@@ -117,8 +117,10 @@ describe("VM", function () {
   });
 
   it("Should call payable with value", async () => {
+    const amount = 123;
+
     const planner = new weiroll.Planner();
-    planner.add(payable.pay().withValue(10000000000));
+    planner.add(payable.pay().withValue(amount));
     const result = planner.add(payable.balance());
     planner.add(events.logUint(result));
     const {commands, state} = planner.plan();
@@ -126,7 +128,7 @@ describe("VM", function () {
     const tx = await vm.execute(commands, state);
     await expect(tx)
       .to.emit(eventsContract.attach(vm.address), "LogUint")
-      .withArgs(6);
+      .withArgs(amount);
 
     const receipt = await tx.wait();
     console.log(`Payable function: ${receipt.gasUsed.toNumber()} gas`);
