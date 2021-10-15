@@ -11,7 +11,7 @@ async function deployLibrary(name) {
 describe("VM", function () {
   const testString = "Hello, world!";
 
-  let events, vm, math, strings, stateTest, vmLibrary;
+  let events, vm, math, strings, stateTest, payable, vmLibrary;
   let eventsContract;
 
   before(async () => {
@@ -23,6 +23,9 @@ describe("VM", function () {
 
     const StateTest = await ethers.getContractFactory("StateTest");
     stateTest = await StateTest.deploy();
+
+    const Payable = await ethers.getContractFactory("Payable");
+    payable = weiroll.Contract.createContract(await Payable.deploy());
 
     const VMLibrary = await ethers.getContractFactory("VM");
     vmLibrary = await VMLibrary.deploy();
@@ -111,6 +114,22 @@ describe("VM", function () {
 
     const receipt = await tx.wait();
     console.log(`String concatenation: ${receipt.gasUsed.toNumber()} gas`);
+  });
+
+  it("Should call payable with value", async () => {
+    const planner = new weiroll.Planner();
+    planner.add(payable.pay().withValue(10000000000));
+    const result = planner.add(payable.balance());
+    planner.add(events.logUint(result));
+    const {commands, state} = planner.plan();
+
+    const tx = await vm.execute(commands, state);
+    await expect(tx)
+      .to.emit(eventsContract.attach(vm.address), "LogUint")
+      .withArgs(6);
+
+    const receipt = await tx.wait();
+    console.log(`Payable function: ${receipt.gasUsed.toNumber()} gas`);
   });
 
   it("Should pass and return raw state to functions", async () => {
