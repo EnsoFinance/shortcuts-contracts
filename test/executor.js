@@ -120,6 +120,25 @@ describe("Executor", function () {
     let gas = receipt.gasUsed.toNumber() - 21000;
     console.log(`Array Sum: ${gas} gas`);
     totalGas += gas;
+    console.log(`String concatenation: ${receipt.gasUsed.toNumber()} gas`);
+  });
+
+  xit("Should call payable with value", async () => {
+    const amount = 123;
+
+    const planner = new weiroll.Planner();
+    planner.add(payable.pay().withValue(amount));
+    const result = planner.add(payable.balance());
+    planner.add(events.logUint(result));
+    const {commands, state} = planner.plan();
+
+    const tx = await vm.execute(commands, state);
+    await expect(tx)
+      .to.emit(eventsContract.attach(vm.address), "LogUint")
+      .withArgs(amount);
+
+    const receipt = await tx.wait();
+    console.log(`Payable function: ${receipt.gasUsed.toNumber()} gas`);
   });
 
   it("Should pass and return raw state to functions", async () => {

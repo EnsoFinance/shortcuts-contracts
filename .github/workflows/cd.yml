@@ -1,0 +1,44 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - network-*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm install
+      - run: npm run test
+
+      - name: Push to remote fork
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SOURCE: "./"
+          EXCLUDE: "/node_modules/"
+          REMOTE_HOST: "3.144.40.241"
+          REMOTE_USER: "ubuntu"
+          TARGET: "/home/ubuntu/v2-contracts"
+
+      - name: Deploy smart contracts
+        uses: appleboy/ssh-action@master
+        with:
+          host: "3.144.40.241"
+          username: "ubuntu"
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: bash /home/ubuntu/v2-contracts/scripts/deploy.sh
