@@ -28,7 +28,7 @@ describe("Tuple", function () {
     return executor.execute(encodedCommands, state);
   }
   
-  it("Should perform a tuple return that's sliced before being fed to another function (first var)", async () => {
+  xit("Should perform a tuple return that's sliced before being fed to another function (first var)", async () => {
 
     const commands = [
       [multiReturn, "intTuple",      "0x40ffffffffffff", "0x00"],
@@ -52,7 +52,7 @@ describe("Tuple", function () {
     console.log(`Tuple return+slice: ${receipt.gasUsed.toNumber()} gas`);
   });
 
-  it("Should perform a tuple return that's sliced before being fed to another function (second var)", async () => {
+  xit("Should perform a tuple return that's sliced before being fed to another function (second var)", async () => {
 
     const commands = [
       [multiReturn, "intTuple",      "0x40ffffffffffff", "0x00"],

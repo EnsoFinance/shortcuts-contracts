@@ -141,7 +141,7 @@ describe("Executor", function () {
     console.log(`Payable function: ${receipt.gasUsed.toNumber()} gas`);
   });
 
-  it("Should pass and return raw state to functions", async () => {
+  xit("Should pass and return raw state to functions", async () => {
     const commands = [
       [stateTest, "addSlots", "0x00000102feffff", "0xfe"],
       [events, "logUint", "0x0000ffffffffff", "0xff"]
