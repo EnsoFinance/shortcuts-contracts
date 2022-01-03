@@ -32,7 +32,7 @@ jobs:
           SOURCE: "./"
           REMOTE_HOST: "3.144.40.241"
           REMOTE_USER: "ubuntu"
-          TARGET: "/home/ubuntu/liquidity-migration"
+          TARGET: "/home/ubuntu/v2-contracts"
 
       - name: Deploy smart contracts
         uses: appleboy/ssh-action@master
