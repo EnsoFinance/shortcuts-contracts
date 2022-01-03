@@ -116,7 +116,7 @@ describe("VM", function () {
     console.log(`String concatenation: ${receipt.gasUsed.toNumber()} gas`);
   });
 
-  it("Should call payable with value", async () => {
+  xit("Should call payable with value", async () => {
     const amount = 123;
 
     const planner = new weiroll.Planner();
