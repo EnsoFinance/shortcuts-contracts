@@ -9,7 +9,7 @@ interface IERC20 {
     function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
-interface INetherFactory {
+interface IPortalFactory {
     function vm() external view returns(address);
 }
 
@@ -39,6 +39,7 @@ contract Portal {
         returns (bytes[] memory)
     {
         if (!caller[msg.sender]) revert PortalErrors.NotCaller();
+        
         _execute(commands, state);
     }
 
