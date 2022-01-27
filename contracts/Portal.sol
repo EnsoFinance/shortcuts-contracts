@@ -29,9 +29,9 @@ contract Portal {
     event Removed(address caller, address sender);
 
     constructor(address _owner) {
-        factory = msg.sender; // maybe cheaper not to store instance? and only address
-        _addCaller(msg.sender);
-        _addCaller(_owner);    
+        factory = msg.sender;
+        caller[msg.sender] = true;
+        caller[_owner] = true;
     }
 
     function execute(bytes32[] calldata commands, bytes[] memory state)
@@ -65,14 +65,8 @@ contract Portal {
         public
     {
         if (!caller[msg.sender]) revert PortalErrors.NotCaller();
-        _addCaller(_caller);
+        caller[msg.sender] = true;
         emit Added(_caller, msg.sender);
-    }
-    
-    function _addCaller(address _caller) 
-        internal
-    {
-        caller[_caller] = true; // do not verify if already entry: save gas
     }
 }
 

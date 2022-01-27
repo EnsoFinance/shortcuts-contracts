@@ -76,5 +76,7 @@ describe("ERC20", function () {
         // revert if not calling from owner
         // await expect(portal.connect(addr1).execute(commands, state))
         // .to.be.revertedWith('Portal#onlyOwner: not owner')
+
+        await portal.addCaller(addr1.address);
     });
 })
