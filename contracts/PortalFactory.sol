@@ -8,7 +8,8 @@ contract PortalFactory {
 
     event Deployed(address addr, address sender);
 
-    constructor(address _vm) public {
+    constructor(address _vm) public
+    {
         vm = _vm;
     }
 

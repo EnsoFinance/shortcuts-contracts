@@ -22,14 +22,14 @@ library PortalErrors {
 
 
 contract Portal {
-    INetherFactory public factory;
+    address public factory;
     mapping (address=>bool) public caller;
 
     event Added(address caller, address sender);
     event Removed(address caller, address sender);
 
     constructor(address _owner) {
-        factory = INetherFactory(msg.sender); // maybe cheaper not to store instance? and only address
+        factory = msg.sender; // maybe cheaper not to store instance? and only address
         _addCaller(msg.sender);
         _addCaller(_owner);    
     }
@@ -46,7 +46,7 @@ contract Portal {
         internal
         returns (bytes[] memory)   
     {
-        (bool success, bytes memory data) = factory.vm().delegatecall(
+        (bool success, bytes memory data) = INetherFactory(factory).vm().delegatecall(
             abi.encodeWithSelector(VM.execute.selector, commands, state)
         );
         require(success);
