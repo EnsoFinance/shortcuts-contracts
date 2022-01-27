@@ -54,10 +54,4 @@ contract PortalFactory {
     function salt(address _user) public pure returns (bytes32) {
       return keccak256(abi.encode(_user));
     }
-
 }
-
-/*
-    TODO:
-        - introduce salts
-*/

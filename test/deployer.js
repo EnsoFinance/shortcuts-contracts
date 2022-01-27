@@ -60,7 +60,6 @@ describe("ERC20", function () {
         console.log('events', events)
         console.log('balance', await tokenContract.balanceOf(to))
   
-            // doesn't generate the same address rn, probs due to salt in the factory
         // why is it 0 again? probably revert on execution? should we try simple math test?
     });
 })
