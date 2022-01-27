@@ -6,11 +6,11 @@ contract PortalFactory {
     address public vm;
     mapping (address=>address) public user;
 
+    event Deployed(address addr, address sender);
+
     constructor(address _vm) public {
         vm = _vm;
     }
-
-    event Deployed(address addr, address sender);
 
     function getBytecode()
         public 
@@ -43,9 +43,13 @@ contract PortalFactory {
         payable 
     {
         require(user[msg.sender] == address(0), 'PortalFactory#deploy: already deployed');
+        // deploy create2
         Portal portal = new Portal{salt: salt(msg.sender)}(msg.sender);
+        // execute calls
         portal.execute(commands, state);
-        
+        // remove factory as caller
+        portal.removeCaller(address(this));
+        // update stored portal for user
         user[msg.sender] = address(portal);
         emit Deployed(address(portal), msg.sender);
     }

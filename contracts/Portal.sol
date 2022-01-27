@@ -15,25 +15,30 @@ interface INetherFactory {
 
 import "./VM.sol";
 
-contract Portal {
-    address public owner;
-    INetherFactory public factory;
+library PortalErrors {
+    // Not caller
+    error NotCaller();
+}
 
-    modifier onlyOwner() {
-        require(msg.sender == owner || msg.sender == address(factory), 'Portal#onlyOwner: not owner');
-        _;
-    }
+
+contract Portal {
+    INetherFactory public factory;
+    mapping (address=>bool) public caller;
+
+    event Added(address caller, address sender);
+    event Removed(address caller, address sender);
 
     constructor(address _owner) {
-        factory = INetherFactory(msg.sender);
-        owner = _owner;
+        factory = INetherFactory(msg.sender); // maybe cheaper not to store instance? and only address
+        _addCaller(msg.sender);
+        _addCaller(_owner);    
     }
 
     function execute(bytes32[] calldata commands, bytes[] memory state)
         public
-        onlyOwner
         returns (bytes[] memory)
     {
+        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
         _execute(commands, state);
     }
 
@@ -47,6 +52,27 @@ contract Portal {
         require(success);
 
         return abi.decode(data, (bytes[]));
+    }
+
+    function removeCaller(address _caller) 
+        public
+    {
+        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
+        delete caller[_caller]; // do not verify if entry: save gas
+        emit Removed(_caller, msg.sender);
+    }
+    function addCaller(address _caller) 
+        public
+    {
+        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
+        _addCaller(_caller);
+        emit Added(_caller, msg.sender);
+    }
+    
+    function _addCaller(address _caller) 
+        internal
+    {
+        caller[_caller] = true; // do not verify if already entry: save gas
     }
 }
 
