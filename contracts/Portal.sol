@@ -1,17 +1,19 @@
 pragma solidity ^0.8.4;
 
-interface VMInterface {
-    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory);
-}
+import "hardhat/console.sol";
+
 
 interface IERC20 {
     function allowance(address owner, address spender) external view returns (uint256);
     function approve(address spender, uint256 amount) external returns (bool);
+    function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
 interface INetherFactory {
     function vm() external view returns(address);
 }
+
+import "./VM.sol";
 
 contract Portal {
     address public owner;
@@ -30,25 +32,24 @@ contract Portal {
     function execute(bytes32[] calldata commands, bytes[] memory state)
         public
         onlyOwner
-        // returns (bytes[] memory)
-        returns(bool)
+        returns (bytes[] memory)
     {
-        return _execute(commands, state);
+        _execute(commands, state);
     }
 
 
     function _execute(bytes32[] calldata commands, bytes[] memory state)
         internal
-        returns(bool)
-        // returns (bytes[] memory)   
+        returns (bytes[] memory)   
     {
-        (bool success, bytes memory data) = factory.vm().delegatecall(
-            abi.encodeWithSelector(VMInterface.execute.selector, commands, state)
+        address vm = factory.vm();   
+        (bool success, bytes memory trial) = vm.delegatecall(
+            abi.encodeWithSelector(VM.execute.selector, commands, state)
         );
+        console.log(success);
         // require(success);
 
         // return abi.decode(data, (bytes[]));
-        return true;
     }
 }
 

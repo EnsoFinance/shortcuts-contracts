@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
 import "./CommandBuilder.sol";
@@ -28,7 +29,8 @@ contract VM {
 
     function execute(bytes32[] calldata commands, bytes[] memory state)
         public
-        ensureDelegateCall
+        payable
+        // ensureDelegateCall
         returns (bytes[] memory)
     {
         bytes32 command;
@@ -81,8 +83,9 @@ contract VM {
                 uint256 calleth;
                 bytes memory v = state[uint8(bytes1(indices))];
                 assembly {
-                    mstore(calleth, add(v, 0x20))
+                    calleth := mload(add(v, add(0x20, 0)))
                 }
+
                 (success, outdata) = address(uint160(uint256(command))).call{ // target
                     value: calleth
                 }(
