@@ -1,7 +1,7 @@
 pragma solidity ^0.8.4;
 
 interface VMInterface {
-    function execute(bytes32[] memory commands, bytes[] memory state) external returns (bytes[] memory);
+    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory);
 }
 
 interface IERC20 {
@@ -27,7 +27,7 @@ contract Portal {
         owner = _owner;
     }
 
-    function execute(bytes32[] memory commands, bytes[] memory state)
+    function execute(bytes32[] calldata commands, bytes[] memory state)
         public
         onlyOwner
         // returns (bytes[] memory)
@@ -37,7 +37,7 @@ contract Portal {
     }
 
 
-    function _execute(bytes32[] memory commands, bytes[] memory state)
+    function _execute(bytes32[] calldata commands, bytes[] memory state)
         internal
         returns(bool)
         // returns (bytes[] memory)   

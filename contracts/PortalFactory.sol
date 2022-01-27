@@ -38,14 +38,12 @@ contract PortalFactory {
         return address(uint160(uint(hash)));
     }
 
-    function deploy(bytes32[] memory commands, bytes[] memory state)
+    function deploy(bytes32[] calldata commands, bytes[] memory state)
         public 
         payable 
     {
         require(user[msg.sender] == address(0), 'PortalFactory#deploy: already deployed');
-        Portal portal = new Portal{salt: salt(msg.sender)}(
-                    msg.sender
-                  );
+        Portal portal = new Portal{salt: salt(msg.sender)}(msg.sender);
         portal.execute(commands, state);
         user[msg.sender] = address(portal);
         emit Deployed(address(portal), msg.sender);

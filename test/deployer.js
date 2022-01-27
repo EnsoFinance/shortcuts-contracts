@@ -52,7 +52,7 @@ describe("ERC20", function () {
 
         let portal = await factory.getAddress(bytecode)
         await tokenContract.approve(portal, amount.mul(3))
-
+        console.log(planner)
         let tx = await factory.deploy(commands, state)
         let eventFilter = factory.filters.Deployed()
         let events = await factory.queryFilter(eventFilter)

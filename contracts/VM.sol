@@ -26,7 +26,7 @@ contract VM {
         self = address(this);
     }
 
-    function execute(bytes32[] memory commands, bytes[] memory state)
+    function execute(bytes32[] calldata commands, bytes[] memory state)
         public
         ensureDelegateCall
         returns (bytes[] memory)
