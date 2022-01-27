@@ -3,15 +3,9 @@ pragma solidity ^0.8.4;
 import "./Portal.sol";
 
 contract PortalFactory {
-    address public vm;
     mapping (address=>address) public user;
 
     event Deployed(address addr, address sender);
-
-    constructor(address _vm) public
-    {
-        vm = _vm;
-    }
 
     function getBytecode()
         public 
@@ -54,7 +48,6 @@ contract PortalFactory {
         user[msg.sender] = address(portal);
         emit Deployed(address(portal), msg.sender);
     }
-
     function salt(address _user) public pure returns (bytes32) {
       return keccak256(abi.encode(_user));
     }

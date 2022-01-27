@@ -32,7 +32,7 @@ describe("ERC20", function () {
         vm = await VM.deploy();
 
         Factory = await ethers.getContractFactory("PortalFactory");
-        factory = await Factory.deploy(vm.address);
+        factory = await Factory.deploy();
 
         Portal = await ethers.getContractFactory("Portal");
     });

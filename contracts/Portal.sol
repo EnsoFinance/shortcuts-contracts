@@ -9,10 +9,6 @@ interface IERC20 {
     function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
-interface IPortalFactory {
-    function vm() external view returns(address);
-}
-
 import "./VM.sol";
 
 library PortalErrors {
@@ -22,14 +18,13 @@ library PortalErrors {
 
 
 contract Portal {
-    address public factory;
     mapping (address=>bool) public caller;
+    address public constant _VM = 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9;
 
     event Added(address caller, address sender);
     event Removed(address caller, address sender);
 
     constructor(address _owner) {
-        factory = msg.sender;
         caller[msg.sender] = true;
         caller[_owner] = true;
     }
@@ -47,7 +42,7 @@ contract Portal {
         internal
         returns (bytes[] memory)   
     {
-        (bool success, bytes memory data) = INetherFactory(factory).vm().delegatecall(
+        (bool success, bytes memory data) = _VM.delegatecall(
             abi.encodeWithSelector(VM.execute.selector, commands, state)
         );
         require(success);
