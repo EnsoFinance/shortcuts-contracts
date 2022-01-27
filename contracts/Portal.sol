@@ -42,11 +42,10 @@ contract Portal {
         internal
         returns (bytes[] memory)   
     {
-        address vm = factory.vm();   
-        (bool success, bytes memory trial) = vm.delegatecall(
+        (bool success, bytes memory data) = factory.vm().delegatecall(
             abi.encodeWithSelector(VM.execute.selector, commands, state)
         );
-        console.log(success);
+        console.log(msg.sender);
         // require(success);
 
         // return abi.decode(data, (bytes[]));

@@ -2,6 +2,8 @@
 pragma solidity ^0.8.4;
 
 import "./CommandBuilder.sol";
+import "hardhat/console.sol";
+
 
 uint8 constant FLAG_CT_DELEGATECALL = 0x00;
 uint8 constant FLAG_CT_CALL = 0x01;
@@ -17,6 +19,7 @@ contract VM {
     using CommandBuilder for bytes[];
 
     address immutable self;
+    bool public inside;
 
     modifier ensureDelegateCall() {
         require(address(this) != self);
@@ -30,7 +33,7 @@ contract VM {
     function execute(bytes32[] calldata commands, bytes[] memory state)
         public
         payable
-        // ensureDelegateCall
+        ensureDelegateCall
         returns (bytes[] memory)
     {
         bytes32 command;
@@ -39,7 +42,6 @@ contract VM {
 
         bool success;
         bytes memory outdata;
-
         for (uint256 i = 0; i < commands.length; i++) {
             command = commands[i];
             flags = uint8(bytes1(command << 32));

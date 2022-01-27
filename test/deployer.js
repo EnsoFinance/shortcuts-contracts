@@ -14,7 +14,7 @@ describe("ERC20", function () {
     let supply = ethers.BigNumber.from("100000000000000000000");
     let amount = supply.div(10);
 
-    let Factory, factory, salt, events, vm, math, strings, stateTest, payable, vmLibrary, eventsContract, erc20, addr1, owner;
+    let Factory, factory, Portal, salt, events, vm, math, strings, stateTest, payable, vmLibrary, eventsContract, erc20, addr1, owner;
 
     before(async () => {
         [owner, addr1] = await ethers.getSigners();
@@ -28,15 +28,13 @@ describe("ERC20", function () {
         const Payable = await ethers.getContractFactory("Payable");
         payable = weiroll.Contract.createContract(await Payable.deploy());
     
-        const VMLibrary = await ethers.getContractFactory("VM");
-        vmLibrary = await VMLibrary.deploy();
-    
-        const VM = await ethers.getContractFactory("TestableVM");
-        vm = await VM.deploy(vmLibrary.address);
+        const VM = await ethers.getContractFactory("VM");
+        vm = await VM.deploy();
 
         Factory = await ethers.getContractFactory("PortalFactory");
         factory = await Factory.deploy(vm.address);
 
+        Portal = await ethers.getContractFactory("Portal");
     });
     it('should get gas costs', async () => {
         const planner = new weiroll.Planner();
@@ -49,13 +47,20 @@ describe("ERC20", function () {
         const {commands, state} = planner.plan();
 
         let bytecode = await factory.getBytecode()
-        let portal = await factory.getAddress(bytecode)
-        await tokenContract.approve(portal, amount.mul(3))
+        let portalAddr = await factory.getAddress(bytecode)
+        await tokenContract.approve(portalAddr, amount.mul(3))
 
-        console.log('approval', await tokenContract.allowance(owner.address, portal))
+        console.log('approval', await tokenContract.allowance(owner.address, portalAddr))
         let tx = await factory.deploy(commands, state)
+        portal = await Portal.attach(portalAddr);
+          
+        // console.log('factory', factory.address)
+        // console.log('owner', owner.address)
+        // console.log('vm', vm.address)
+        // console.log('factory vm', await factory.vm())
         console.log('balance', await tokenContract.balanceOf(to))
-  
+        console.log('approval', await tokenContract.allowance(owner.address, portalAddr))
+
         // why is it 0 again? probably revert on execution? should we try simple math test?
     });
 })
