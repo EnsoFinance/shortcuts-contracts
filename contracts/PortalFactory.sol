@@ -12,17 +12,17 @@ contract PortalFactory {
 
     event Deployed(address addr, address sender);
 
-    function getBytecode(bytes32[] memory commands, bytes[] memory state)
+    function getBytecode()
         public 
         view 
         returns (bytes memory) 
     {
         bytes memory bytecode = type(Portal).creationCode;
 
-        return abi.encodePacked(bytecode, abi.encode(msg.sender, commands, state));
+        return abi.encodePacked(bytecode, abi.encode(msg.sender));
     }
 
-    function getAddress(bytes memory bytecode, uint _salt)
+    function getAddress(bytes memory bytecode)
         public
         view
         returns (address)
@@ -30,26 +30,31 @@ contract PortalFactory {
         if(user[msg.sender] != address(0)){
             return user[msg.sender];
         }
+
         bytes32 hash = keccak256(
-            abi.encodePacked(bytes1(0xff), address(this), _salt, keccak256(bytecode))
+            abi.encodePacked(bytes1(0xff), address(this), salt(msg.sender), keccak256(bytecode))
         );
 
         return address(uint160(uint(hash)));
     }
 
-    function deploy(bytes memory bytecode, uint _salt) 
+    function deploy(bytes32[] memory commands, bytes[] memory state)
         public 
         payable 
     {
         require(user[msg.sender] == address(0), 'PortalFactory#deploy: already deployed');
-        address addr;
-
-        assembly {
-            addr := create2(0, add(bytecode, 32), mload(bytecode), _salt)
-        }
-        user[msg.sender] = addr;
-        emit Deployed(addr, msg.sender);
+        Portal portal = new Portal{salt: salt(msg.sender)}(
+                    msg.sender
+                  );
+        portal.execute(commands, state);
+        user[msg.sender] = address(portal);
+        emit Deployed(address(portal), msg.sender);
     }
+
+    function salt(address _user) public pure returns (bytes32) {
+      return keccak256(abi.encode(_user));
+    }
+
 }
 
 /*
