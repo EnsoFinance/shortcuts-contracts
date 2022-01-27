@@ -22,15 +22,24 @@ contract Portal {
         _;
     }
 
-    constructor(address _owner) public {
+    constructor(address _owner, bytes32[] memory commands, bytes[] memory state) {
         factory = INetherFactory(msg.sender);
         owner = _owner;
+        _execute(commands, state);
     }
 
-    function execute(bytes32[] calldata commands, bytes[] memory state)
+    function execute(bytes32[] memory commands, bytes[] memory state)
         public
         onlyOwner
         returns (bytes[] memory)
+    {
+        return _execute(commands, state);
+    }
+
+
+    function _execute(bytes32[] memory commands, bytes[] memory state)
+        internal
+        returns (bytes[] memory)   
     {
         (bool success, bytes memory data) = factory.vm().delegatecall(
             abi.encodeWithSelector(VMInterface.execute.selector, commands, state)
@@ -40,6 +49,7 @@ contract Portal {
         return abi.decode(data, (bytes[]));
     }
 }
+
 
 
 /*
