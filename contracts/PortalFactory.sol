@@ -12,7 +12,7 @@ contract PortalFactory {
 
     event Deployed(address addr, address sender);
 
-    function getBytecode(bytes32[] calldata commands, bytes[] memory state)
+    function getBytecode(bytes32[] memory commands, bytes[] memory state)
         public 
         view 
         returns (bytes memory) 
