@@ -8,4 +8,8 @@ contract ExecutorToken is ERC20 {
     constructor(uint256 initialSupply) ERC20("Exec", "EXE") {
         _mint(msg.sender, initialSupply);
     }
+
+    function msgSender() public view returns(address) {
+        return _msgSender();
+    }
 }

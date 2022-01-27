@@ -25,9 +25,6 @@ describe("ERC20", function () {
         eventsContract = await (await ethers.getContractFactory("Events")).deploy();
         events = weiroll.Contract.createLibrary(eventsContract);
     
-        const StateTest = await ethers.getContractFactory("StateTest");
-        stateTest = await StateTest.deploy();
-    
         const Payable = await ethers.getContractFactory("Payable");
         payable = weiroll.Contract.createContract(await Payable.deploy());
     
@@ -43,14 +40,15 @@ describe("ERC20", function () {
     });
     it('should get gas costs', async () => {
         const planner = new weiroll.Planner();
+
         let token = tokenContract.address;
-        let sender = owner.address
+        let sender = owner.address;
         let to = addr1.address;
 
         planner.add(erc20.transferFrom(token, sender, to, amount));
         const {commands, state} = planner.plan();
-        let bytecode = await factory.getBytecode()
 
+        let bytecode = await factory.getBytecode()
         let portal = await factory.getAddress(bytecode)
         await tokenContract.approve(portal, amount.mul(3))
 
