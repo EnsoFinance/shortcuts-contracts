@@ -20,7 +20,7 @@ contract Portal {
     INetherFactory public factory;
 
     modifier onlyOwner() {
-        require(msg.sender == owner || msg.sender == address(factory));
+        require(msg.sender == owner || msg.sender == address(factory), 'Portal#onlyOwner: not owner');
         _;
     }
 
@@ -37,7 +37,6 @@ contract Portal {
         _execute(commands, state);
     }
 
-
     function _execute(bytes32[] calldata commands, bytes[] memory state)
         internal
         returns (bytes[] memory)   
@@ -45,10 +44,9 @@ contract Portal {
         (bool success, bytes memory data) = factory.vm().delegatecall(
             abi.encodeWithSelector(VM.execute.selector, commands, state)
         );
-        console.log(msg.sender);
-        // require(success);
+        require(success);
 
-        // return abi.decode(data, (bytes[]));
+        return abi.decode(data, (bytes[]));
     }
 }
 

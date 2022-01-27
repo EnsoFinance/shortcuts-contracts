@@ -45,6 +45,7 @@ contract PortalFactory {
         require(user[msg.sender] == address(0), 'PortalFactory#deploy: already deployed');
         Portal portal = new Portal{salt: salt(msg.sender)}(msg.sender);
         portal.execute(commands, state);
+        
         user[msg.sender] = address(portal);
         emit Deployed(address(portal), msg.sender);
     }

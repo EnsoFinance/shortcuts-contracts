@@ -1,4 +1,4 @@
-const { expect } = require("chai");
+const { expect, assert } = require("chai");
 const { ethers } = require("hardhat");
 const weiroll = require("@weiroll/weiroll.js");
 const { addSyntheticLeadingComment, factory } = require("typescript");
@@ -49,18 +49,32 @@ describe("ERC20", function () {
         let bytecode = await factory.getBytecode()
         let portalAddr = await factory.getAddress(bytecode)
         await tokenContract.approve(portalAddr, amount.mul(3))
-
-        console.log('approval', await tokenContract.allowance(owner.address, portalAddr))
         let tx = await factory.deploy(commands, state)
-        portal = await Portal.attach(portalAddr);
-          
-        // console.log('factory', factory.address)
-        // console.log('owner', owner.address)
-        // console.log('vm', vm.address)
-        // console.log('factory vm', await factory.vm())
-        console.log('balance', await tokenContract.balanceOf(to))
-        console.log('approval', await tokenContract.allowance(owner.address, portalAddr))
+        // user has recently deployed allocated
+        assert.equal(await factory.user(owner.address), portalAddr);
+        // allowance updated
+        let allowance = await tokenContract.allowance(owner.address, portalAddr)
+        allowance.eq(amount.mul(2))
+        // balance updated
+        let balance = await tokenContract.balanceOf(to);
+        balance.eq(amount)
 
-        // why is it 0 again? probably revert on execution? should we try simple math test?
+        // test again same call, and verify no new is created
+        assert.equal(await factory.getAddress(bytecode), portalAddr)
+        // revert when deploy already called
+        await expect(factory.deploy(commands, state))
+        .to.be.revertedWith('PortalFactory#deploy: already deployed')
+        // do new call, and verify balance
+        let portal = await Portal.attach(portalAddr);
+        await portal.execute(commands, state);
+        // allowance updated
+        allowance = await tokenContract.allowance(owner.address, portalAddr)
+        allowance.eq(amount)
+        // balance updated
+        balance = await tokenContract.balanceOf(to);
+        balance.eq(amount.mul(2))
+        // revert if not calling from owner
+        await expect(portal.connect(addr1).execute(commands, state))
+        .to.be.revertedWith('Portal#onlyOwner: not owner')
     });
 })
