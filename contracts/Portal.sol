@@ -27,7 +27,7 @@ contract Portal {
     {
         if (!caller[msg.sender]) revert PortalErrors.NotCaller();
         
-        _execute(commands, state);
+        return _execute(commands, state);
     }
 
     function _execute(bytes32[] calldata commands, bytes[] memory state)
@@ -37,7 +37,12 @@ contract Portal {
         (bool success, bytes memory data) = _VM.delegatecall(
             abi.encodeWithSelector(VM.execute.selector, commands, state)
         );
-        require(success);
+        
+        if (!success) {
+            assembly {
+                revert(add(32, data), mload(data))
+            }
+        }
 
         return abi.decode(data, (bytes[]));
     }
