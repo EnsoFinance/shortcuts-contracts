@@ -20,7 +20,7 @@ contract Portal {
     event Removed(address caller, address sender);
 
     function initialize(address _caller, bytes32[] calldata commands, bytes[] memory state)
-        public
+        external
     {
         if(init) revert PortalErrors.AlreadyInit();
         init = true;
@@ -29,7 +29,7 @@ contract Portal {
     }
 
     function execute(bytes32[] calldata commands, bytes[] memory state)
-        public
+        external
         returns (bytes[] memory)
     {
         if (!caller[msg.sender]) revert PortalErrors.NotCaller();
