@@ -9,7 +9,7 @@ interface IVM {
     function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) ;
 }
 
-contract Portal {
+contract CallerPortal {
     mapping (address=>bool) public caller;
     address public constant _VM = 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9;
 
