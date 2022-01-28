@@ -13,18 +13,15 @@ interface IVM {
 
 contract Portal {
     bool public init;
-    mapping (address=>bool) public caller;
+    address public caller;
     address public constant _VM = 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9;
-
-    event Added(address caller, address sender);
-    event Removed(address caller, address sender);
 
     function initialize(address _caller, bytes32[] calldata commands, bytes[] memory state)
         external
     {
         if(init) revert PortalErrors.AlreadyInit();
         init = true;
-        caller[_caller] = true;
+        caller = _caller;
         _execute(commands, state);
     }
 
@@ -32,7 +29,7 @@ contract Portal {
         external
         returns (bytes[] memory)
     {
-        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
+        if (caller != msg.sender) revert PortalErrors.NotCaller();
         
         return _execute(commands, state);
     }
@@ -47,20 +44,5 @@ contract Portal {
         require(success);
 
         return abi.decode(data, (bytes[]));
-    }
-
-    function removeCaller(address _caller) 
-        public
-    {
-        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
-        delete caller[_caller]; // do not verify if entry: save gas
-        emit Removed(_caller, msg.sender);
-    }
-    function addCaller(address _caller) 
-        public
-    {
-        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
-        caller[msg.sender] = true;
-        emit Added(_caller, msg.sender);
     }
 }
