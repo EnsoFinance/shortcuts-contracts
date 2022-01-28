@@ -10,7 +10,6 @@ library FactoryErrors {
     error AlreadyExists();
 }
 
-
 contract PortalFactory {
     using Clones for address;
     
@@ -28,8 +27,8 @@ contract PortalFactory {
     }
 
     function deploy(bytes memory init)
-        public 
-        payable 
+        public
+        payable
     {
         if(user[msg.sender] != address(0)) revert FactoryErrors.AlreadyExists();
 
