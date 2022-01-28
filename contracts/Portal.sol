@@ -1,6 +1,8 @@
 pragma solidity ^0.8.4;
 
 library PortalErrors {
+    // Already initialized
+    error AlreadyInit();
     // Not caller
     error NotCaller();
 }
@@ -10,6 +12,7 @@ interface IVM {
 }
 
 contract Portal {
+    bool public init;
     mapping (address=>bool) public caller;
     address public constant _VM = 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9;
 
@@ -19,6 +22,8 @@ contract Portal {
     function initialize(address _caller, bytes32[] calldata commands, bytes[] memory state)
         public
     {
+        if(init) revert PortalErrors.AlreadyInit();
+        init = true;
         caller[_caller] = true;
         _execute(commands, state);
     }
