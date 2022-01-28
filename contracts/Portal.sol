@@ -29,7 +29,7 @@ contract Portal {
     {
         if (!caller[msg.sender]) revert PortalErrors.NotCaller();
         
-        _execute(commands, state);
+        return _execute(commands, state);
     }
 
     function _execute(bytes32[] calldata commands, bytes[] memory state)
