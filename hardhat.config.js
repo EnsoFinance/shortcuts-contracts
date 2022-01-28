@@ -3,7 +3,10 @@ const { TASK_COMPILE_SOLIDITY_GET_COMPILER_INPUT, TASK_COMPILE_SOLIDITY_EMIT_ART
 const { utils } = require("ethers");
 const { access, readFile } = require("fs/promises");
 
+
 require("@nomiclabs/hardhat-waffle");
+require("hardhat-gas-reporter");
+
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
