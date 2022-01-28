@@ -1,13 +1,13 @@
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
-import "./VM.sol";
-
 library PortalErrors {
     // Not caller
     error NotCaller();
 }
 
+interface IVM {
+    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) ;
+}
 
 contract Portal {
     mapping (address=>bool) public caller;
@@ -37,7 +37,7 @@ contract Portal {
         returns (bytes[] memory)   
     {
         (bool success, bytes memory data) = _VM.delegatecall(
-            abi.encodeWithSelector(VM.execute.selector, commands, state)
+            abi.encodeWithSelector(IVM.execute.selector, commands, state)
         );
         require(success);
 
