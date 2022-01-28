@@ -16,9 +16,11 @@ contract Portal {
     event Added(address caller, address sender);
     event Removed(address caller, address sender);
 
-    constructor(address _owner) {
-        caller[msg.sender] = true;
+    function initialize(address _owner, bytes32[] calldata commands, bytes[] memory state)
+        public
+    {
         caller[_owner] = true;
+        _execute(commands, state);
     }
 
     function execute(bytes32[] calldata commands, bytes[] memory state)
