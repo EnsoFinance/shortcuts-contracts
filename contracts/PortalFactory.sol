@@ -18,14 +18,6 @@ contract PortalFactory {
 
     event Deployed(address instance);
 
-    function getAddress() 
-        public
-        view
-        returns(address)
-    {
-        return PORTAL.predictDeterministicAddress(msg.sender, address(this));
-    }
-
     function deploy(bytes memory init)
         public
         payable
@@ -39,5 +31,12 @@ contract PortalFactory {
 
         user[msg.sender] = instance;
         emit Deployed(instance);
+    }
+    function getAddress() 
+        public
+        view
+        returns(address)
+    {
+        return PORTAL.predictDeterministicAddress(msg.sender, address(this));
     }
 }
