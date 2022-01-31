@@ -1,0 +1,3 @@
+[submodule "resources/tornado-core"]
+	path = resources/tornado-core
+	url = git@github.com:tornadocash/tornado-core.git

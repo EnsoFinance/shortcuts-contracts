@@ -15,23 +15,47 @@ contract PortalFactory {
     
     mapping (address=>address) public user;
     address public constant PORTAL = 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707;
+    address public constant RECIPE = 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707;
 
-    event Deployed(address instance); 
+    event DeployedPortal(address portal);
+    event DeployedRecipe(address recipe);
+
+    function deploy(bytes memory init, bytes memory init2)
+        public
+        payable
+    {
+        if(user[msg.sender] != address(0)) revert FactoryErrors.AlreadyExists();
+
+        _portal(init);
+
+        address recipe = RECIPE.cloneDeterministic(msg.sender);
+
+        (bool success, bytes memory data) = recipe.call{value:msg.value}(init2);
+        require(success);
+
+        emit DeployedRecipe(recipe);
+    }
 
     function deploy(bytes memory init)
         public
         payable
     {
         if(user[msg.sender] != address(0)) revert FactoryErrors.AlreadyExists();
+        _portal(init);
+    }
 
-        address instance = PORTAL.cloneDeterministic(msg.sender);
+    function _portal(bytes memory init)
+        internal
+    {
+        address portal = PORTAL.cloneDeterministic(msg.sender);
 
-        (bool success, bytes memory data) = instance.call{value:msg.value}(init);
+        (bool success, bytes memory data) = portal.call{value:msg.value}(init);
         require(success);
 
-        user[msg.sender] = instance;
-        emit Deployed(instance);
+        user[msg.sender] = portal;
+        emit DeployedPortal(portal);
     }
+
     function getAddress() 
         public
         view
