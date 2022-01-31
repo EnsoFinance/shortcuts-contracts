@@ -34,7 +34,7 @@ contract ERC721 {
         init = true;
         name = _name;
         symbol = _symbol;
-        balanceOf[_caller]=1; // might be cheaper to increment, should check
+        balanceOf[_caller] = 1; // might be cheaper to increment, should check
         ownerOf[0] = _caller;
         fee = _fee;
     }

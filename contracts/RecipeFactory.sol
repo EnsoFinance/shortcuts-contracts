@@ -24,7 +24,7 @@ contract PortalFactory {
     {
         if(user[msg.sender] != address(0)) revert FactoryErrors.AlreadyExists();
 
-        address instance = PORTAL.cloneDeterministic(msg.sender);
+        address instance = RECIPE.cloneDeterministic(msg.sender);
 
         (bool success, bytes memory data) = instance.call{value:msg.value}(init);
         require(success);
