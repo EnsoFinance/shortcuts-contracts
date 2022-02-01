@@ -12,6 +12,8 @@ library RecipeErrors {
     error NotAuthorized();
     // wrong from, and invalid address
     error Invalid();
+    // not enough funds
+    error MoreETH();
 }
 
 contract Recipe {
@@ -19,14 +21,17 @@ contract Recipe {
     uint256 public fee;
     string public name;
     string public symbol;                    
-    bytes32[] public commands;
+    bytes32[] internal commands;
 
     mapping(address => uint256) public balanceOf;
     mapping(uint256 => address) public ownerOf;
     mapping(uint256 => address) public getApproved;
+    mapping(address => uint256) public calls;
 
     event Transfer(address indexed from, address indexed to, uint256 indexed id);
     event Approval(address indexed owner, address indexed spender, uint256 indexed id);
+    event Paid(address spender, uint256 calls, uint256 amount);
+    event Withdraw(address owner, uint256 amount);
 
     function initialize(
         address _caller, 
@@ -47,6 +52,34 @@ contract Recipe {
         commands = _commands;
     }
 
+    function withdraw() 
+        external
+        payable
+    {
+        if(msg.sender != ownerOf[0]) revert RecipeErrors.NotAuthorized();
+        payable(msg.sender).transfer(address(this).balance);
+        emit Withdraw(msg.sender, address(this).balance);
+    }
+
+    function pay(uint256 _calls) 
+        external
+        payable
+    {
+        if(msg.value < _calls * fee) revert RecipeErrors.MoreETH();
+        calls[msg.sender]+= _calls;
+        emit Paid(msg.sender, _calls, _calls * fee);
+    }
+
+    // assumption: other contracts will call this
+    function getCommands() 
+        external
+        returns(bytes32[] memory)
+    {
+        calls[msg.sender]--; // revert if 0
+        return commands;
+    }
+
+    // Base 721 functions, removed other uncessary functions
     function approve(address spender, uint256 id) public virtual {
         address owner = ownerOf[id];
 
@@ -82,20 +115,13 @@ contract Recipe {
 
         emit Transfer(from, to, id);
     }
+
     function getLength() 
         external
         view
         returns(uint256)
     {
         return commands.length;
-    }
-
-    function getCommands() 
-        external
-        view
-        returns(bytes32[] memory)
-    {
-        return commands;
     }
 
     // function tokenURI(uint256 id) public view virtual returns (string memory);

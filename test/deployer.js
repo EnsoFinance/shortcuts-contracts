@@ -89,7 +89,7 @@ describe("Portal", function () {
 
       recipe_depoyed = await Recipe.attach(predict_recipe);
 
-      console.log(await recipe_depoyed.getCommands())
+      // console.log(await recipe_depoyed.getCommands())
     });
 
     // it("should predict address before deploy", async () => {
