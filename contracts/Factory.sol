@@ -10,7 +10,7 @@ library FactoryErrors {
     error AlreadyExists();
 }
 
-contract PortalFactory {
+contract Factory {
     using Clones for address;
     
     mapping (address=>address) public user;
@@ -20,7 +20,7 @@ contract PortalFactory {
     event DeployedPortal(address portal);
     event DeployedRecipe(address recipe);
 
-    function deployRecipe(bytes memory init, bytes memory init2)
+    function deployCreate(bytes memory init, bytes memory init2)
         public
         payable
     {
@@ -42,6 +42,18 @@ contract PortalFactory {
     {
         if(user[msg.sender] != address(0)) revert FactoryErrors.AlreadyExists();
         _portal(init);
+    }
+
+    function create(bytes memory init2) 
+        public
+        payable
+    {
+        address recipe = RECIPE.cloneDeterministic(msg.sender);
+
+        (bool success, bytes memory data) = recipe.call{value:msg.value}(init2);
+        require(success);
+
+        emit DeployedRecipe(recipe);
     }
 
     function _portal(bytes memory init)

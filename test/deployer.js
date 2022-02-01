@@ -39,7 +39,7 @@ describe("Portal", function () {
 
     console.log('vmLibrary', vmLibrary.address)
 
-    Factory = await ethers.getContractFactory("PortalFactory");
+    Factory = await ethers.getContractFactory("Factory");
     factory = await Factory.deploy();
 
     Portal = await ethers.getContractFactory("Portal");
@@ -64,8 +64,10 @@ describe("Portal", function () {
         [],
       ]);
 
+      // const tx_portal = await factory.deploy(init_portal);
+
       const planner = new weiroll.Planner();
-      // console.log(eventsContract.address)
+
       planner.add(events.logString("lfg degens"));
       const { commands, state } = planner.plan();
       console.log('commands', commands)
@@ -82,10 +84,11 @@ describe("Portal", function () {
         "name",
         "symbol"
       ]);
-      const tx = await factory.deployRecipe(init_portal, init_recipe);
+      // const tx_recipe = await factory.deployCreate(init_portal, init_recipe);
+      const tx_recipe_only = await factory.create(init_recipe)
+
       recipe_depoyed = await Recipe.attach(predict_recipe);
 
-      console.log(await recipe_depoyed.getLength())
       console.log(await recipe_depoyed.getCommands())
     });
 
