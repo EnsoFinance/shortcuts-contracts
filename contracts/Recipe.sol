@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity >=0.8.0;
 
-library ERC721Errors {
+/*
+    ERC721 from solmate(T11 tyty) - optimized further fyi.
+    Custom recipe requirements
+*/
+
+library RecipeErrors {
     error AlreadyInit();
     // Not athrotized
     error NotAuthorized();
@@ -9,16 +14,12 @@ library ERC721Errors {
     error Invalid();
 }
 
-
-
-/// @notice Modern, minimalist, and gas efficient ERC-721 implementation.
-/// @author Solmate (https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC721.sol)
-/// @dev Note that balanceOf does not revert if passed the zero address, in defiance of the ERC.
-contract ERC721 {
+contract Recipe {
     bool public init;
+    uint256 public fee;
     string public name;
     string public symbol;                    
-    uint256 public fee;
+    bytes32[] public commands;
 
     mapping(address => uint256) public balanceOf;
     mapping(uint256 => address) public ownerOf;
@@ -27,22 +28,29 @@ contract ERC721 {
     event Transfer(address indexed from, address indexed to, uint256 indexed id);
     event Approval(address indexed owner, address indexed spender, uint256 indexed id);
 
-    function initialize(address _caller, uint256 _fee, string memory _name, string memory _symbol)
+    function initialize(
+        address _caller, 
+        bytes32[] calldata _commands, 
+        uint256 _fee, 
+        string memory _name, 
+        string memory _symbol
+    )
         external
     {
-        if(init) revert ERC721Errors.AlreadyInit();
+        if(init) revert RecipeErrors.AlreadyInit();
         init = true;
         name = _name;
         symbol = _symbol;
         balanceOf[_caller] = 1; // might be cheaper to increment, should check
         ownerOf[0] = _caller;
         fee = _fee;
+        commands = _commands;
     }
 
     function approve(address spender, uint256 id) public virtual {
         address owner = ownerOf[id];
 
-        if(msg.sender != owner) revert ERC721Errors.NotAuthorized();
+        if(msg.sender != owner) revert RecipeErrors.NotAuthorized();
 
         getApproved[id] = spender;
 
@@ -54,11 +62,11 @@ contract ERC721 {
         address to,
         uint256 id
     ) public virtual {
-        if(from != ownerOf[id]) revert ERC721Errors.Invalid();
+        if(from != ownerOf[id]) revert RecipeErrors.Invalid();
 
-        if(to == address(0)) revert ERC721Errors.Invalid();
+        if(to == address(0)) revert RecipeErrors.Invalid();
 
-        if(msg.sender != from || msg.sender != getApproved[id]) revert ERC721Errors.NotAuthorized();
+        if(msg.sender != from || msg.sender != getApproved[id]) revert RecipeErrors.NotAuthorized();
 
         // Underflow of the sender's balance is impossible because we check for
         // ownership above and the recipient's balance can't realistically overflow.
@@ -74,6 +82,22 @@ contract ERC721 {
 
         emit Transfer(from, to, id);
     }
+    function getLength() 
+        external
+        view
+        returns(uint256)
+    {
+        return commands.length;
+    }
+
+    function getCommands() 
+        external
+        view
+        returns(bytes32[] memory)
+    {
+        return commands;
+    }
+
     // function tokenURI(uint256 id) public view virtual returns (string memory);
 }
 

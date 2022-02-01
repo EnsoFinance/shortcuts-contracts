@@ -10,7 +10,7 @@ library FactoryErrors {
     error AlreadyExists();
 }
 
-contract PortalFactory {
+contract RecipeFactory {
     using Clones for address;
     
     mapping (address=>address) public user;
@@ -37,6 +37,6 @@ contract PortalFactory {
         view
         returns(address)
     {
-        return PORTAL.predictDeterministicAddress(msg.sender, address(this));
+        return RECIPE.predictDeterministicAddress(msg.sender, address(this));
     }
 }

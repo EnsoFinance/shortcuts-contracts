@@ -45,43 +45,87 @@ describe("Portal", function () {
     Portal = await ethers.getContractFactory("Portal");
     portal = await Portal.deploy()
     console.log('portal', portal.address)
+
+    Recipe = await ethers.getContractFactory("Recipe");
+    recipe = await Recipe.deploy()
+    console.log('recipe', recipe.address)
   });
 
   describe("Factory", async () => {
-
-    it("should predict address before deploy", async () => {
-  
-      const predict = await factory.getAddress();
-
-      let ABI = [
-        "function initialize(address _owner, bytes32[] calldata commands, bytes[] memory state)",
+    it('dirty full IT', async () => {
+      const predict_portal = await factory.getPortal();
+      let ABI_PORTAL = [
+        "function initialize(address _caller, bytes32[] calldata commands, bytes[] memory state)",
       ];
-      let iface = new ethers.utils.Interface(ABI);
-      let init = iface.encodeFunctionData("initialize", [
+      let iface_portal = new ethers.utils.Interface(ABI_PORTAL);
+      let init_portal = iface_portal.encodeFunctionData("initialize", [
         owner.address,
         [],
         [],
       ]);
 
-      const tx = await factory.deploy(init);
-      await expect(tx).to.emit(factory, "Deployed").withArgs(predict);
-    });
-
-    it("should execute on already deployed portal", async () => {
-      const address = await factory.getAddress();
-      const portal = await Portal.attach(address);
-      const message = "Hello World!";
-
       const planner = new weiroll.Planner();
-      planner.add(events.logString(message));
+      // console.log(eventsContract.address)
+      planner.add(events.logString("lfg degens"));
       const { commands, state } = planner.plan();
+      console.log('commands', commands)
 
-      const tx = await portal.execute(commands, state);
-      // console.log(tx)
-      await expect(tx)
-        .to.emit(eventsContract.attach(address), "LogString")
-        .withArgs(message);
+      let predict_recipe = await factory.getRecipe()
+      let ABI_RECIPE = [
+        "function initialize(address _caller, bytes32[] calldata _commands, uint256 _fee, string memory _name, string memory _symbol)",
+      ]
+      let iface_recipe = new ethers.utils.Interface(ABI_RECIPE);
+      let init_recipe = iface_recipe.encodeFunctionData("initialize", [
+        owner.address,
+        commands,
+        0,
+        "name",
+        "symbol"
+      ]);
+      const tx = await factory.deployRecipe(init_portal, init_recipe);
+      recipe_depoyed = await Recipe.attach(predict_recipe);
+
+      console.log(await recipe_depoyed.getLength())
+      console.log(await recipe_depoyed.getCommands())
     });
+
+    // it("should predict address before deploy", async () => {
+  
+    //   const predict = await factory.getAddress();
+
+    //   let ABI = [
+    //     "function initialize(address _owner, bytes32[] calldata commands, bytes[] memory state)",
+    //   ];
+    //   let iface = new ethers.utils.Interface(ABI);
+    //   let init = iface.encodeFunctionData("initialize", [
+    //     owner.address,
+    //     [],
+    //     [],
+    //   ]);
+
+    //   const tx = await factory.deploy(init);
+    //   // await expect(tx).to.emit(factory, "Deployed").withArgs(predict);
+    // });
+
+    // it("should execute on already deployed portal", async () => {
+    //   const address = await factory.getAddress();
+    //   const portal = await Portal.attach(address);
+    //   const message = "Hello World!";
+
+    //   const planner = new weiroll.Planner();
+    //   console.log(eventsContract.address)
+    //   planner.add(events.logString(message));
+    //   planner.add(events.logString('trial'));
+    //   const { commands, state } = planner.plan();
+    //   console.log('commands', commands)
+    //   console.log('state', state)
+
+    //   const tx = await portal.execute(commands, state);
+    //   // console.log(tx)
+    //   // await expect(tx)
+    //   //   .to.emit(eventsContract.attach(address), "LogString")
+    //   //   .withArgs(message);
+    // });
   });
 
   // it("should access tokens that were approved before deploy", async () => {
