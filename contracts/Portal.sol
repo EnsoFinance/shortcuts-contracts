@@ -1,5 +1,9 @@
 pragma solidity ^0.8.4;
 
+// Full trust to manager for this
+
+
+
 library PortalErrors {
     // Already initialized
     error AlreadyInit();
@@ -11,6 +15,7 @@ interface IVM {
     function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) ;
 }
 
+
 contract Portal {
     bool public init;
     mapping (address=>bool) public caller;
@@ -18,6 +23,7 @@ contract Portal {
 
     event Added(address caller, address sender);
     event Removed(address caller, address sender);
+    event Executed(address caller, bytes32 identifier, bytes32[] commands);
 
     function initialize(address _caller, bytes32[] calldata commands, bytes[] memory state)
         public
@@ -35,6 +41,7 @@ contract Portal {
         if (!caller[msg.sender]) revert PortalErrors.NotCaller();
         
         _execute(commands, state);
+        emit Executed(msg.sender, keccak256(abi.encodePacked(commands)), commands);
     }
 
     function _execute(bytes32[] calldata commands, bytes[] memory state)

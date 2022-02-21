@@ -13,8 +13,9 @@ library FactoryErrors {
 contract PortalFactory {
     using Clones for address;
     
-    mapping (address=>address) public user;
-    address public constant PORTAL = 0x0165878A594ca255338adfa4d48449f69242Eb8F;
+    mapping (address => bool) public created;
+    mapping (address => address) public user;
+    address public constant PORTAL = 0x63d0871a4FD8AFBb8f5cC2Dac7C919f073b848D7;
 
     event Deployed(address instance);
 
@@ -38,6 +39,7 @@ contract PortalFactory {
         require(success);
 
         user[msg.sender] = instance;
+        created[instance] = true;
         emit Deployed(instance);
     }
 }
