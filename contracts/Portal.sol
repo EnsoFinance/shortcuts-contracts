@@ -41,7 +41,12 @@ contract Portal {
         (bool success, bytes memory data) = _VM.delegatecall(
             abi.encodeWithSelector(IVM.execute.selector, commands, state)
         );
-        require(success);
+        
+        if (!success) {
+            assembly {
+                revert(add(32, data), mload(data))
+            }
+        }
 
         return abi.decode(data, (bytes[]));
     }
