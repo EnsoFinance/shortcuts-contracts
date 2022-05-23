@@ -20,24 +20,34 @@ if (process.env.HARDHAT_NETWORK) {
 
 const registerDeployment = (contractTitle: string, address: string) => {
   contracts[contractTitle] = address;
-  console.log(`Deployed ${contractTitle}: ${address} 🚀`);
+  console.log(`Deployed & Registered ${contractTitle}: ${address} 🚀`);
   const data = JSON.stringify(
-    { ...deployments, [network]: contracts },
+    network === "localhost"
+      ? contracts
+      : { ...deployments, [network]: contracts },
     null,
     2
   );
-  fs.writeFileSync("./deployments.json", data);
+  fs.writeFileSync(
+    network === "localhost" ? "./local.deployments.json" : "./deployments.json",
+    data
+  );
 };
 
 async function main() {
   const VM = await hre.ethers.getContractFactory("VM");
-  const vm = await VM.deploy();
+  console.log("Deployed VM:", (await VM.deploy()).address);
 
-  const contractName = "TestableVM";
-  if (overwrite || !contracts[contractName]) {
-    const TESTABLE_VM = await hre.ethers.getContractFactory(contractName);
-    const testableVm = await TESTABLE_VM.deploy(vm.address);
-    registerDeployment(contractName, testableVm.address);
+  const PORTAL = await hre.ethers.getContractFactory("Portal");
+  console.log("Deployed Portal:", (await PORTAL.deploy()).address);
+
+  const portalFactoryContractName = "PortalFactory";
+  if (overwrite || !contracts[portalFactoryContractName]) {
+    const PORTAL_FACTORY = await hre.ethers.getContractFactory(
+      portalFactoryContractName
+    );
+    const PortalFactory = await PORTAL_FACTORY.deploy();
+    registerDeployment(portalFactoryContractName, PortalFactory.address);
   }
 }
 

@@ -1,31 +1,35 @@
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
-import "./VM.sol";
-
 library PortalErrors {
+    // Already initialized
+    error AlreadyInit();
     // Not caller
     error NotCaller();
 }
 
+interface IVM {
+    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) ;
+}
 
 contract Portal {
-    mapping (address=>bool) public caller;
-    address public constant _VM = 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9;
+    bool public init;
+    address public caller;
+    address public constant _VM = 0x8F4ec854Dd12F1fe79500a1f53D0cbB30f9b6134;
 
-    event Added(address caller, address sender);
-    event Removed(address caller, address sender);
-
-    constructor(address _owner) {
-        caller[msg.sender] = true;
-        caller[_owner] = true;
+    function initialize(address _caller, bytes32[] calldata commands, bytes[] memory state)
+        external
+    {
+        if(init) revert PortalErrors.AlreadyInit();
+        init = true;
+        caller = _caller;
+        _execute(commands, state);
     }
 
     function execute(bytes32[] calldata commands, bytes[] memory state)
-        public
+        external
         returns (bytes[] memory)
     {
-        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
+        if (caller != msg.sender) revert PortalErrors.NotCaller();
         
         return _execute(commands, state);
     }
@@ -35,7 +39,7 @@ contract Portal {
         returns (bytes[] memory)   
     {
         (bool success, bytes memory data) = _VM.delegatecall(
-            abi.encodeWithSelector(VM.execute.selector, commands, state)
+            abi.encodeWithSelector(IVM.execute.selector, commands, state)
         );
         
         if (!success) {
@@ -45,20 +49,5 @@ contract Portal {
         }
 
         return abi.decode(data, (bytes[]));
-    }
-
-    function removeCaller(address _caller) 
-        public
-    {
-        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
-        delete caller[_caller]; // do not verify if entry: save gas
-        emit Removed(_caller, msg.sender);
-    }
-    function addCaller(address _caller) 
-        public
-    {
-        if (!caller[msg.sender]) revert PortalErrors.NotCaller();
-        caller[msg.sender] = true;
-        emit Added(_caller, msg.sender);
     }
 }
