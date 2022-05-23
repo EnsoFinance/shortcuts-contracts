@@ -14,7 +14,7 @@ contract PortalFactory {
     using Clones for address;
     
     mapping (address=>address) public user;
-    address public constant PORTAL = 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707;
+    address public constant PORTAL = 0xC66AB83418C20A65C3f8e83B3d11c8C3a6097b6F;
 
     event Deployed(address instance);
 

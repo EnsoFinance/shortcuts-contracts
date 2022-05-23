@@ -14,7 +14,7 @@ interface IVM {
 contract Portal {
     bool public init;
     address public caller;
-    address public constant _VM = 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9;
+    address public constant _VM = 0x8F4ec854Dd12F1fe79500a1f53D0cbB30f9b6134;
 
     function initialize(address _caller, bytes32[] calldata commands, bytes[] memory state)
         external
