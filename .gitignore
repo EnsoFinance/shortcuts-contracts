@@ -1,8 +1,27 @@
-node_modules
-
 #Hardhat files
-cache
-artifacts
+cache/
+artifacts/
+dist/
 
 # local deployments
 local.deployments.json
+
+coverage*
+typechain/
+
+.vscode/*
+!.vscode/settings.json.default
+!.vscode/launch.json.default
+!.vscode/extensions.json.default
+
+node_modules/
+.env
+
+.yalc
+yalc.lock
+yarn-error.log
+package-lock.json
+
+contractsInfo.json
+deployments/hardhat
+deployments/localhost

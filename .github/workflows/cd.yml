@@ -1,6 +1,7 @@
 name: CD
 
 on:
+  pull_request:
   push:
     branches:
       - main
@@ -19,4 +20,4 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - run: npm install
-      - run: npm run test
+      - run: npm run gas
