@@ -45,13 +45,11 @@ describe('Portal', function () {
     portal: Portal,
     events: weiroll.Contract,
     eventsContract: Events,
-    erc20: weiroll.Contract,
     addr1: Signer,
     owner: Signer;
 
   before(async () => {
     [owner, addr1] = await ethers.getSigners();
-    erc20 = await deployLibrary('LibERC20');
 
     const eventsFactory = (await ethers.getContractFactory('Events')) as Events__factory;
     eventsContract = await eventsFactory.deploy();
