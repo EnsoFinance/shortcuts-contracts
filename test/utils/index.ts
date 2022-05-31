@@ -31,7 +31,7 @@ export async function setupUserWithPortal<
 >(address: string, contracts: T): Promise<{address: string} & T> {
   const user = await setupUser(address, contracts);
   const portalAddress = await user['PortalFactory'].getAddress();
-  user['Portal'] = contracts.Portal.attach(portalAddress);
+  user['Portal'] = contracts.Portal.attach(portalAddress).connect(await ethers.getSigner(address));
   return user;
 }
 

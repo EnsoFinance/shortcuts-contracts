@@ -1,7 +1,7 @@
 import {expect} from './chai-setup';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts} from 'hardhat';
 import {Contract, ContractTransaction, BigNumber} from 'ethers';
-import {EnsoVM, Events, Portal, PortalFactory} from '../typechain';
+import {EnsoVM, Events, Portal, PortalFactory, Portal__factory} from '../typechain';
 import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
 import {setupUserWithPortal, setupUsersWithPortals} from './utils';
 
@@ -103,6 +103,19 @@ describe('Portal', function () {
       const {userWithPortal} = await setup();
 
       await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('AlreadyExists()');
+    });
+
+    it('should not allow user to deploy multiple portals', async () => {
+      const {userWithPortal} = await setup();
+
+      await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('AlreadyExists()');
+    });
+
+    it('should not allow user to execute on other user portal', async () => {
+      const {userWithPortal, userWithoutPortal: impostor, Portal} = await setup();
+
+      impostor.Portal = Portal.attach(userWithPortal.Portal.address).connect(await ethers.getSigner(impostor.address));
+      await expect(impostor.Portal.execute([], [])).to.be.revertedWith('NotCaller()');
     });
   });
 });
