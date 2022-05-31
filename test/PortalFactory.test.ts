@@ -104,5 +104,13 @@ describe('Portal', function () {
 
       await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('AlreadyExists()');
     });
+
+    it('cannot execute before deploying portal', async () => {
+      const {userWithoutPortal: user} = await setup();
+
+      await expect(user.Portal.caller()).to.be.reverted;
+      await expect(user.Portal.init()).to.be.reverted;
+      await expect(user.Portal.execute([], [])).to.be.reverted;
+    });
   });
 });
