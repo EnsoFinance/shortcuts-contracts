@@ -12,11 +12,11 @@
   },
   "include": [
     "./hardhat.config.ts",
-    "./scripts",
-    "./deploy",
+    "scripts",
+    "deploy",
     "tests",
     "typechain/**/*",
-    "./utils"
+    "utils"
   ],
   "files": ["./hardhat.config.ts"]
 }
