@@ -15,9 +15,17 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          always-auth: true
+          registry-url: https://registry.npmjs.org
+          scope: '@ensofinance'
 
-      - run: npm install
-      - run: npm run gas
+      - name: Install dependencies
+        run: yarn --ignore-platform
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Running tests
+        run: yarn gas

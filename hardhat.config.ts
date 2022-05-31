@@ -17,7 +17,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: '0.8.9',
+        version: '0.8.11',
         settings: {
           optimizer: {
             enabled: true,
@@ -33,28 +33,28 @@ const config: HardhatUserConfig = {
   networks: addForkConfiguration({
     hardhat: {
       initialBaseFeePerGas: 0, // to fix : https://github.com/sc-forks/solidity-coverage/issues/652, see https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136
+      saveDeployments: true,
     },
     localhost: {
       url: nodeUrl('localhost'),
       accounts: accounts(),
       chainId: 31337,
-    },
-    production: {
-      url: nodeUrl('mainnet'),
-      accounts: accounts('mainnet'),
+      saveDeployments: true,
     },
     mainnet: {
       url: nodeUrl('mainnet'),
       accounts: accounts('mainnet'),
+      saveDeployments: true,
     },
     kovan: {
       url: nodeUrl('kovan'),
       accounts: accounts('kovan'),
+      saveDeployments: true,
     },
   }),
-  deterministicDeployment: {},
   paths: {
     sources: 'contracts',
+    deployments: 'deployments',
   },
   gasReporter: {
     currency: 'USD',
