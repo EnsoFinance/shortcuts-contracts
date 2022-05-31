@@ -23,9 +23,9 @@ jobs:
           scope: '@ensofinance'
 
       - name: Install dependencies
-        run: npm install
+        run: yarn --ignore-platform
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Running tests
-        run: npm run gas
+        run: yarn gas

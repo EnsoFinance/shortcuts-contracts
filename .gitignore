@@ -21,6 +21,7 @@ node_modules/
 yalc.lock
 yarn-error.log
 package-lock.json
+yarn.lock
 
 contractsInfo.json
 deployments/hardhat
