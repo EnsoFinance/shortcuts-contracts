@@ -1,5 +1,6 @@
 import {Contract} from 'ethers';
 import {ethers} from 'hardhat';
+import {Portal, PortalFactory} from '../../typechain';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],
@@ -21,5 +22,25 @@ export async function setupUser<T extends {[contractName: string]: Contract}>(
   for (const key of Object.keys(contracts)) {
     user[key] = contracts[key].connect(await ethers.getSigner(address));
   }
+
   return user as {address: string} & T;
+}
+
+export async function setupUserWithPortal<
+  T extends {[contractName: string]: Contract; Portal: Portal; PortalFactory: PortalFactory}
+>(address: string, contracts: T): Promise<{address: string} & T> {
+  const user = await setupUser(address, contracts);
+  const portalAddress = await user['PortalFactory'].getAddress();
+  user['Portal'] = contracts.Portal.attach(portalAddress);
+  return user;
+}
+
+export async function setupUsersWithPortals<
+  T extends {[contractName: string]: Contract; Portal: Portal; PortalFactory: PortalFactory}
+>(addresses: string[], contracts: T): Promise<({address: string} & T)[]> {
+  const users: ({address: string} & T)[] = [];
+  for (const address of addresses) {
+    users.push(await setupUserWithPortal(address, contracts));
+  }
+  return users;
 }

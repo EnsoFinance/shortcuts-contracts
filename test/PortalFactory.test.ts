@@ -3,7 +3,7 @@ import {ethers, deployments, getNamedAccounts, getUnnamedAccounts} from 'hardhat
 import {Contract, ContractTransaction, BigNumber} from 'ethers';
 import {EnsoVM, Events, Portal, PortalFactory} from '../typechain';
 import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
-import {setupUser, setupUsers} from './utils';
+import {setupUserWithPortal, setupUsersWithPortals} from './utils';
 
 const setup = deployments.createFixture(async () => {
   await deployments.fixture('PortalFactory');
@@ -23,17 +23,17 @@ const setup = deployments.createFixture(async () => {
     EnsoVM: <EnsoVM>await ethers.getContract('EnsoVM'),
   };
 
-  const [user, ...users] = await setupUsers(await getUnnamedAccounts(), contracts);
+  const [user, ...users] = await setupUsersWithPortals(await getUnnamedAccounts(), contracts);
 
-  const deployerUser = await setupUser(deployer, contracts);
+  const deployerUser = await setupUserWithPortal(deployer, contracts);
   await deployerUser.PortalFactory.deploy([], []);
   deployerUser.Portal = contracts.Portal.attach(await deployerUser.PortalFactory.getAddress());
 
   return {
     ...contracts,
     users,
-    deployer: deployerUser,
-    user: user,
+    userWithPortal: deployerUser,
+    userWithoutPortal: user,
   };
 });
 
@@ -52,7 +52,7 @@ async function expectEventFromPortal(
 describe('Portal', function () {
   describe('PortalFactory', async () => {
     it('should predict address before deploy', async () => {
-      const {user} = await setup();
+      const {userWithoutPortal: user} = await setup();
       const predict = await user.PortalFactory.getAddress();
 
       const tx = await user.PortalFactory.deploy([], []);
@@ -60,8 +60,7 @@ describe('Portal', function () {
     });
 
     it('should execute on already deployed portal', async () => {
-      const {Portal, PortalFactory, Events} = await setup();
-      const portal = Portal.attach(await PortalFactory.getAddress());
+      const {userWithPortal, Events} = await setup();
 
       const planner = new Planner();
 
@@ -69,12 +68,41 @@ describe('Portal', function () {
 
       const weirolledEvents = weiroll.createLibrary(Events);
       planner.add(weirolledEvents.logString(message));
+      const {commands, state} = planner.plan();
+
+      const tx = await userWithPortal.Portal.execute(commands, state);
+
+      await expectEventFromPortal(tx, userWithPortal.Portal.address, Events, 'LogString', message);
+    });
+
+    it('should allow to execute while deploying portal', async () => {
+      const {userWithoutPortal: user, Events} = await setup();
+
+      const portalAddress = await user.PortalFactory.getAddress();
+
+      const message = "I'm deploying a portal!";
+      const number = BigNumber.from(42);
+
+      const weirolledEvents = weiroll.createLibrary(Events);
+      const planner = new Planner();
+
+      planner.add(weirolledEvents.logString(message));
+      planner.add(weirolledEvents.logUint(number));
 
       const {commands, state} = planner.plan();
 
-      const tx = await portal.execute(commands, state);
+      const tx = await user.PortalFactory.deploy(commands, state);
 
-      await expectEventFromPortal(tx, portal.address, Events, 'LogString', message);
+      await expect(tx).to.emit(user.PortalFactory, 'Deployed').withArgs(portalAddress);
+
+      await expectEventFromPortal(tx, portalAddress, Events, 'LogString', message);
+      await expectEventFromPortal(tx, portalAddress, Events, 'LogUint', number.toString());
+    });
+
+    it('should not allow user to deploy multiple portals', async () => {
+      const {userWithPortal} = await setup();
+
+      await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('AlreadyExists()');
     });
   });
 });
