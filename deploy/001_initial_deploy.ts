@@ -1,11 +1,11 @@
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
-import {VM__factory, PortalFactory__factory, Portal__factory} from '../typechain';
+import {PortalFactory__factory, Portal__factory, IVM__factory} from '../typechain';
 import fs from 'fs';
 
 import DEPLOYMENTS_JSON from '../deployments.json';
 const deployments: {[key: string]: {[key: string]: string}} = DEPLOYMENTS_JSON;
-let contracts: {[key: string]: string} = {};
+const contracts: {[key: string]: string} = {};
 let hardhatNetwork: string;
 
 // If true it will deploy contract regardless of whether there is an address currently on the network
@@ -32,7 +32,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployer} = await getNamedAccounts();
   const deployerSigner = await ethers.getSigner(deployer);
 
-  const {deploy: deployVM, address: vmAddress} = await deterministic('VM', {
+  const {deploy: deployVM, address: vmAddress} = await deterministic('EnsoVM', {
     from: deployer,
     args: [],
     log: true,
@@ -40,7 +40,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   await deployVM();
-  const vm = VM__factory.connect(vmAddress, deployerSigner);
+  const vm = IVM__factory.connect(vmAddress, deployerSigner);
 
   const portalDeployment = await deploy('Portal', {
     from: deployer,
@@ -48,13 +48,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
     autoMine: true,
   });
-  registerDeployment;
   const portal = Portal__factory.connect(portalDeployment.address, deployerSigner);
 
   if (overwrite || !contracts['PortalFactory']) {
     const {deploy: deployPortalFactory, address: portalFactoryAddress} = await deterministic('PortalFactory', {
       from: deployer,
-      args: [],
+      args: [vm.address, portal.address],
       log: true,
       autoMine: true,
     });
@@ -63,8 +62,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     registerDeployment('PortalFactory', portalFactoryAddress);
     const portalFactory = PortalFactory__factory.connect(portalFactoryAddress, deployerSigner);
 
-    const init = portal.interface.encodeFunctionData('initialize', [deployer, [], []]);
-    const tx = await portalFactory.deploy(init);
+    const tx = await portalFactory.deploy([], [], {
+      gasLimit: 227800,
+    });
     const receipt = await tx.wait();
     const deployedEvent = receipt.events?.find((e) => e.event === 'Deployed');
 

@@ -1,9 +1,9 @@
-pragma solidity ^0.8.4;
+// SPDX-License-Identifier: MIT
 
-// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/proxy/Clones.sol#L39
+pragma solidity ^0.8.11;
 
 import "./Portal.sol";
-import {Clones} from './Libraries/Clones.sol';
+import {Clones} from "./Libraries/Clones.sol";
 
 library FactoryErrors {
     // Not caller
@@ -12,31 +12,31 @@ library FactoryErrors {
 
 contract PortalFactory {
     using Clones for address;
-    
-    mapping (address=>address) public user;
-    address public constant PORTAL = 0xC66AB83418C20A65C3f8e83B3d11c8C3a6097b6F;
 
-    event Deployed(address instance);
+    mapping(address => Portal) public user;
+    address public portalImplementation_;
+    address public ensoVM_;
 
-    function deploy(bytes memory init)
-        public
-        payable
-    {
-        if(user[msg.sender] != address(0)) revert FactoryErrors.AlreadyExists();
+    event Deployed(Portal instance);
 
-        address instance = PORTAL.cloneDeterministic(msg.sender);
+    constructor(address _vm, address _portal) {
+        portalImplementation_ = _portal;
+        ensoVM_ = _vm;
+    }
 
-        (bool success, bytes memory data) = instance.call{value:msg.value}(init);
-        require(success);
+    function deploy(bytes32[] calldata commands, bytes[] memory state) public payable returns (Portal instance) {
+        if (address(user[msg.sender]) != address(0)) {
+            revert FactoryErrors.AlreadyExists();
+        }
+
+        instance = Portal(portalImplementation_.cloneDeterministic(msg.sender));
+        instance.initialize{value: msg.value}(ensoVM_, msg.sender, commands, state);
 
         user[msg.sender] = instance;
         emit Deployed(instance);
     }
-    function getAddress() 
-        public
-        view
-        returns(address)
-    {
-        return PORTAL.predictDeterministicAddress(msg.sender, address(this));
+
+    function getAddress() public view returns (address) {
+        return portalImplementation_.predictDeterministicAddress(msg.sender, address(this));
     }
 }

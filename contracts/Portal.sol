@@ -1,4 +1,6 @@
-pragma solidity ^0.8.4;
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.11;
 
 library PortalErrors {
     // Already initialized
@@ -8,45 +10,38 @@ library PortalErrors {
 }
 
 interface IVM {
-    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) ;
+    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory);
 }
 
 contract Portal {
     bool public init;
     address public caller;
-    address public constant _VM = 0x8F4ec854Dd12F1fe79500a1f53D0cbB30f9b6134;
+    address public VM;
 
-    function initialize(address _caller, bytes32[] calldata commands, bytes[] memory state)
-        external
-    {
-        if(init) revert PortalErrors.AlreadyInit();
+    function initialize(
+        address _VM,
+        address _caller,
+        bytes32[] calldata commands,
+        bytes[] memory state
+    ) external payable {
+        if (init) revert PortalErrors.AlreadyInit();
+        VM = _VM;
         init = true;
         caller = _caller;
         _execute(commands, state);
     }
 
-    function execute(bytes32[] calldata commands, bytes[] memory state)
-        external
-        returns (bytes[] memory)
-    {
+    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) {
         if (caller != msg.sender) revert PortalErrors.NotCaller();
-        
+
         return _execute(commands, state);
     }
 
-    function _execute(bytes32[] calldata commands, bytes[] memory state)
-        internal
-        returns (bytes[] memory)   
-    {
-        (bool success, bytes memory data) = _VM.delegatecall(
+    function _execute(bytes32[] calldata commands, bytes[] memory state) internal returns (bytes[] memory) {
+        (bool success, bytes memory data) = VM.delegatecall(
             abi.encodeWithSelector(IVM.execute.selector, commands, state)
         );
-        
-        if (!success) {
-            assembly {
-                revert(add(32, data), mload(data))
-            }
-        }
+        require(success);
 
         return abi.decode(data, (bytes[]));
     }

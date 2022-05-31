@@ -1,8 +1,20 @@
-import {expect} from 'chai';
-import {ethers} from 'hardhat';
-import {Contract, ContractFactory} from 'ethers';
+import {use as chaiUse, expect} from 'chai';
+import {ethers, waffle} from 'hardhat';
+import {Contract, ContractTransaction, Event} from 'ethers';
 import {Signer} from 'ethers';
+import {
+  EnsoVM,
+  EnsoVM__factory,
+  Events,
+  Events__factory,
+  Portal,
+  PortalFactory,
+  PortalFactory__factory,
+  Portal__factory,
+} from '../typechain';
 import * as weiroll from '@weiroll/weiroll.js';
+
+chaiUse(waffle.solidity);
 
 async function deployLibrary(name: string) {
   const factory = await ethers.getContractFactory(name);
@@ -10,15 +22,29 @@ async function deployLibrary(name: string) {
   return weiroll.Contract.createLibrary(contract);
 }
 
+async function expectEventFromPortal(
+  tx: ContractTransaction,
+  ownerAddress: string,
+  emitterContract: Contract,
+  eventName: string,
+  ...eventArgs: string[]
+) {
+  await expect(tx)
+    .to.emit(emitterContract.attach(ownerAddress), eventName)
+    .withArgs(...eventArgs);
+}
+
 describe('Portal', function () {
   const supply = ethers.BigNumber.from('100000000000000000000');
 
-  let Factory: ContractFactory,
-    factory: Contract,
-    Portal: ContractFactory,
-    portal: Contract,
+  let EnsoVM: EnsoVM__factory,
+    vm: EnsoVM,
+    Factory: PortalFactory__factory,
+    factory: PortalFactory,
+    Portal: Portal__factory,
+    portal: Portal,
     events: weiroll.Contract,
-    eventsContract: Contract,
+    eventsContract: Events,
     erc20: weiroll.Contract,
     addr1: Signer,
     owner: Signer;
@@ -27,80 +53,41 @@ describe('Portal', function () {
     [owner, addr1] = await ethers.getSigners();
     erc20 = await deployLibrary('LibERC20');
 
-    eventsContract = await (await ethers.getContractFactory('Events')).deploy();
+    const eventsFactory = (await ethers.getContractFactory('Events')) as Events__factory;
+    eventsContract = await eventsFactory.deploy();
     events = weiroll.Contract.createLibrary(eventsContract);
 
-    const VMLibrary = await ethers.getContractFactory('VM');
-    const vmLibrary = await VMLibrary.deploy();
+    EnsoVM = (await ethers.getContractFactory('EnsoVM')) as EnsoVM__factory;
+    vm = await EnsoVM.deploy();
 
-    console.log('vmLibrary', vmLibrary.address);
-
-    Factory = await ethers.getContractFactory('PortalFactory');
-    factory = await Factory.deploy();
-
-    Portal = await ethers.getContractFactory('Portal');
+    Portal = (await ethers.getContractFactory('Portal')) as Portal__factory;
     portal = await Portal.deploy();
-    console.log('portal', portal.address);
+
+    Factory = (await ethers.getContractFactory('PortalFactory')) as PortalFactory__factory;
+    factory = await Factory.deploy(vm.address, portal.address);
   });
 
-  describe('Factory', async () => {
+  describe('PortalFactory', async () => {
     it('should predict address before deploy', async () => {
       const predict = await factory.getAddress();
 
-      const ABI = ['function initialize(address _owner, bytes32[] calldata commands, bytes[] memory state)'];
-      const iface = new ethers.utils.Interface(ABI);
-      const init = iface.encodeFunctionData('initialize', [await owner.getAddress(), [], []]);
-      const tx = await factory.deploy(init);
+      const tx = await factory.deploy([], []);
       await expect(tx).to.emit(factory, 'Deployed').withArgs(predict);
     });
 
-    it.skip('should execute on already deployed portal', async () => {
-      const address = await factory.getAddress();
-      const portal = await Portal.attach(address);
-      const message = 'Hello World!';
+    it('should execute on already deployed portal', async () => {
+      const portal = Portal.attach(await factory.getAddress());
 
       const planner = new weiroll.Planner();
+
+      const message = 'Hello World!';
       planner.add(events.logString(message));
+
       const {commands, state} = planner.plan();
 
       const tx = await portal.execute(commands, state);
 
-      await expect(tx).to.emit(eventsContract.attach(address), 'LogString').withArgs(message);
+      await expectEventFromPortal(tx, portal.address, eventsContract, 'LogString', message);
     });
   });
-
-  // it("should access tokens that were approved before deploy", async () => {
-  //   const planner = new weiroll.Planner();
-
-  //   let token = tokenContract.address;
-  //   let sender = owner.address;
-  //   let to = addr1.address;
-
-  //   planner.add(erc20.transferFrom(token, sender, to, amount));
-  //   const { commands, state } = planner.plan();
-
-  //   let predict = await factory.getAddress();
-  //   console.log("predict", predict);
-
-  //   let ABI = [
-  //     "function initialize(address _owner, bytes32[] calldata commands, bytes[] memory state)",
-  //   ];
-  //   let iface = new ethers.utils.Interface(ABI);
-  //   let init = iface.encodeFunctionData("initialize", [
-  //     owner.address,
-  //     commands,
-  //     state,
-  //   ]);
-
-  //   // approve
-  //   await tokenContract.approve(predict, amount);
-
-  //   const tx = await factory.deploy(init);
-  //   await expect(tx)
-  //     .to.emit(tokenContract, "Transfer")
-  //     .withArgs(owner, to, amount);
-
-  //   let balance = await tokenContract.balanceOf(to);
-  //   expect(balance).to.be.eq(amount);
-  // });
 });
