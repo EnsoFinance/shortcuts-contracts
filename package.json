@@ -1,6 +1,6 @@
 {
   "name": "@ensofinance/v2-contracts",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.12",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
@@ -42,6 +42,7 @@
     "typescript": "^4.6.4"
   },
   "scripts": {
+    "postinstall":"typechain",
     "prepare": "hardhat typechain",
     "lint": "eslint \"**/*.{js,ts}\" && solhint src/**/*.sol",
     "lint:fix": "eslint --fix \"**/*.{js,ts}\" && solhint --fix src/**/*.sol",
