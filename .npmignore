@@ -1,4 +1,4 @@
 hardhat.config.ts
 scripts
 utils
-test
+./test

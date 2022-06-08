@@ -17,6 +17,5 @@
     "tests",
     "typechain/**/*",
     "utils"
-  ],
-  "files": ["./hardhat.config.ts"]
+  ]
 }
