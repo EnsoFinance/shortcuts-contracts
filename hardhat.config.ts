@@ -8,6 +8,7 @@ import 'solidity-coverage';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
+import 'hardhat-packager';
 
 import {nodeUrl, accounts, addForkConfiguration} from './utils/network';
 
@@ -72,6 +73,10 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_KEY,
+  },
+  packager: {
+    contracts: ['Portal', 'PortalFactory'],
+    includeFactories: true,
   },
   external: process.env.HARDHAT_FORK
     ? {
