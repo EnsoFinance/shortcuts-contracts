@@ -41,7 +41,6 @@ const config: HardhatUserConfig = {
       url: nodeUrl('localhost'),
       accounts: accounts(),
       chainId: getChainId(),
-      saveDeployments: true,
     },
     mainnet: {
       url: nodeUrl('mainnet'),
