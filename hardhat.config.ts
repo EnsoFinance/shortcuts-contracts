@@ -10,7 +10,7 @@ import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
 import 'hardhat-packager';
 
-import {nodeUrl, accounts, addForkConfiguration} from './utils/network';
+import {nodeUrl, accounts, addForkConfiguration, getChainId} from './utils/network';
 
 dotenv.config();
 
@@ -40,7 +40,7 @@ const config: HardhatUserConfig = {
     localhost: {
       url: nodeUrl('localhost'),
       accounts: accounts(),
-      chainId: 31337,
+      chainId: getChainId(),
       saveDeployments: true,
     },
     mainnet: {
