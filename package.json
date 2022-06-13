@@ -1,6 +1,6 @@
 {
   "name": "@ensofinance/v2-contracts",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "devDependencies": {
     "@ensofinance/weiroll": "^1.1.0",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.12",
@@ -48,6 +48,8 @@
   },
   "files": [
     "/contracts",
+    "/artifacts",
+    "/typechain",
     "/dist/**/*.d.ts",
     "/dist/**/*.d.ts.map",
     "/dist/**/*.js",
