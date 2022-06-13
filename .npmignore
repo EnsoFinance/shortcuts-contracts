@@ -1,6 +1,5 @@
 hardhat.config.ts
 scripts
 utils
-dist
 cache
 ./test
