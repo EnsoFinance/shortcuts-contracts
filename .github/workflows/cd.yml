@@ -30,3 +30,6 @@ jobs:
 
       - name: Running tests
         run: yarn gas
+
+      - name: Test deploy scripts
+        run: yarn void:deploy

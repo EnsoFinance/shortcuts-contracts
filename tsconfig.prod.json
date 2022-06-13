@@ -1,9 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "./src",
     "outDir": "./dist"
   },
-  "files": [],
-  "include": ["src/**/*"]
+  "files": ["index.ts"],
+  "include": ["contracts", "typechain"]
 }
