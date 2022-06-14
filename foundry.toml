@@ -1,0 +1,17 @@
+[default]
+src = 'contracts'
+out = 'artifacts'
+libs = ["node_modules", "lib"]
+fuzz-runs = 1000
+remappings = [
+    '@ensdomains/=node_modules/@ensdomains/',
+    '@ensofinance/=node_modules/@ensofinance/',
+    '@openzeppelin/=node_modules/@openzeppelin/',
+    '@rari-capital/=node_modules/@rari-capital/',
+    'clones-with-immutable-args/=node_modules/clones-with-immutable-args/',
+    'eth-gas-reporter/=node_modules/eth-gas-reporter/',
+    'hardhat-deploy/=node_modules/hardhat-deploy/',
+    'hardhat/=node_modules/hardhat/',
+]
+
+# See more config options https://github.com/foundry-rs/foundry/tree/master/config

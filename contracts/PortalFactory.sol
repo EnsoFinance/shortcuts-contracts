@@ -14,8 +14,8 @@ contract PortalFactory {
     using Clones for address;
 
     mapping(address => Portal) public user;
-    address public portalImplementation_;
-    address public ensoVM_;
+    address public immutable portalImplementation_;
+    address public immutable ensoVM_;
 
     event Deployed(Portal instance);
 

@@ -7,6 +7,8 @@ library PortalErrors {
     error AlreadyInit();
     // Not caller
     error NotCaller();
+    // Invalid address
+    error InvalidAddress();
 }
 
 interface IVM {
@@ -14,7 +16,6 @@ interface IVM {
 }
 
 contract Portal {
-    bool public init;
     address public caller;
     address public VM;
 
@@ -24,14 +25,14 @@ contract Portal {
         bytes32[] calldata commands,
         bytes[] memory state
     ) external payable {
-        if (init) revert PortalErrors.AlreadyInit();
+        if (VM != address(0)) revert PortalErrors.AlreadyInit();
+        if (_VM == address(0)) revert PortalErrors.InvalidAddress();
         VM = _VM;
-        init = true;
         caller = _caller;
         _execute(commands, state);
     }
 
-    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) {
+    function execute(bytes32[] calldata commands, bytes[] memory state) external payable returns (bytes[] memory) {
         if (caller != msg.sender) revert PortalErrors.NotCaller();
 
         return _execute(commands, state);
@@ -41,7 +42,7 @@ contract Portal {
         (bool success, bytes memory data) = VM.delegatecall(
             abi.encodeWithSelector(IVM.execute.selector, commands, state)
         );
-        require(success);
+        require(success, string(data));
 
         return abi.decode(data, (bytes[]));
     }
