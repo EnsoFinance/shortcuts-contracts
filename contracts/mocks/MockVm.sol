@@ -4,7 +4,7 @@ pragma solidity ^0.8.11;
 
 
 contract MockVm {
-    function execute(bytes32[] calldata commands, bytes[] memory state) public returns (bytes[] memory) {
+    function execute(bytes32[] calldata commands, bytes[] calldata state) public returns (bytes[] memory) {
         emit VmData(commands, state);
         return state;
     }

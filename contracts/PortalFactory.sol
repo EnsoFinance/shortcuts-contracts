@@ -24,7 +24,7 @@ contract PortalFactory {
         ensoVM_ = _vm;
     }
 
-    function deploy(bytes32[] calldata commands, bytes[] memory state) public payable returns (Portal instance) {
+    function deploy(bytes32[] calldata commands, bytes[] calldata state) public payable returns (Portal instance) {
         if (address(user[msg.sender]) != address(0)) {
             revert FactoryErrors.AlreadyExists();
         }

@@ -12,7 +12,7 @@ library PortalErrors {
 }
 
 interface IVM {
-    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory);
+    function execute(bytes32[] calldata commands, bytes[] calldata state) external returns (bytes[] memory);
 }
 
 contract Portal {
@@ -23,7 +23,7 @@ contract Portal {
         address _VM,
         address _caller,
         bytes32[] calldata commands,
-        bytes[] memory state
+        bytes[] calldata state
     ) external payable {
         if (VM != address(0)) revert PortalErrors.AlreadyInit();
         if (_VM == address(0)) revert PortalErrors.InvalidAddress();
@@ -32,18 +32,16 @@ contract Portal {
         _execute(commands, state);
     }
 
-    function execute(bytes32[] calldata commands, bytes[] memory state) external payable returns (bytes[] memory) {
+    function execute(bytes32[] calldata commands, bytes[] calldata state)
+        external
+        payable
+        returns (bytes[] memory returnData)
+    {
         if (caller != msg.sender) revert PortalErrors.NotCaller();
-
-        return _execute(commands, state);
+        returnData = _execute(commands, state);
     }
 
-    function _execute(bytes32[] calldata commands, bytes[] memory state) internal returns (bytes[] memory) {
-        (bool success, bytes memory data) = VM.delegatecall(
-            abi.encodeWithSelector(IVM.execute.selector, commands, state)
-        );
-        require(success, string(data));
-
-        return abi.decode(data, (bytes[]));
+    function _execute(bytes32[] calldata commands, bytes[] calldata state) internal returns (bytes[] memory) {
+        return IVM(VM).execute(commands, state);
     }
 }

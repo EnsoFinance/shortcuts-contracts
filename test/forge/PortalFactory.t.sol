@@ -31,9 +31,13 @@ contract PortalFactoryTest is Test {
     Portal internal portal;
     PortalFactory internal factory;
     PortalUser internal user;
+    PortalUser internal user2;
 
     bytes32[] internal commands;
     bytes[] internal state;
+
+    bytes32[] internal emptyCommands;
+    bytes[] internal emptyState;
 
     event VmData(bytes32[] commands, bytes[] state);
 
@@ -41,13 +45,14 @@ contract PortalFactoryTest is Test {
         MockVm mockVm = new MockVm();
         portalReference = new Portal();
         factory = new PortalFactory(address(mockVm), address(portalReference));
-        for (uint i = 0; i < 5; i++){
+        for (uint i = 0; i < 500; i++){
             commands.push(keccak256("hello world"));
             state.push(bytes("hello world"));
         }
         factory.deploy(commands, state);
         portal = Portal(factory.getAddress());
         user = new PortalUser(address(factory));
+        user2 = new PortalUser(address(factory));
     }
 
     function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {
@@ -60,7 +65,11 @@ contract PortalFactoryTest is Test {
         portal.execute(c, s);
     }
 
-    function testExecute() public {
-        portal.execute(commands, state);
+    function testExecuteNoState() public {
+        portal.execute(emptyCommands, emptyState);
+    }
+
+    function testDeployNoState() public {
+        user2.deployPortal(emptyCommands, emptyState);
     }
 }
