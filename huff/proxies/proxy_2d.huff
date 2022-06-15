@@ -1,0 +1,128 @@
+#include "./proxy_base.huff"
+
+// stack: [ bottom top ]
+
+// a proxy that delegatecalls it's constructor. Takes an arbitrary number of constructor args. The first 32 bytes are the runtime target (for future delegate calls), the next 32 bytes are the constructor target, and everything else gets copied into memory for the delegatecall to the constructor target. The constructor target implements a function that sets the storage according to any arbitrary logic using the data forwarded from the constructor (this data would include the function selector, if one was needed). Then, all future delegate calls go to the runtime target.
+
+// put the storage slot for the runtime delegatecall target on top of stack
+#define macro TARGET_SLOT = takes(0) returns(1) { 0x00 }
+
+// sload the delegatecall target and leaves it on top of the stack
+#define macro TARGET = takes(0) returns(1) {
+    // sload(TARGET_SLOT)
+
+    // []
+    TARGET_SLOT()                   // [ TARGET_SLOT() ]
+    sload                           // [ ]
+}
+
+#define macro CONSTRUCTOR_SHALLOW = takes(0) returns(0) {
+    // [ ]
+    0x00
+    dup1
+
+    ///// placeholder for
+    // COPY_CONSTRUCTOR_ARGS<CONSTRUCTOR_SHALLOW_SIZE+RUNTIME_SIZE>()
+    // TODO: check PUSH1 placeholder against total bytecode size
+    COPY_CONSTRUCTOR_ARGS<0x00>()
+
+    dup1
+    0x40
+    ASSERT_GTE<throw_label>()
+    dup2
+    mload
+    MASK_ADDRESS()
+    STORE_TARGET()
+
+    // do the constructor delegatecall
+    // delegatecall(gas, addr, argsOffset, argsLength, retOffset, retLength)
+    // delegatecall(gas, c_target, )
+
+    // [ 0x00 c_args_ptr c_args_len ]
+    dup3
+    dup1
+    swap2
+    0x40
+    sub
+
+    dup4
+    0x40
+    add
+
+    dup5
+    0x20
+    add
+    mload
+    MASK_ADDRESS()
+    gas
+    delegatecall
+
+    iszero
+    JUMPI<throw_label>()
+
+
+    COPY_RUNTIME_SHALLOW()
+    return
+
+    throw_label:
+        THROW()
+
+}
+
+// TODO:
+// - should we store the runtime target after the constructor delegate call?
+//      This would prevent the constructor delegatecall from overwriting runtime target, which could be good or bad
+
+#define macro CONSTRUCTOR = takes(0) returns(0) {
+    // [ ]
+    0x00        // [ 0x00 ]
+    dup1        // [ 0x00 dest_off ]
+    COPY_CONSTRUCTOR_ARGS<CONSTRUCTOR_SHALLOW_SIZE+RUNTIME_SIZE>()
+
+    // [ 0x00 c_args_ptr c_args_len ]
+    dup1        // [ 0x00 c_args_ptr c_args_len c_args_len ]
+    0x40        // [ 0x00 c_args_ptr c_args_len c_args_len 0x40 ]
+    ASSERT_GTE<throw_label>()    // [ 0x00 c_args_ptr c_args_len ]
+    dup2                    // [ 0x00 c_args_ptr c_args_len c_args_ptr ]
+    mload                   // [ 0x00 c_args_ptr c_args_len rt_target ]
+    MASK_ADDRESS()          // [ 0x00 c_args_ptr c_args_len addr(rt_target) ]
+    STORE_TARGET()          // [ 0x00 c_args_ptr c_args_len ]
+
+    // do the constructor delegatecall
+    // delegatecall(gas, addr, argsOffset, argsLength, retOffset, retLength)
+    // delegatecall(gas, c_target, )
+
+    // [ 0x00 c_args_ptr c_args_len ]
+    dup3                    // [ 0x00 c_args_ptr c_args_len 0x00 ]
+    dup1                   // [ 0x00 c_args_ptr c_args_len 0x00 0x00 ]
+    swap2                   // [ 0x00 c_args_ptr 0x00 0x00 c_args_len ]
+    0x40                    // [ 0x00 c_args_ptr 0x00 0x00 c_args_len 0x40 ]
+    sub                     // [ 0x00 c_args_ptr 0x00 0x00 sub(c_args_len, 0x40) ]
+
+    dup4                    // [ 0x00 c_args_ptr 0x00 0x00 sub(c_args_len, 0x40) c_args_ptr ]
+    0x40                    // [ 0x00 c_args_ptr 0x00 0x00 sub(c_args_len, 0x40) c_args_ptr 0x40 ]
+    add                     // [ 0x00 c_args_ptr 0x00 0x00 sub(c_args_len, 0x40) add(c_args_ptr, 0x40) ]
+
+    // c_target = mload(add(c_args_ptr, 0x20))
+    dup5                    // [ 0x00 c_args_ptr ... c_args_ptr ]
+    0x20                    // [ 0x00 c_args_ptr ... c_args_ptr 0x20 ]
+    add                     // [ 0x00 c_args_ptr ... c_target_ptr ]
+    mload                   // [ 0x00 c_args_ptr ... c_target ]
+    MASK_ADDRESS()          // [ 0x00 c_args_ptr ... addr(c_target) ]
+
+    gas
+    // [ 0x00 0x00 extra_c_args_len extra_c_args_off addr(c_target) gas]
+    delegatecall    // [ success ]
+
+    // TODO: revert with data?
+    // check success and revert if failed
+    iszero          // [ iszero(success) ]
+    JUMPI<throw_label>()    // [ ]
+
+
+    COPY_RUNTIME()          // [ rt_len 0x00 ]
+    return
+
+    throw_label:
+        THROW()
+}

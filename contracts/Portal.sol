@@ -12,7 +12,7 @@ library PortalErrors {
 }
 
 interface IVM {
-    function execute(bytes32[] calldata commands, bytes[] calldata state) external returns (bytes[] memory);
+    function execute(bytes32[] calldata commands, bytes[] calldata state) payable external returns (bytes[] memory);
 }
 
 contract Portal {

@@ -26,7 +26,7 @@ contract PortalUser is Test{
     }
 }
 
-contract PortalFactoryTest is Test {
+contract HuffPortalFactoryTest is Test {
     Portal internal portalReference;
     Portal internal portal;
     PortalFactory internal factory;
@@ -43,38 +43,43 @@ contract PortalFactoryTest is Test {
 
     function setUp() public {
         MockVm mockVm = new MockVm();
-        portalReference = new Portal();
-        factory = new PortalFactory(address(mockVm), address(portalReference));
+        address huffPortal;
+        bytes
+            memory huffCode = hex"61005e8061000d6000396000f360003560e01c8063de792d5f1461001b57631f7c1bac14610051575b600054331461002a5760006000fd5b6000368082833781829183346001545af13d8083843e919060011461004f5760006000fd5bf35b602435600055600435600155";
+        bytes32 salt = keccak256(abi.encode(1));
+        assembly {
+            huffPortal := create2(0, add(huffCode, 32), mload(huffCode), salt)
+        }
         for (uint i = 0; i < 50; i++){
             commands.push(keccak256("hello world"));
             state.push(bytes("hello world"));
         }
+        factory = new PortalFactory(address(mockVm), address(huffPortal));
         factory.deploy(commands, state);
         portal = Portal(factory.getAddress());
         user = new PortalUser(address(factory));
         user2 = new PortalUser(address(factory));
     }
 
-    function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {
-        user.deployPortal(c, s);
-    }
+    // function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {
+    //     user.deployPortal(c, s);
+    // }
 
-    function testFuzzExecute(bytes32[] memory c, bytes[] memory s) public {
+    function testHuffFuzzExecute(bytes32[] memory c, bytes[] memory s) public {
         vm.expectEmit(true, true, true, true);
         emit VmData(c, s);
         portal.execute(c, s);
     }
 
-    function testExecuteNoState() public {
+    function testHuffExecuteNoState() public {
         portal.execute(emptyCommands, emptyState);
     }
 
-    function testExecuteLargeState() public {
-
+    function testHuffExecuteLargeState() public {
         portal.execute(commands, state);
     }
 
-    function testDeployNoState() public {
-        user2.deployPortal(emptyCommands, emptyState);
-    }
+    // function testHuffDeploy() public {
+    //     user2.deployPortal(emptyCommands, emptyState);
+    // }
 }
