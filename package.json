@@ -2,6 +2,8 @@
   "name": "@ensofinance/v2-contracts",
   "version": "0.3.1",
   "devDependencies": {
+    "@dethcrypto/eth-sdk": "^0.3.2",
+    "@dethcrypto/eth-sdk-client": "^0.1.6",
     "@ensofinance/weiroll": "^1.1.0",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.12",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
@@ -56,7 +58,7 @@
     "/dist/**/*.js.map"
   ],
   "scripts": {
-    "prepare": "yarn hardhat typechain",
+    "prepare": "yarn hardhat typechain && yarn eth-sdk",
     "clean": "rm -rf ./artifacts ./cache ./dist ./tsconfig.prod.tsbuildinfo",
     "lint": "eslint \"**/*.{js,ts}\" && solhint src/**/*.sol",
     "lint:fix": "eslint --fix \"**/*.{js,ts}\" && solhint --fix src/**/*.sol",
@@ -65,6 +67,7 @@
     "compile": "hardhat compile",
     "void:deploy": "hardhat deploy --report-gas --export-all deployments/deployments.json",
     "test": "cross-env HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test",
+    "actions": "yarn fork:actions mainnet",
     "gas": "cross-env REPORT_GAS=true hardhat test",
     "coverage": "cross-env HARDHAT_DEPLOY_FIXTURE=true hardhat coverage",
     "dev:node": "cross-env MINING_INTERVAL=\"3000,5000\" hardhat node --hostname 0.0.0.0",
@@ -81,6 +84,8 @@
     "fork:dev": "node ./scripts/_scripts.js fork:dev",
     "fork:node": "node ./scripts/_scripts.js fork:node",
     "fork:test": "node ./scripts/_scripts.js fork:test",
-    "package:publish": "yarn clean && yarn hardhat typechain && yarn tsc --project ./tsconfig.prod.json && npm publish" 
+    "fork:actions": "node ./scripts/_scripts.js fork:actions",
+    "fork:actions:full": "yarn prepare && node ./scripts/_scripts.js fork:actions",
+    "package:publish": "yarn clean && yarn hardhat typechain && yarn tsc --project ./tsconfig.prod.json && npm publish"
   }
 }

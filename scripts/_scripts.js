@@ -142,6 +142,18 @@ async function performAction(rawArgs) {
         options['no-impersonation'] ? `HARDHAT_DEPLOY_NO_IMPERSONATION=true` : ''
       } HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test ${extra.join(' ')}`
     );
+  } else if (firstArg === 'fork:actions') {
+    const {fixedArgs, options, extra} = parseArgs(args, 1, {
+      blockNumber: 'string',
+      'no-impersonation': 'boolean',
+    });
+    await execute(
+      `cross-env HARDHAT_FORK=${fixedArgs[0]} ${
+        options.blockNumber ? `HARDHAT_FORK_NUMBER=${options.blockNumber}` : ''
+      } ${
+        options['no-impersonation'] ? `HARDHAT_DEPLOY_NO_IMPERSONATION=true` : ''
+      } HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive actions-playground ${extra.join(' ')}`
+    );
   } else if (firstArg === 'fork:dev') {
     const {fixedArgs, options, extra} = parseArgs(args, 1, {
       blockNumber: 'string',

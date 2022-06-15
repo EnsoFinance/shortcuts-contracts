@@ -1,0 +1,203 @@
+{
+  "address": "0xd5BDD85E036121fF5C2C730C4F4aF5dB74340ED0",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_vm",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_portal",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "AlreadyExists",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "contract Portal",
+          "name": "instance",
+          "type": "address"
+        }
+      ],
+      "name": "Deployed",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "commands",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "state",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "deploy",
+      "outputs": [
+        {
+          "internalType": "contract Portal",
+          "name": "instance",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ensoVM_",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "portalImplementation_",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "user",
+      "outputs": [
+        {
+          "internalType": "contract Portal",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x642fa6a3f4f7883cd46048e2d40fde11530a20804381d67fc97179fa76131b2b",
+  "receipt": {
+    "to": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
+    "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": null,
+    "transactionIndex": 0,
+    "gasUsed": "507137",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xc2e9117e3fdbc880f24a8f05f436a8df30b5fb42a154221d0e27284fea42d82f",
+    "transactionHash": "0x642fa6a3f4f7883cd46048e2d40fde11530a20804381d67fc97179fa76131b2b",
+    "logs": [],
+    "blockNumber": 14966084,
+    "cumulativeGasUsed": "507137",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xF61034da19318cC8928cdAB49d3c03cacc5EDc3a",
+    "0x29Bbf1043Bd397a5c22e3D2cd39B6f8f3b06CD04"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "c567dc2e50458cff86bf9fc720670fb0",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.11+commit.d7f03943\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_vm\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_portal\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AlreadyExists\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"contract Portal\",\"name\":\"instance\",\"type\":\"address\"}],\"name\":\"Deployed\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"commands\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes[]\",\"name\":\"state\",\"type\":\"bytes[]\"}],\"name\":\"deploy\",\"outputs\":[{\"internalType\":\"contract Portal\",\"name\":\"instance\",\"type\":\"address\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"ensoVM_\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"portalImplementation_\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"user\",\"outputs\":[{\"internalType\":\"contract Portal\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/PortalFactory.sol\":\"PortalFactory\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":2000},\"remappings\":[]},\"sources\":{\"contracts/Libraries/Clones.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts v4.4.1 (proxy/Clones.sol)\\n// Modified from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/proxy/Clones.sol\\n\\npragma solidity ^0.8.0;\\n\\nlibrary Clones {\\n    /**\\n     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.\\n     *\\n     * This function uses the create2 opcode and a `salt` to deterministically deploy\\n     * the clone. Using the same `implementation` and `salt` multiple time will revert, since\\n     * the clones cannot be deployed twice at the same address.\\n     */\\n    function cloneDeterministic(address implementation, address salt) internal returns (address instance) {\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\\n            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\\n            instance := create2(0, ptr, 0x37, salt)\\n        }\\n        require(instance != address(0), \\\"ERC1167: create2 failed\\\");\\n    }\\n\\n    /**\\n     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.\\n     */\\n    function predictDeterministicAddress(\\n        address implementation,\\n        address salt,\\n        address deployer\\n    ) internal pure returns (address predicted) {\\n        assembly {\\n            let ptr := mload(0x40)\\n            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\\n            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf3ff00000000000000000000000000000000)\\n            mstore(add(ptr, 0x38), shl(0x60, deployer))\\n            mstore(add(ptr, 0x4c), salt)\\n            mstore(add(ptr, 0x6c), keccak256(ptr, 0x37))\\n            predicted := keccak256(add(ptr, 0x37), 0x55)\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0x24935f7394af468793c51805881643eea06f3058ec824b0a30d5af9b7fb244a0\",\"license\":\"MIT\"},\"contracts/Portal.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.11;\\n\\nlibrary PortalErrors {\\n    // Already initialized\\n    error AlreadyInit();\\n    // Not caller\\n    error NotCaller();\\n}\\n\\ninterface IVM {\\n    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory);\\n}\\n\\ncontract Portal {\\n    bool public init;\\n    address public caller;\\n    address public VM;\\n\\n    function initialize(\\n        address _VM,\\n        address _caller,\\n        bytes32[] calldata commands,\\n        bytes[] memory state\\n    ) external payable {\\n        if (init) revert PortalErrors.AlreadyInit();\\n        VM = _VM;\\n        init = true;\\n        caller = _caller;\\n        _execute(commands, state);\\n    }\\n\\n    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) {\\n        if (caller != msg.sender) revert PortalErrors.NotCaller();\\n\\n        return _execute(commands, state);\\n    }\\n\\n    function _execute(bytes32[] calldata commands, bytes[] memory state) internal returns (bytes[] memory) {\\n        (bool success, bytes memory data) = VM.delegatecall(\\n            abi.encodeWithSelector(IVM.execute.selector, commands, state)\\n        );\\n        require(success);\\n\\n        return abi.decode(data, (bytes[]));\\n    }\\n}\\n\",\"keccak256\":\"0xff5bb7d7490388704166c683cbff07d00ed23aaf7e5d641448a7f009752a6100\",\"license\":\"MIT\"},\"contracts/PortalFactory.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.11;\\n\\nimport \\\"./Portal.sol\\\";\\nimport {Clones} from \\\"./Libraries/Clones.sol\\\";\\n\\nlibrary FactoryErrors {\\n    // Not caller\\n    error AlreadyExists();\\n}\\n\\ncontract PortalFactory {\\n    using Clones for address;\\n\\n    mapping(address => Portal) public user;\\n    address public portalImplementation_;\\n    address public ensoVM_;\\n\\n    event Deployed(Portal instance);\\n\\n    constructor(address _vm, address _portal) {\\n        portalImplementation_ = _portal;\\n        ensoVM_ = _vm;\\n    }\\n\\n    function deploy(bytes32[] calldata commands, bytes[] memory state) public payable returns (Portal instance) {\\n        if (address(user[msg.sender]) != address(0)) {\\n            revert FactoryErrors.AlreadyExists();\\n        }\\n\\n        instance = Portal(portalImplementation_.cloneDeterministic(msg.sender));\\n        instance.initialize{value: msg.value}(ensoVM_, msg.sender, commands, state);\\n\\n        user[msg.sender] = instance;\\n        emit Deployed(instance);\\n    }\\n\\n    function getAddress() public view returns (address) {\\n        return portalImplementation_.predictDeterministicAddress(msg.sender, address(this));\\n    }\\n}\\n\",\"keccak256\":\"0x606a11dd6c0c5f9bc28778a272fec4b88070cbc3f41b166a0916e1e2ea2c44ce\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161082038038061082083398101604081905261002f9161007f565b600180546001600160a01b039283166001600160a01b031991821617909155600280549390921692169190911790556100b2565b80516001600160a01b038116811461007a57600080fd5b919050565b6000806040838503121561009257600080fd5b61009b83610063565b91506100a960208401610063565b90509250929050565b61075f806100c16000396000f3fe60806040526004361061005a5760003560e01c806381e7e20e1161004357806381e7e20e14610146578063abbea9871461017c578063f7dcbaf81461018f57600080fd5b8063308530431461005f57806338cc48311461009b575b600080fd5b34801561006b57600080fd5b5060015461007f906001600160a01b031681565b6040516001600160a01b03909116815260200160405180910390f35b3480156100a757600080fd5b506001546040517f3d602d80600a3d3981f3363d3d373d3d3d363d730000000000000000000000008152606091821b7fffffffffffffffffffffffffffffffffffffffff0000000000000000000000001660148201527f5af43d82803e903d91602b57fd5bf3ff0000000000000000000000000000000060288201523090911b603882015233604c8201526037808220606c830152605591012061007f565b34801561015257600080fd5b5061007f6101613660046103fc565b6000602081905290815260409020546001600160a01b031681565b61007f61018a36600461048c565b6101af565b34801561019b57600080fd5b5060025461007f906001600160a01b031681565b336000908152602081905260408120546001600160a01b0316156101ff576040517f23369fa600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600154610215906001600160a01b031633610321565b6002546040517f1f7c1bac0000000000000000000000000000000000000000000000000000000081529192506001600160a01b0380841692631f7c1bac92349261026c9291169033908a908a908a906004016105ff565b6000604051808303818588803b15801561028557600080fd5b505af1158015610299573d6000803e3d6000fd5b5050336000908152602081815260409182902080547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b03881690811790915591519182527ff40fcec21964ffb566044d083b4073f29f7f7929110ea19e1b3ebe375d89055e94500191506103129050565b60405180910390a19392505050565b60006040517f3d602d80600a3d3981f3363d3d373d3d3d363d7300000000000000000000000081528360601b60148201527f5af43d82803e903d91602b57fd5bf300000000000000000000000000000000006028820152826037826000f59150506001600160a01b0381166103f6576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601760248201527f455243313136373a2063726561746532206661696c6564000000000000000000604482015260640160405180910390fd5b92915050565b60006020828403121561040e57600080fd5b81356001600160a01b038116811461042557600080fd5b9392505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b604051601f8201601f1916810167ffffffffffffffff811182821017156104845761048461042c565b604052919050565b600080600060408085870312156104a257600080fd5b843567ffffffffffffffff808211156104ba57600080fd5b818701915087601f8301126104ce57600080fd5b8135818111156104dd57600080fd5b602089818360051b86010111156104f357600080fd5b80840197508196508089013593508284111561050e57600080fd5b838901935089601f85011261052257600080fd5b83359150828211156105365761053661042c565b8160051b61054582820161045b565b928352848101820192828101908c85111561055f57600080fd5b83870192505b848310156105ed5782358681111561057d5760008081fd5b8701603f81018e1361058f5760008081fd5b84810135878111156105a3576105a361042c565b6105b586601f19601f8401160161045b565b8181528f8b8385010111156105ca5760008081fd5b818b84018883013760009181018701919091528352509183019190830190610565565b80985050505050505050509250925092565b60006001600160a01b038088168352602081881681850152608060408501528560808501527f07ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff86111561065157600080fd5b8560051b9150818760a0860137818401915060a08201600080825260a086850301606087015281875180845260c08601915060c08160051b8701019350848901835b82811015610716577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4088870301845281518051808852865b818110156106e6578281018a01518982018b015289016106cb565b818111156106f657878a838b0101525b50601f01601f191696909601870195509286019290860190600101610693565b50939d9c5050505050505050505050505056fea26469706673582212205a82ba4554036ce24ab7e5d138e9810e245bc0ddafe9d640b59aead87b5e571764736f6c634300080b0033",
+  "deployedBytecode": "0x60806040526004361061005a5760003560e01c806381e7e20e1161004357806381e7e20e14610146578063abbea9871461017c578063f7dcbaf81461018f57600080fd5b8063308530431461005f57806338cc48311461009b575b600080fd5b34801561006b57600080fd5b5060015461007f906001600160a01b031681565b6040516001600160a01b03909116815260200160405180910390f35b3480156100a757600080fd5b506001546040517f3d602d80600a3d3981f3363d3d373d3d3d363d730000000000000000000000008152606091821b7fffffffffffffffffffffffffffffffffffffffff0000000000000000000000001660148201527f5af43d82803e903d91602b57fd5bf3ff0000000000000000000000000000000060288201523090911b603882015233604c8201526037808220606c830152605591012061007f565b34801561015257600080fd5b5061007f6101613660046103fc565b6000602081905290815260409020546001600160a01b031681565b61007f61018a36600461048c565b6101af565b34801561019b57600080fd5b5060025461007f906001600160a01b031681565b336000908152602081905260408120546001600160a01b0316156101ff576040517f23369fa600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600154610215906001600160a01b031633610321565b6002546040517f1f7c1bac0000000000000000000000000000000000000000000000000000000081529192506001600160a01b0380841692631f7c1bac92349261026c9291169033908a908a908a906004016105ff565b6000604051808303818588803b15801561028557600080fd5b505af1158015610299573d6000803e3d6000fd5b5050336000908152602081815260409182902080547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b03881690811790915591519182527ff40fcec21964ffb566044d083b4073f29f7f7929110ea19e1b3ebe375d89055e94500191506103129050565b60405180910390a19392505050565b60006040517f3d602d80600a3d3981f3363d3d373d3d3d363d7300000000000000000000000081528360601b60148201527f5af43d82803e903d91602b57fd5bf300000000000000000000000000000000006028820152826037826000f59150506001600160a01b0381166103f6576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601760248201527f455243313136373a2063726561746532206661696c6564000000000000000000604482015260640160405180910390fd5b92915050565b60006020828403121561040e57600080fd5b81356001600160a01b038116811461042557600080fd5b9392505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b604051601f8201601f1916810167ffffffffffffffff811182821017156104845761048461042c565b604052919050565b600080600060408085870312156104a257600080fd5b843567ffffffffffffffff808211156104ba57600080fd5b818701915087601f8301126104ce57600080fd5b8135818111156104dd57600080fd5b602089818360051b86010111156104f357600080fd5b80840197508196508089013593508284111561050e57600080fd5b838901935089601f85011261052257600080fd5b83359150828211156105365761053661042c565b8160051b61054582820161045b565b928352848101820192828101908c85111561055f57600080fd5b83870192505b848310156105ed5782358681111561057d5760008081fd5b8701603f81018e1361058f5760008081fd5b84810135878111156105a3576105a361042c565b6105b586601f19601f8401160161045b565b8181528f8b8385010111156105ca5760008081fd5b818b84018883013760009181018701919091528352509183019190830190610565565b80985050505050505050509250925092565b60006001600160a01b038088168352602081881681850152608060408501528560808501527f07ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff86111561065157600080fd5b8560051b9150818760a0860137818401915060a08201600080825260a086850301606087015281875180845260c08601915060c08160051b8701019350848901835b82811015610716577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4088870301845281518051808852865b818110156106e6578281018a01518982018b015289016106cb565b818111156106f657878a838b0101525b50601f01601f191696909601870195509286019290860190600101610693565b50939d9c5050505050505050505050505056fea26469706673582212205a82ba4554036ce24ab7e5d138e9810e245bc0ddafe9d640b59aead87b5e571764736f6c634300080b0033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 189,
+        "contract": "contracts/PortalFactory.sol:PortalFactory",
+        "label": "user",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_address,t_contract(Portal)173)"
+      },
+      {
+        "astId": 191,
+        "contract": "contracts/PortalFactory.sol:PortalFactory",
+        "label": "portalImplementation_",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_address"
+      },
+      {
+        "astId": 193,
+        "contract": "contracts/PortalFactory.sol:PortalFactory",
+        "label": "ensoVM_",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_address"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_contract(Portal)173": {
+        "encoding": "inplace",
+        "label": "contract Portal",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_contract(Portal)173)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => contract Portal)",
+        "numberOfBytes": "32",
+        "value": "t_contract(Portal)173"
+      }
+    }
+  }
+}

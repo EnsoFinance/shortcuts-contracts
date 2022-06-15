@@ -1,0 +1,41 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Libraries/Clones.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts v4.4.1 (proxy/Clones.sol)\n// Modified from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/proxy/Clones.sol\n\npragma solidity ^0.8.0;\n\nlibrary Clones {\n    /**\n     * @dev Deploys and returns the address of a clone that mimics the behaviour of `implementation`.\n     *\n     * This function uses the create2 opcode and a `salt` to deterministically deploy\n     * the clone. Using the same `implementation` and `salt` multiple time will revert, since\n     * the clones cannot be deployed twice at the same address.\n     */\n    function cloneDeterministic(address implementation, address salt) internal returns (address instance) {\n        assembly {\n            let ptr := mload(0x40)\n            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\n            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\n            instance := create2(0, ptr, 0x37, salt)\n        }\n        require(instance != address(0), \"ERC1167: create2 failed\");\n    }\n\n    /**\n     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.\n     */\n    function predictDeterministicAddress(\n        address implementation,\n        address salt,\n        address deployer\n    ) internal pure returns (address predicted) {\n        assembly {\n            let ptr := mload(0x40)\n            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\n            mstore(add(ptr, 0x14), shl(0x60, implementation))\n            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf3ff00000000000000000000000000000000)\n            mstore(add(ptr, 0x38), shl(0x60, deployer))\n            mstore(add(ptr, 0x4c), salt)\n            mstore(add(ptr, 0x6c), keccak256(ptr, 0x37))\n            predicted := keccak256(add(ptr, 0x37), 0x55)\n        }\n    }\n}\n"
+    },
+    "contracts/PortalFactory.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.11;\n\nimport \"./Portal.sol\";\nimport {Clones} from \"./Libraries/Clones.sol\";\n\nlibrary FactoryErrors {\n    // Not caller\n    error AlreadyExists();\n}\n\ncontract PortalFactory {\n    using Clones for address;\n\n    mapping(address => Portal) public user;\n    address public portalImplementation_;\n    address public ensoVM_;\n\n    event Deployed(Portal instance);\n\n    constructor(address _vm, address _portal) {\n        portalImplementation_ = _portal;\n        ensoVM_ = _vm;\n    }\n\n    function deploy(bytes32[] calldata commands, bytes[] memory state) public payable returns (Portal instance) {\n        if (address(user[msg.sender]) != address(0)) {\n            revert FactoryErrors.AlreadyExists();\n        }\n\n        instance = Portal(portalImplementation_.cloneDeterministic(msg.sender));\n        instance.initialize{value: msg.value}(ensoVM_, msg.sender, commands, state);\n\n        user[msg.sender] = instance;\n        emit Deployed(instance);\n    }\n\n    function getAddress() public view returns (address) {\n        return portalImplementation_.predictDeterministicAddress(msg.sender, address(this));\n    }\n}\n"
+    },
+    "contracts/Portal.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.11;\n\nlibrary PortalErrors {\n    // Already initialized\n    error AlreadyInit();\n    // Not caller\n    error NotCaller();\n}\n\ninterface IVM {\n    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory);\n}\n\ncontract Portal {\n    bool public init;\n    address public caller;\n    address public VM;\n\n    function initialize(\n        address _VM,\n        address _caller,\n        bytes32[] calldata commands,\n        bytes[] memory state\n    ) external payable {\n        if (init) revert PortalErrors.AlreadyInit();\n        VM = _VM;\n        init = true;\n        caller = _caller;\n        _execute(commands, state);\n    }\n\n    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) {\n        if (caller != msg.sender) revert PortalErrors.NotCaller();\n\n        return _execute(commands, state);\n    }\n\n    function _execute(bytes32[] calldata commands, bytes[] memory state) internal returns (bytes[] memory) {\n        (bool success, bytes memory data) = VM.delegatecall(\n            abi.encodeWithSelector(IVM.execute.selector, commands, state)\n        );\n        require(success);\n\n        return abi.decode(data, (bytes[]));\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 2000
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
