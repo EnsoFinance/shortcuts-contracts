@@ -12,6 +12,8 @@ jobs:
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      ETH_NODE_URI_MAINNET: ${{ secrets.ETH_NODE_URI_MAINNET }}
+      ETHERSCAN_KEY: ${{ secrets.ETHERSCAN_KEY }}
 
     steps:
       - name: Checkout the code
