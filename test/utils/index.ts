@@ -1,3 +1,6 @@
+import '@nomiclabs/hardhat-ethers';
+import 'hardhat-deploy';
+
 import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
 import {Portal, PortalFactory, Events, EnsoVM} from '../../typechain';
