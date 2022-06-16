@@ -22,5 +22,4 @@ export default defineConfig({
   rpc: {
     mainnet: process.env.ETH_NODE_URI_MAINNET,
   },
-  outputPath: './eth-sdk/types',
 });
