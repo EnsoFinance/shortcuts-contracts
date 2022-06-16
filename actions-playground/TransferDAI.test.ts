@@ -1,5 +1,5 @@
 import {expect} from '../test/chai-setup';
-import {ethers, getNamedAccounts} from 'hardhat';
+import {getNamedAccounts} from 'hardhat';
 import {BigNumber} from 'ethers';
 import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
 import {getMainnetSdk} from '@dethcrypto/eth-sdk-client';
