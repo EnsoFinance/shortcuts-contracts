@@ -25,3 +25,7 @@ yarn.lock
 
 contractsInfo.json
 deployments/hardhat
+
+# eth-sdk
+eth-sdk/abis
+eth-sdk/types
