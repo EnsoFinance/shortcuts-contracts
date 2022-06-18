@@ -47,15 +47,13 @@ describe('Short stETH Action', function () {
     const randomUser = users[0];
     const userWithPortalSigner = await impersonateAccount(userWithPortal.address);
 
-    // const USDC = SDK.usdc.connect(userWithPortalSigner);
-    // const eUSDC = EToken(await EULER_MARKETS.underlyingToEToken(SDK.usdc.address)).connect(userWithPortalSigner);
+    const USDC = SDK.usdc.connect(userWithPortalSigner);
+    const eUSDC = EToken(await EULER_MARKETS.underlyingToEToken(SDK.usdc.address)).connect(userWithPortalSigner);
     const eDai = EToken(await EULER_MARKETS.underlyingToEToken(SDK.dai.address)).connect(userWithPortalSigner);
 
-    //console.log(ewstETH.address);
-    // await USDC.approve(EULER_PROXY, SINGLE_USDC.mul(USD_AMOUNT));
-    // await eUSDC.deposit(0, SINGLE_USDC.mul(USD_AMOUNT));
-    // await EULER_MARKETS.connect(userWithPortalSigner).enterMarket(0, USDC.address);
-    //console.log(await eUSDC.balanceOf(userWithPortal.address));
+    await USDC.approve(EULER_PROXY, SINGLE_USDC.mul(USD_AMOUNT));
+    await eUSDC.deposit(0, SINGLE_USDC.mul(USD_AMOUNT));
+    console.log(await eUSDC.balanceOf(userWithPortal.address));
 
     //console.log(await EULER_MARKETS.underlyingToAssetConfig(SDK.usdc.address)); //cf = 3600000000 = 0.36
     //console.log(await EULER_MARKETS.underlyingToAssetConfig(SDK.wstETH.address)); //bf = 3560000000 = 0.356
@@ -69,11 +67,11 @@ describe('Short stETH Action', function () {
 
     const txToEvents = async (tx: any) => JSON.stringify((await tx.wait()).events, undefined, 2);
 
-    const tx = await eDai.mint(0, 20000);
+    let tx = await eDai.mint(0, 10000);
     console.log(await txToEvents(tx));
     console.log(await eDai.balanceOf(userWithPortal.address));
 
-    // const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+    const WETH = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
     // tx = await EULER_MARKETS.connect(userWithPortalSigner).enterMarket(0, WETH, {gasLimit: 100000});
     // console.log(await txToEvents(tx));
 
@@ -96,23 +94,25 @@ describe('Short stETH Action', function () {
     // };
 
     // const path = encodePath([SDK.wstETH.address, WETH], [500]);
+    const eWETH = EToken(await EULER_MARKETS.underlyingToEToken(WETH)).connect(userWithPortalSigner);
+    console.log(await eWETH.balanceOf(userWithPortal.address));
 
-    // tx = await EULER_SWAP.connect(userWithPortalSigner).swapUniExactInput(
-    //   {
-    //     subAccountIdIn: 0,
-    //     subAccountIdOut: 0,
-    //     amountIn: 1,
-    //     amountOutMinimum: 0,
-    //     deadline: ethers.constants.MaxUint256,
-    //     path,
-    //   },
-    //   {gasLimit: 100000}
-    // );
-    // console.log(await txToEvents(tx));
+    tx = await EULER_SWAP.connect(userWithPortalSigner).swapUniExactInputSingle({
+      subAccountIdIn: 0,
+      subAccountIdOut: 0,
+      underlyingIn: SDK.usdc.address,
+      underlyingOut: WETH,
+      amountIn: 1000,
+      amountOutMinimum: 0,
+      deadline: ethers.constants.MaxUint256,
+      fee: 500,
+      sqrtPriceLimitX96: 0,
+    });
+    console.log('WHAT', await txToEvents(tx));
 
     //console.log(await SDK.wstETH.balanceOf(userWithPortal.address));
     // await ewstETH.withdraw(0, 1000);
-    //console.log(await SDK.wstETH.balanceOf(userWithPortal.address));
+    console.log(await eWETH.balanceOf(userWithPortal.address));
   });
 
   // it('should work with Portal', async () => {
