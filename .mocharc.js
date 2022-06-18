@@ -8,7 +8,7 @@ module.exports = {
   reporter: 'spec',
   require: ['ts-node/register', 'hardhat/register'], // ['ts-node/register/transpile-only'], (for yarn link <plugin>)
   slow: 300,
-  timeout: 20000,
+  timeout: 60000,
   ui: 'bdd',
   watch: false,
   'watch-files': ['src/**/*.sol', 'test/**/*.ts'],
