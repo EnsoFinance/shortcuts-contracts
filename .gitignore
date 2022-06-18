@@ -26,3 +26,4 @@ deployments/hardhat
 
 # eth-sdk
 eth-sdk/abis
+eth-sdk/sdk
