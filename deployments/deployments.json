@@ -55,7 +55,7 @@
           ]
         },
         "Portal": {
-          "address": "0x29Bbf1043Bd397a5c22e3D2cd39B6f8f3b06CD04",
+          "address": "0x9fB2E05588979FE21EFB72Ed18a2B374f118017C",
           "abi": [
             {
               "inputs": [],
@@ -114,7 +114,7 @@
                   "type": "bytes[]"
                 }
               ],
-              "stateMutability": "nonpayable",
+              "stateMutability": "payable",
               "type": "function"
             },
             {
@@ -161,7 +161,7 @@
           ]
         },
         "PortalFactory": {
-          "address": "0xd5BDD85E036121fF5C2C730C4F4aF5dB74340ED0",
+          "address": "0x9570ebd01087053817db4626e822fe384bC3f048",
           "abi": [
             {
               "inputs": [
