@@ -10,7 +10,7 @@ library PortalErrors {
 }
 
 interface IVM {
-    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory);
+    function execute(bytes32[] calldata commands, bytes[] memory state) external payable returns (bytes[] memory);
 }
 
 contract Portal {
@@ -31,7 +31,7 @@ contract Portal {
         _execute(commands, state);
     }
 
-    function execute(bytes32[] calldata commands, bytes[] memory state) external returns (bytes[] memory) {
+    function execute(bytes32[] calldata commands, bytes[] memory state) external payable returns (bytes[] memory) {
         if (caller != msg.sender) revert PortalErrors.NotCaller();
 
         return _execute(commands, state);

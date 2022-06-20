@@ -1,8 +1,8 @@
 import {expect} from '../test/chai-setup';
 import {ethers, getNamedAccounts} from 'hardhat';
-import {Contract, ContractTransaction, BigNumber} from 'ethers';
+import {BigNumber} from 'ethers';
 import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
-import {getMainnetSdk, MainnetSdk} from '@dethcrypto/eth-sdk-client';
+import {getMainnetSdk} from '@dethcrypto/eth-sdk-client';
 
 import {setup, impersonateAccount} from '../test/utils';
 
@@ -44,7 +44,7 @@ const setupStEthAction = async () => {
 };
 
 describe('Short stETH Action', function () {
-  it('should ...', async () => {
+  it.skip('should ...', async () => {
     const {userWithPortal, users} = await setupStEthAction();
 
     const randomUser = users[0];
@@ -61,7 +61,7 @@ describe('Short stETH Action', function () {
     expect(balance).to.equal(BigNumber.from(1));
   });
 
-  it.skip('should work with Portal', async () => {
+  it('should work with Portal', async () => {
     const {userWithPortal, users} = await setupStEthAction();
 
     const randomUser = users[0];
@@ -72,6 +72,8 @@ describe('Short stETH Action', function () {
     const sdk = getMainnetSdk(userWithPortalSigner);
     const dai = sdk.dai;
 
+    expect(await dai.balanceOf(userWithPortal.address)).to.gte(BigNumber.from(1));
+
     const weirolledDai = weiroll.createLibrary(dai);
 
     planner.add(weirolledDai.transfer(randomUser.address, BigNumber.from(1)));
@@ -81,7 +83,6 @@ describe('Short stETH Action', function () {
     const tx = await userWithPortal.Portal.execute(commands, state);
     await tx.wait();
 
-    const balance = await dai.balanceOf(randomUser.address);
-    expect(balance).to.equal(BigNumber.from(1));
+    expect(await dai.balanceOf(randomUser.address)).to.equal(BigNumber.from(1));
   });
 });
