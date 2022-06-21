@@ -5,11 +5,6 @@ pragma solidity ^0.8.11;
 import "./Portal.sol";
 import {Clones} from "./Libraries/Clones.sol";
 
-library FactoryErrors {
-    // Not caller
-    error AlreadyExists();
-}
-
 contract PortalFactory {
     using Clones for address;
 
@@ -19,6 +14,8 @@ contract PortalFactory {
 
     event Deployed(Portal instance);
 
+    error AlreadyExists();
+
     constructor(address _vm, address _portal) {
         portalImplementation_ = _portal;
         ensoVM_ = _vm;
@@ -26,7 +23,7 @@ contract PortalFactory {
 
     function deploy(bytes32[] calldata commands, bytes[] calldata state) public payable returns (Portal instance) {
         if (address(user[msg.sender]) != address(0)) {
-            revert FactoryErrors.AlreadyExists();
+            revert AlreadyExists();
         }
 
         instance = Portal(portalImplementation_.cloneDeterministic(msg.sender));

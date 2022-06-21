@@ -2,12 +2,11 @@
 
 pragma solidity ^0.8.11;
 
-
 interface IVM {
-    function execute(bytes32[] calldata commands, bytes[] calldata state) external payable returns (bytes[] memory);
+    function execute(bytes32[] calldata commands, bytes[] calldata state) payable external returns (bytes[] memory);
 }
 
-contract Portal {
+contract DelegatePortal {
     address public caller;
     address public VM;
 
@@ -43,6 +42,9 @@ contract Portal {
     }
 
     function _execute(bytes32[] calldata commands, bytes[] calldata state) internal returns (bytes[] memory) {
-        return IVM(VM).execute(commands, state);
+        (bool success, bytes memory ret)  =  address(VM).delegatecall(abi.encodeWithSelector(IVM.execute.selector, commands, state));
+        require(success);
+        return abi.decode(ret, (bytes[]));
     }
 }
+
