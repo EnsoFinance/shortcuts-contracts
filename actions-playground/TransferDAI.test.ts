@@ -63,6 +63,9 @@ describe('Transfer Dai Action', function () {
     planner.add(weirolledDai.transferFrom(userWithPortal.address, randomUser.address, BigNumber.from(1)));
     const {commands, state} = planner.plan();
 
+    console.log('Commands: ', commands);
+    console.log('State: ', state);
+
     const weirollTx = await userWithPortal.Portal.execute(commands, state);
     await weirollTx.wait();
 

@@ -45,4 +45,6 @@ contract Portal {
 
         return abi.decode(data, (bytes[]));
     }
+
+    receive() external payable {}
 }

@@ -39,4 +39,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await deployPortalFactory();
 };
 export default func;
+
 func.tags = ['EnsoVM', 'PortalFactory', 'Portal'];

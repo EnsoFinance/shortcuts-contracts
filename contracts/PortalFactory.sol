@@ -29,7 +29,7 @@ contract PortalFactory {
             revert FactoryErrors.AlreadyExists();
         }
 
-        instance = Portal(portalImplementation_.cloneDeterministic(msg.sender));
+        instance = Portal(payable(portalImplementation_.cloneDeterministic(msg.sender)));
         instance.initialize{value: msg.value}(ensoVM_, msg.sender, commands, state);
 
         user[msg.sender] = instance;
