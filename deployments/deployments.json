@@ -1,0 +1,287 @@
+{
+  "31337": [
+    {
+      "name": "hardhat",
+      "chainId": "31337",
+      "contracts": {
+        "EnsoVM": {
+          "address": "0xF61034da19318cC8928cdAB49d3c03cacc5EDc3a",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "command_index",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "target",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "message",
+                  "type": "string"
+                }
+              ],
+              "name": "ExecutionFailed",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes32[]",
+                  "name": "commands",
+                  "type": "bytes32[]"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "state",
+                  "type": "bytes[]"
+                }
+              ],
+              "name": "execute",
+              "outputs": [
+                {
+                  "internalType": "bytes[]",
+                  "name": "",
+                  "type": "bytes[]"
+                }
+              ],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ]
+        },
+        "Portal": {
+          "address": "0x9fB2E05588979FE21EFB72Ed18a2B374f118017C",
+          "abi": [
+            {
+              "inputs": [],
+              "name": "AlreadyInit",
+              "type": "error"
+            },
+            {
+              "inputs": [],
+              "name": "NotCaller",
+              "type": "error"
+            },
+            {
+              "inputs": [],
+              "name": "VM",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "caller",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes32[]",
+                  "name": "commands",
+                  "type": "bytes32[]"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "state",
+                  "type": "bytes[]"
+                }
+              ],
+              "name": "execute",
+              "outputs": [
+                {
+                  "internalType": "bytes[]",
+                  "name": "",
+                  "type": "bytes[]"
+                }
+              ],
+              "stateMutability": "payable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "init",
+              "outputs": [
+                {
+                  "internalType": "bool",
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_VM",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "_caller",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes32[]",
+                  "name": "commands",
+                  "type": "bytes32[]"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "state",
+                  "type": "bytes[]"
+                }
+              ],
+              "name": "initialize",
+              "outputs": [],
+              "stateMutability": "payable",
+              "type": "function"
+            }
+          ]
+        },
+        "PortalFactory": {
+          "address": "0x9570ebd01087053817db4626e822fe384bC3f048",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_vm",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "_portal",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "nonpayable",
+              "type": "constructor"
+            },
+            {
+              "inputs": [],
+              "name": "AlreadyExists",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": false,
+                  "internalType": "contract Portal",
+                  "name": "instance",
+                  "type": "address"
+                }
+              ],
+              "name": "Deployed",
+              "type": "event"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes32[]",
+                  "name": "commands",
+                  "type": "bytes32[]"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "state",
+                  "type": "bytes[]"
+                }
+              ],
+              "name": "deploy",
+              "outputs": [
+                {
+                  "internalType": "contract Portal",
+                  "name": "instance",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "payable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "ensoVM_",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getAddress",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "portalImplementation_",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "name": "user",
+              "outputs": [
+                {
+                  "internalType": "contract Portal",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

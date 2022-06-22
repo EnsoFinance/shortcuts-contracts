@@ -4,7 +4,7 @@ artifacts/
 dist/
 
 # local deployments
-local.deployments.json
+deployments/localhost
 
 coverage*
 typechain/

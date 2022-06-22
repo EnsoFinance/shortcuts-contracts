@@ -8,9 +8,8 @@ import 'solidity-coverage';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
-import 'hardhat-packager';
 
-import {nodeUrl, accounts, addForkConfiguration} from './utils/network';
+import {nodeUrl, accounts, addForkConfiguration, getChainId} from './utils/network';
 
 dotenv.config();
 
@@ -35,12 +34,12 @@ const config: HardhatUserConfig = {
     hardhat: {
       initialBaseFeePerGas: 0, // to fix : https://github.com/sc-forks/solidity-coverage/issues/652, see https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136
       saveDeployments: true,
+      accounts: accounts(),
     },
     localhost: {
       url: nodeUrl('localhost'),
       accounts: accounts(),
-      chainId: 31337,
-      saveDeployments: true,
+      chainId: getChainId(),
     },
     mainnet: {
       url: nodeUrl('mainnet'),
@@ -73,10 +72,6 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_KEY,
-  },
-  packager: {
-    contracts: ['Portal', 'PortalFactory'],
-    includeFactories: true,
   },
   external: process.env.HARDHAT_FORK
     ? {

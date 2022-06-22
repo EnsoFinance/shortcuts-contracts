@@ -34,7 +34,7 @@ contract Portal {
         payable
         returns (bytes[] memory returnData)
     {
-         if (msg.sender != caller) revert NotCaller();
+        if (msg.sender != caller) revert NotCaller();
         returnData = _execute(commands, state);
     }
 

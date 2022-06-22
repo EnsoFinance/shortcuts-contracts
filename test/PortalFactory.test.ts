@@ -1,41 +1,8 @@
 import {expect} from './chai-setup';
-import {ethers, deployments, getNamedAccounts, getUnnamedAccounts} from 'hardhat';
+import {ethers} from 'hardhat';
 import {Contract, ContractTransaction, BigNumber} from 'ethers';
-import {EnsoVM, Events, Portal, PortalFactory, Portal__factory} from '../typechain';
 import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
-import {setupUserWithPortal, setupUsersWithPortals} from './utils';
-
-const setup = deployments.createFixture(async () => {
-  await deployments.fixture('PortalFactory');
-
-  const {deployer} = await getNamedAccounts();
-
-  await deployments.deploy('Events', {
-    from: deployer,
-    args: [],
-    autoMine: true,
-  });
-
-  const contracts = {
-    PortalFactory: <PortalFactory>await ethers.getContract('PortalFactory'),
-    Portal: <Portal>await ethers.getContract('Portal'),
-    Events: <Events>await ethers.getContract('Events'),
-    EnsoVM: <EnsoVM>await ethers.getContract('EnsoVM'),
-  };
-
-  const [user, ...users] = await setupUsersWithPortals(await getUnnamedAccounts(), contracts);
-
-  const deployerUser = await setupUserWithPortal(deployer, contracts);
-  await deployerUser.PortalFactory.deploy([], []);
-  deployerUser.Portal = contracts.Portal.attach(await deployerUser.PortalFactory.getAddress());
-
-  return {
-    ...contracts,
-    users,
-    userWithPortal: deployerUser,
-    userWithoutPortal: user,
-  };
-});
+import {setup} from './utils';
 
 async function expectEventFromPortal(
   tx: ContractTransaction,

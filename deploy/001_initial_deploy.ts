@@ -4,7 +4,7 @@ import {DeployFunction} from 'hardhat-deploy/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployments, getNamedAccounts} = hre;
 
-  const {deterministic, deploy} = deployments;
+  const {deterministic} = deployments;
 
   const {deployer} = await getNamedAccounts();
 
@@ -18,7 +18,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   await deployVM();
 
-  const portalDeployment = await deploy('Portal', {
+  const {deploy: deployPortal, address: portalAddress} = await deterministic('Portal', {
     from: deployer,
     args: [],
     log: true,
@@ -26,9 +26,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     skipIfAlreadyDeployed: true,
   });
 
+  await deployPortal();
+
   const {deploy: deployPortalFactory} = await deterministic('PortalFactory', {
     from: deployer,
-    args: [vmAddress, portalDeployment.address],
+    args: [vmAddress, portalAddress],
     log: true,
     autoMine: true,
     skipIfAlreadyDeployed: true,

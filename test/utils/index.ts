@@ -1,6 +1,6 @@
-import {Contract} from 'ethers';
-import {ethers} from 'hardhat';
-import {Portal, PortalFactory} from '../../typechain';
+import {Contract, Signer} from 'ethers';
+import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
+import {Portal, PortalFactory, Events, EnsoVM} from '../../typechain';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],
@@ -43,4 +43,49 @@ export async function setupUsersWithPortals<
     users.push(await setupUserWithPortal(address, contracts));
   }
   return users;
+}
+
+export const setup = deployments.createFixture(async () => {
+  await deployments.fixture('PortalFactory');
+
+  const {deployer} = await getNamedAccounts();
+
+  await deployments.deploy('Events', {
+    from: deployer,
+    args: [],
+    autoMine: true,
+  });
+
+  const contracts = {
+    PortalFactory: <PortalFactory>await ethers.getContract('PortalFactory'),
+    Portal: <Portal>await ethers.getContract('Portal'),
+    Events: <Events>await ethers.getContract('Events'),
+    EnsoVM: <EnsoVM>await ethers.getContract('EnsoVM'),
+  };
+
+  const [user, ...users] = await setupUsersWithPortals(await getUnnamedAccounts(), contracts);
+
+  const deployerUser = await setupUserWithPortal(deployer, contracts);
+  await deployerUser.PortalFactory.deploy([], []);
+  const deployerUserPortalAddress = await deployerUser.PortalFactory.getAddress();
+
+  deployerUser.Portal = contracts.Portal.attach(deployerUserPortalAddress);
+
+  return {
+    ...contracts,
+    users,
+    userWithPortal: deployerUser,
+    userWithoutPortal: user,
+  };
+});
+
+export async function impersonateAccount(address: string): Promise<Signer> {
+  await network.provider.request({
+    method: 'hardhat_impersonateAccount',
+    params: [address],
+  });
+
+  const signer = await ethers.getSigner(address);
+
+  return signer;
 }
