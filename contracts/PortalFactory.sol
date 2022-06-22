@@ -26,14 +26,14 @@ contract PortalFactory {
             revert AlreadyExists();
         }
 
-        instance = Portal(portalImplementation.cloneDeterministic(msg.sender));
+        instance = Portal(payable(portalImplementation.cloneDeterministic(msg.sender)));
         instance.initialize{value: msg.value}(ensoVM, msg.sender, commands, state);
 
         user[msg.sender] = instance;
         emit Deployed(instance);
     }
 
-    function getAddress() public view returns (address) {
-        return portalImplementation.predictDeterministicAddress(msg.sender, address(this));
+    function getAddress() public view returns (address payable) {
+        return payable(portalImplementation.predictDeterministicAddress(msg.sender, address(this)));
     }
 }

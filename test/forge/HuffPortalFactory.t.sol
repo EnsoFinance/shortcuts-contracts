@@ -6,9 +6,7 @@ import {PortalFactory} from "../../contracts/PortalFactory.sol";
 import {Portal} from "../../contracts/Portal.sol";
 import {MockVM} from "../../contracts/mocks/MockVM.sol";
 
-
-contract PortalUser is Test{
-
+contract PortalUser is Test {
     PortalFactory internal factory;
     Portal internal portal;
 
@@ -50,7 +48,7 @@ contract HuffPortalFactoryTest is Test {
         assembly {
             huffPortal := create2(0, add(huffCode, 32), mload(huffCode), salt)
         }
-        for (uint i = 0; i < 50; i++){
+        for (uint256 i = 0; i < 50; i++) {
             commands.push(keccak256("hello world"));
             state.push(bytes("hello world"));
         }
