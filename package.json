@@ -67,6 +67,7 @@
     "compile": "hardhat compile",
     "void:deploy": "hardhat deploy --report-gas --export-all deployments/deployments.json",
     "test": "cross-env HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test",
+    "ci": "yarn test && yarn actions",
     "actions": "yarn fork:actions mainnet",
     "gas": "cross-env REPORT_GAS=true hardhat test",
     "coverage": "cross-env HARDHAT_DEPLOY_FIXTURE=true hardhat coverage",

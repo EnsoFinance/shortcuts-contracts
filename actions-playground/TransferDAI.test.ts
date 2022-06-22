@@ -27,7 +27,7 @@ const setupTransferDaiAction = async () => {
   };
 };
 
-describe('Transfer Dai Action', function () {
+describe.only('Transfer Dai Action', function () {
   it('should transfer DAI without Portal', async () => {
     const {userWithPortal, users} = await setupTransferDaiAction();
 
@@ -45,7 +45,7 @@ describe('Transfer Dai Action', function () {
     expect(balance).to.equal(BigNumber.from(1));
   });
 
-  it('should transfer DAI with Portal', async () => {
+  it('should transferFrom DAI with Portal', async () => {
     const {userWithPortal, users} = await setupTransferDaiAction();
     const randomUser = users[0];
 
@@ -63,13 +63,35 @@ describe('Transfer Dai Action', function () {
     planner.add(weirolledDai.transferFrom(userWithPortal.address, randomUser.address, BigNumber.from(1)));
     const {commands, state} = planner.plan();
 
-    console.log('Commands: ', commands);
-    console.log('State: ', state);
-
     const weirollTx = await userWithPortal.Portal.execute(commands, state);
     await weirollTx.wait();
 
     const balance = await dai.balanceOf(randomUser.address);
     expect(balance).to.equal(BigNumber.from(1));
+  });
+
+  it('should transfer DAI with Portal', async () => {
+    const {userWithPortal: user, users} = await setupTransferDaiAction();
+    const randomUser = users[0];
+
+    const userWithPortalSigner = await impersonateAccount(user.address);
+    const planner = new Planner();
+
+    const sdk = getMainnetSdk(userWithPortalSigner);
+    const dai = sdk.dai;
+
+    const daiToSend = BigNumber.from(10).pow(18);
+    const topUpPortalWithDaiTx = await dai.transfer(user.Portal.address, daiToSend);
+    await topUpPortalWithDaiTx.wait();
+
+    const weirolledDai = weiroll.createContract(dai);
+    planner.add(weirolledDai.transfer(randomUser.address, daiToSend));
+    const {commands, state} = planner.plan();
+
+    const weirollTx = await user.Portal.execute(commands, state);
+    await weirollTx.wait();
+
+    const balance = await dai.balanceOf(randomUser.address);
+    expect(balance).to.equal(daiToSend);
   });
 });
