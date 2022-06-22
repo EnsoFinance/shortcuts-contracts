@@ -29,7 +29,7 @@ describe('Wrap ETH Action', function () {
     expect(balance).to.equal(BigNumber.from(1));
   });
 
-  it.skip('should wrap ETH with Portal', async () => {
+  it('should wrap ETH with Portal', async () => {
     const {userWithPortal} = await setupWrapEthAction();
     const userWithPortalSigner = await impersonateAccount(userWithPortal.address);
 
@@ -51,7 +51,7 @@ describe('Wrap ETH Action', function () {
     expect(balance).to.equal(ethToWrap);
   });
 
-  it.skip('should wrap ETH with Portal and transfer it to user', async () => {
+  it('should wrap ETH with Portal and transfer it to user', async () => {
     const {userWithPortal} = await setupWrapEthAction();
     const userWithPortalSigner = await impersonateAccount(userWithPortal.address);
 
@@ -71,7 +71,7 @@ describe('Wrap ETH Action', function () {
     const weirollTx = await userWithPortal.Portal.execute(commands, state, {gasLimit: 100000, value: ethToWrap});
     await weirollTx.wait();
 
-    const balance = await weth.balanceOf(userWithPortal.Portal.address);
-    expect(balance).to.equal(ethToWrap);
+    const userWethBalance = await weth.balanceOf(userWithPortal.address);
+    expect(userWethBalance).to.equal(ethToWrap);
   });
 });

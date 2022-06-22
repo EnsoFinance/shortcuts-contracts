@@ -60,7 +60,6 @@ export const setup = deployments.createFixture(async () => {
     PortalFactory: <PortalFactory>await ethers.getContract('PortalFactory'),
     Portal: <Portal>await ethers.getContract('Portal'),
     Events: <Events>await ethers.getContract('Events'),
-    EnsoVM: <EnsoVM>await ethers.getContract('EnsoVM'),
   };
 
   const [user, ...users] = await setupUsersWithPortals(await getUnnamedAccounts(), contracts);

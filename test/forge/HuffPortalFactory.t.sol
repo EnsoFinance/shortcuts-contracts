@@ -20,11 +20,11 @@ contract PortalUser is Test {
         vm.expectEmit(true, true, true, true);
         emit VMData(commands, state);
         factory.deploy(commands, state);
-        portal = Portal(factory.getAddress());
+        portal = Portal(payable(factory.getAddress()));
     }
 }
 
-contract HuffPortalFactoryTest is Test {
+contract SkipHuffPortalFactoryTest is Test {
     Portal internal portalReference;
     Portal internal portal;
     PortalFactory internal factory;
@@ -52,9 +52,9 @@ contract HuffPortalFactoryTest is Test {
             commands.push(keccak256("hello world"));
             state.push(bytes("hello world"));
         }
-        factory = new PortalFactory(address(mockVM), address(huffPortal));
+        factory = new PortalFactory(address(huffPortal));
         factory.deploy(commands, state);
-        portal = Portal(factory.getAddress());
+        portal = Portal(payable(factory.getAddress()));
         user = new PortalUser(address(factory));
         user2 = new PortalUser(address(factory));
     }
