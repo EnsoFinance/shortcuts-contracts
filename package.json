@@ -58,7 +58,8 @@
     "/dist/**/*.js.map"
   ],
   "scripts": {
-    "prepare": "yarn hardhat typechain && yarn eth-sdk",
+    "forge:dependencies": "git submodule update --init --recursive",
+    "prepare": "yarn forge:dependencies && yarn hardhat typechain && yarn eth-sdk",
     "clean": "rm -rf ./artifacts ./cache ./dist ./tsconfig.prod.tsbuildinfo",
     "lint": "eslint \"**/*.{js,ts}\" && solhint src/**/*.sol",
     "lint:fix": "eslint --fix \"**/*.{js,ts}\" && solhint --fix src/**/*.sol",
@@ -66,9 +67,11 @@
     "format:fix": "prettier --write \"**/*.{ts,js,sol}\"",
     "compile": "hardhat compile",
     "void:deploy": "hardhat deploy --report-gas --export-all deployments/deployments.json",
-    "test": "cross-env HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test",
+    "test": "yarn test:forge && yarn test:hardhat && yarn test:actions",
+    "test:hardhat": "cross-env REPORT_GAS=true HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true hardhat test",
+    "test:forge": "forge test",
+    "test:actions": "yarn actions",
     "actions": "yarn fork:actions mainnet",
-    "gas": "cross-env REPORT_GAS=true hardhat test",
     "coverage": "cross-env HARDHAT_DEPLOY_FIXTURE=true hardhat coverage",
     "dev:node": "cross-env MINING_INTERVAL=\"3000,5000\" hardhat node --hostname 0.0.0.0",
     "dev": "cross-env MINING_INTERVAL=\"3000,5000\" hardhat node --hostname 0.0.0.0 --watch",
