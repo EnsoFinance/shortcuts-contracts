@@ -67,9 +67,6 @@ export const setup = deployments.createFixture(async () => {
 
   const deployerUser = await setupUserWithPortal(deployer, contracts);
   await deployerUser.PortalFactory.deploy([], []);
-  const deployerUserPortalAddress = await deployerUser.PortalFactory.getAddress();
-
-  deployerUser.Portal = contracts.Portal.attach(deployerUserPortalAddress);
 
   return {
     ...contracts,
