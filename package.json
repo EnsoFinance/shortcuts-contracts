@@ -1,7 +1,9 @@
 {
   "name": "@ensofinance/v2-contracts",
-  "version": "0.2.4",
+  "version": "0.3.2",
   "devDependencies": {
+    "@dethcrypto/eth-sdk": "^0.3.2",
+    "@dethcrypto/eth-sdk-client": "^0.1.6",
     "@ensofinance/weiroll": "^1.1.0",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.12",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
@@ -30,7 +32,6 @@
     "hardhat-deploy": "^0.11.10",
     "hardhat-deploy-ethers": "^0.3.0-beta.13",
     "hardhat-gas-reporter": "^1.0.8",
-    "hardhat-packager": "^1.4.1",
     "mocha": "^9.2.2",
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
@@ -46,15 +47,19 @@
     "@typechain/ethers-v5": "^10.0.0",
     "typechain": "^8.0.0"
   },
+  "main": "dist/index",
+  "types": "dist/index",
   "files": [
-    "/contracts",
+    "contracts",
+    "deployments",
     "/dist/**/*.d.ts",
     "/dist/**/*.d.ts.map",
     "/dist/**/*.js",
     "/dist/**/*.js.map"
   ],
   "scripts": {
-    "prepare": "hardhat typechain",
+    "prepare": "yarn hardhat typechain && yarn eth-sdk",
+    "clean": "rm -rf ./artifacts ./cache ./dist ./tsconfig.prod.tsbuildinfo",
     "lint": "eslint \"**/*.{js,ts}\" && solhint src/**/*.sol",
     "lint:fix": "eslint --fix \"**/*.{js,ts}\" && solhint --fix src/**/*.sol",
     "format": "prettier --check \"**/*.{ts,js,sol}\"",
@@ -62,6 +67,7 @@
     "compile": "hardhat compile",
     "void:deploy": "hardhat deploy --report-gas --export-all deployments/deployments.json",
     "test": "cross-env HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test",
+    "actions": "yarn fork:actions mainnet",
     "gas": "cross-env REPORT_GAS=true hardhat test",
     "coverage": "cross-env HARDHAT_DEPLOY_FIXTURE=true hardhat coverage",
     "dev:node": "cross-env MINING_INTERVAL=\"3000,5000\" hardhat node --hostname 0.0.0.0",
@@ -71,13 +77,15 @@
     "deploy": "node ./scripts/_scripts.js deploy",
     "verify": "node ./scripts/_scripts.js verify",
     "export": "node ./scripts/_scripts.js export",
-    "export-all": "node ./scripts/_scripts.js export-all deployments.json",
+    "export-all": "node ./scripts/_scripts.js export-all deployments/deployments.json",
     "hardhat": "hardhat",
     "fork:execute": "node ./scripts/_scripts.js fork:run",
     "fork:deploy": "node ./scripts/_scripts.js fork:deploy",
     "fork:dev": "node ./scripts/_scripts.js fork:dev",
     "fork:node": "node ./scripts/_scripts.js fork:node",
     "fork:test": "node ./scripts/_scripts.js fork:test",
-    "package:publish": "hardhat prepare-package && npm publish"
+    "fork:actions": "node ./scripts/_scripts.js fork:actions",
+    "fork:actions:full": "yarn prepare && node ./scripts/_scripts.js fork:actions",
+    "package:publish": "yarn clean && yarn hardhat typechain && yarn tsc --project ./tsconfig.prod.json && npm publish"
   }
 }

@@ -9,6 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      ETH_NODE_URI_MAINNET: ${{ secrets.ETH_NODE_URI_MAINNET }}
+      ETHERSCAN_KEY: ${{ secrets.ETHERSCAN_KEY }}
 
     steps:
       - name: Checkout the code
@@ -24,8 +29,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn --ignore-platform
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Running tests
         run: yarn gas
+
+      - name: Test deploy scripts
+        run: yarn void:deploy
