@@ -10,15 +10,13 @@ contract PortalFactory {
 
     mapping(address => Portal) public user;
     address public immutable portalImplementation;
-    address public immutable ensoVM;
 
     event Deployed(Portal instance);
 
     error AlreadyExists();
 
-    constructor(address vm_, address portal_) {
+    constructor(address portal_) {
         portalImplementation = portal_;
-        ensoVM = vm_;
     }
 
     function deploy(bytes32[] calldata commands, bytes[] calldata state) public payable returns (Portal instance) {
@@ -27,7 +25,7 @@ contract PortalFactory {
         }
 
         instance = Portal(payable(portalImplementation.cloneDeterministic(msg.sender)));
-        instance.initialize{value: msg.value}(ensoVM, msg.sender, commands, state);
+        instance.initialize{value: msg.value}(msg.sender, commands, state);
 
         user[msg.sender] = instance;
         emit Deployed(instance);

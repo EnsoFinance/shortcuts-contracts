@@ -8,16 +8,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {deployer} = await getNamedAccounts();
 
-  const {deploy: deployVM, address: vmAddress} = await deterministic('EnsoVM', {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await deployVM();
-
   const {deploy: deployPortal, address: portalAddress} = await deterministic('Portal', {
     from: deployer,
     args: [],
@@ -30,7 +20,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {deploy: deployPortalFactory} = await deterministic('PortalFactory', {
     from: deployer,
-    args: [vmAddress, portalAddress],
+    args: [portalAddress],
     log: true,
     autoMine: true,
     skipIfAlreadyDeployed: true,
@@ -39,4 +29,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await deployPortalFactory();
 };
 export default func;
-func.tags = ['EnsoVM', 'PortalFactory', 'Portal'];
+func.tags = ['PortalFactory', 'Portal'];

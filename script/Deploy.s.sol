@@ -17,9 +17,8 @@ contract Deploy is Script {
 
     function run() public {
         vm.broadcast();
-        MockVM mockVM = new MockVM();
         Portal portalReference = new Portal();
-        PortalFactory factory = new PortalFactory(address(mockVM), address(portalReference));
+        PortalFactory factory = new PortalFactory(address(portalReference));
         factory.deploy(commands, state);
         Portal portal = Portal(factory.getAddress());
     }

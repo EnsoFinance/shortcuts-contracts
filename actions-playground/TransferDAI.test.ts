@@ -52,7 +52,7 @@ describe('Transfer Dai Action', function () {
     expect(balance).to.equal(BigNumber.from(1));
   });
 
-  it.skip('should transfer DAI with Portal', async () => {
+  it('should transfer DAI with Portal', async () => {
     const {userWithPortal: user, users} = await setupTransferDaiAction();
     const randomUser = users[0];
 
