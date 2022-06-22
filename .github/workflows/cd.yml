@@ -19,6 +19,11 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
 
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -31,7 +36,7 @@ jobs:
         run: yarn --ignore-platform
 
       - name: Running tests
-        run: yarn gas
+        run: yarn test
 
       - name: Test deploy scripts
         run: yarn void:deploy
