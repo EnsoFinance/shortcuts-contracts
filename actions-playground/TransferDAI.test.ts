@@ -11,7 +11,7 @@ const DAI_WHALE = '0x5d38b4e4783e34e2301a2a36c39a03c45798c4dd';
 const setupTransferDaiAction = async () => {
   const baseSetup = await setup();
 
-  const userWithPortal = baseSetup.userWithPortal;
+  const {userWithPortal, userWithoutPortal} = baseSetup;
 
   const {deployer} = await getNamedAccounts();
   const deployerSigner = await impersonateAccount(deployer);
@@ -19,8 +19,15 @@ const setupTransferDaiAction = async () => {
   const sdk = getMainnetSdk(deployerSigner);
 
   const dai = sdk.dai.connect(await impersonateAccount(DAI_WHALE));
-  const tx = await dai.transfer(userWithPortal.address, BigNumber.from(10).pow(18), {gasLimit: 100000});
-  await tx.wait();
+  const topUpUserWithPortalTx = await dai.transfer(userWithPortal.address, BigNumber.from(10).pow(18).mul(10), {
+    gasLimit: 100000,
+  });
+  await topUpUserWithPortalTx.wait();
+
+  const topUpUserWithoutPortalTx = await dai.transfer(userWithoutPortal.address, BigNumber.from(10).pow(18).mul(10), {
+    gasLimit: 100000,
+  });
+  await topUpUserWithoutPortalTx.wait();
 
   return {
     ...baseSetup,
@@ -46,27 +53,27 @@ describe('Transfer Dai Action', function () {
   });
 
   it('should transfer DAI with Portal', async () => {
-    const {userWithPortal, users} = await setupTransferDaiAction();
+    const {userWithPortal: user, users} = await setupTransferDaiAction();
     const randomUser = users[0];
 
-    const userWithPortalSigner = await impersonateAccount(userWithPortal.address);
+    const userWithPortalSigner = await impersonateAccount(user.address);
     const planner = new Planner();
 
     const sdk = getMainnetSdk(userWithPortalSigner);
     const dai = sdk.dai;
 
-    const approveDaiForPortalTx = await dai.approve(userWithPortal.Portal.address, BigNumber.from(1));
-    await approveDaiForPortalTx.wait();
-    expect(await dai.allowance(userWithPortal.address, userWithPortal.Portal.address)).to.equal(BigNumber.from(1));
+    const daiToSend = BigNumber.from(10).pow(18);
+    const topUpPortalWithDaiTx = await dai.transfer(user.Portal.address, daiToSend);
+    await topUpPortalWithDaiTx.wait();
 
     const weirolledDai = weiroll.createContract(dai);
-    planner.add(weirolledDai.transferFrom(userWithPortal.address, randomUser.address, BigNumber.from(1)));
+    planner.add(weirolledDai.transfer(randomUser.address, daiToSend));
     const {commands, state} = planner.plan();
 
-    const weirollTx = await userWithPortal.Portal.execute(commands, state);
+    const weirollTx = await user.Portal.execute(commands, state);
     await weirollTx.wait();
 
     const balance = await dai.balanceOf(randomUser.address);
-    expect(balance).to.equal(BigNumber.from(1));
+    expect(balance).to.equal(daiToSend);
   });
 });

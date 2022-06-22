@@ -4,9 +4,14 @@
       "name": "hardhat",
       "chainId": "31337",
       "contracts": {
-        "EnsoVM": {
-          "address": "0xF61034da19318cC8928cdAB49d3c03cacc5EDc3a",
+        "Portal": {
+          "address": "0x3bBe8523ee35B4E21e31a51b66ff149d8E1D16b8",
           "abi": [
+            {
+              "inputs": [],
+              "name": "AlreadyInit",
+              "type": "error"
+            },
             {
               "inputs": [
                 {
@@ -29,56 +34,14 @@
               "type": "error"
             },
             {
-              "inputs": [
-                {
-                  "internalType": "bytes32[]",
-                  "name": "commands",
-                  "type": "bytes32[]"
-                },
-                {
-                  "internalType": "bytes[]",
-                  "name": "state",
-                  "type": "bytes[]"
-                }
-              ],
-              "name": "execute",
-              "outputs": [
-                {
-                  "internalType": "bytes[]",
-                  "name": "",
-                  "type": "bytes[]"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            }
-          ]
-        },
-        "Portal": {
-          "address": "0x9fB2E05588979FE21EFB72Ed18a2B374f118017C",
-          "abi": [
-            {
               "inputs": [],
-              "name": "AlreadyInit",
+              "name": "InvalidAddress",
               "type": "error"
             },
             {
               "inputs": [],
               "name": "NotCaller",
               "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "VM",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
             },
             {
               "inputs": [],
@@ -110,7 +73,7 @@
               "outputs": [
                 {
                   "internalType": "bytes[]",
-                  "name": "",
+                  "name": "returnData",
                   "type": "bytes[]"
                 }
               ],
@@ -118,28 +81,10 @@
               "type": "function"
             },
             {
-              "inputs": [],
-              "name": "init",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
               "inputs": [
                 {
                   "internalType": "address",
-                  "name": "_VM",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "_caller",
+                  "name": "caller_",
                   "type": "address"
                 },
                 {
@@ -157,22 +102,34 @@
               "outputs": [],
               "stateMutability": "payable",
               "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "initialized",
+              "outputs": [
+                {
+                  "internalType": "bool",
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "stateMutability": "payable",
+              "type": "receive"
             }
           ]
         },
         "PortalFactory": {
-          "address": "0x9570ebd01087053817db4626e822fe384bC3f048",
+          "address": "0x2851113Dc08D2f9fbF96e8B3cFEF6C8DC7253979",
           "abi": [
             {
               "inputs": [
                 {
                   "internalType": "address",
-                  "name": "_vm",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "_portal",
+                  "name": "portal_",
                   "type": "address"
                 }
               ],
@@ -223,23 +180,10 @@
             },
             {
               "inputs": [],
-              "name": "ensoVM_",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
               "name": "getAddress",
               "outputs": [
                 {
-                  "internalType": "address",
+                  "internalType": "address payable",
                   "name": "",
                   "type": "address"
                 }
@@ -249,7 +193,7 @@
             },
             {
               "inputs": [],
-              "name": "portalImplementation_",
+              "name": "portalImplementation",
               "outputs": [
                 {
                   "internalType": "address",

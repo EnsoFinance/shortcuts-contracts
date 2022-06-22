@@ -6,6 +6,7 @@ dotenv.config();
 export default defineConfig({
   contracts: {
     mainnet: {
+      WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       stETH: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
       dai: '0x6b175474e89094c44da98b954eedeac495271d0f',
       euler: {

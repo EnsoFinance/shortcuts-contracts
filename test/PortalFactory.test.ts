@@ -6,13 +6,12 @@ import {setup} from './utils';
 
 async function expectEventFromPortal(
   tx: ContractTransaction,
-  ownerAddress: string,
   emitterContract: Contract,
   eventName: string,
   ...eventArgs: string[]
 ) {
   await expect(tx)
-    .to.emit(emitterContract.attach(ownerAddress), eventName)
+    .to.emit(emitterContract, eventName)
     .withArgs(...eventArgs);
 }
 
@@ -33,13 +32,12 @@ describe('Portal', function () {
 
       const message = 'Hello World!';
 
-      const weirolledEvents = weiroll.createLibrary(Events);
+      const weirolledEvents = weiroll.createContract(Events);
       planner.add(weirolledEvents.logString(message));
       const {commands, state} = planner.plan();
-
       const tx = await userWithPortal.Portal.execute(commands, state);
 
-      await expectEventFromPortal(tx, userWithPortal.Portal.address, Events, 'LogString', message);
+      await expectEventFromPortal(tx, Events, 'LogString', message);
     });
 
     it('should allow to execute while deploying portal', async () => {
@@ -50,7 +48,7 @@ describe('Portal', function () {
       const message = "I'm deploying a portal!";
       const number = BigNumber.from(42);
 
-      const weirolledEvents = weiroll.createLibrary(Events);
+      const weirolledEvents = weiroll.createContract(Events);
       const planner = new Planner();
 
       planner.add(weirolledEvents.logString(message));
@@ -62,8 +60,8 @@ describe('Portal', function () {
 
       await expect(tx).to.emit(user.PortalFactory, 'Deployed').withArgs(portalAddress);
 
-      await expectEventFromPortal(tx, portalAddress, Events, 'LogString', message);
-      await expectEventFromPortal(tx, portalAddress, Events, 'LogUint', number.toString());
+      await expectEventFromPortal(tx, Events, 'LogString', message);
+      await expectEventFromPortal(tx, Events, 'LogUint', number.toString());
     });
 
     it('should not allow user to deploy multiple portals', async () => {

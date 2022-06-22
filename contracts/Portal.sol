@@ -1,48 +1,39 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.11;
 
-library PortalErrors {
+import {VM} from "@ensofinance/weiroll/contracts/VM.sol";
+
+contract Portal is VM {
+    address public caller;
+    bool public initialized;
+
     // Already initialized
     error AlreadyInit();
     // Not caller
     error NotCaller();
-}
-
-interface IVM {
-    function execute(bytes32[] calldata commands, bytes[] memory state) external payable returns (bytes[] memory);
-}
-
-contract Portal {
-    bool public init;
-    address public caller;
-    address public VM;
+    // Invalid address
+    error InvalidAddress();
 
     function initialize(
-        address _VM,
-        address _caller,
+        address caller_,
         bytes32[] calldata commands,
-        bytes[] memory state
+        bytes[] calldata state
     ) external payable {
-        if (init) revert PortalErrors.AlreadyInit();
-        VM = _VM;
-        init = true;
-        caller = _caller;
-        _execute(commands, state);
+        if (initialized) revert AlreadyInit();
+        caller = caller_;
+        if (commands.length != 0) {
+            _execute(commands, state);
+        }
     }
 
-    function execute(bytes32[] calldata commands, bytes[] memory state) external payable returns (bytes[] memory) {
-        if (caller != msg.sender) revert PortalErrors.NotCaller();
-
-        return _execute(commands, state);
+    function execute(bytes32[] calldata commands, bytes[] calldata state)
+        external
+        payable
+        returns (bytes[] memory returnData)
+    {
+        if (msg.sender != caller) revert NotCaller();
+        returnData = _execute(commands, state);
     }
 
-    function _execute(bytes32[] calldata commands, bytes[] memory state) internal returns (bytes[] memory) {
-        (bool success, bytes memory data) = VM.delegatecall(
-            abi.encodeWithSelector(IVM.execute.selector, commands, state)
-        );
-        require(success);
-
-        return abi.decode(data, (bytes[]));
-    }
+    receive() external payable {}
 }
