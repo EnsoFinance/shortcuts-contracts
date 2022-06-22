@@ -9,6 +9,7 @@ import {MockVM} from "../contracts/mocks/MockVM.sol";
 contract Deploy is Script {
     bytes32[] commands;
     bytes[] state;
+
     function setUp() public {
         commands.push(keccak256("hello world"));
         state.push(bytes("hello world"));
@@ -21,7 +22,5 @@ contract Deploy is Script {
         PortalFactory factory = new PortalFactory(address(mockVM), address(portalReference));
         factory.deploy(commands, state);
         Portal portal = Portal(factory.getAddress());
-
     }
 }
-

@@ -41,4 +41,6 @@ contract Portal {
     function _execute(bytes32[] calldata commands, bytes[] calldata state) internal returns (bytes[] memory) {
         return IVM(VM).execute(commands, state);
     }
+
+    receive() external payable {}
 }
