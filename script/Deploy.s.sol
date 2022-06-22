@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "forge-std/Script.sol";
 import {PortalFactory} from "../contracts/PortalFactory.sol";
 import {Portal} from "../contracts/Portal.sol";
-import {MockVm} from "../contracts/mocks/MockVm.sol";
+import {MockVM} from "../contracts/mocks/MockVM.sol";
 
 contract Deploy is Script {
     bytes32[] commands;
@@ -16,9 +16,9 @@ contract Deploy is Script {
 
     function run() public {
         vm.broadcast();
-        MockVm mockVm = new MockVm();
+        MockVM mockVM = new MockVM();
         Portal portalReference = new Portal();
-        PortalFactory factory = new PortalFactory(address(mockVm), address(portalReference));
+        PortalFactory factory = new PortalFactory(address(mockVM), address(portalReference));
         factory.deploy(commands, state);
         Portal portal = Portal(factory.getAddress());
 

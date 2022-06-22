@@ -69,7 +69,7 @@ describe('Portal', function () {
       const weirolledEvents = weiroll.createLibrary(Events);
       planner.add(weirolledEvents.logString(message));
       const {commands, state} = planner.plan();
-
+      console.log(commands, state);
       const tx = await userWithPortal.Portal.execute(commands, state);
 
       await expectEventFromPortal(tx, userWithPortal.Portal.address, Events, 'LogString', message);

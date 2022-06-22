@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.11;
 
-interface IVM {
-    function execute(bytes32[] calldata commands, bytes[] calldata state) payable external returns (bytes[] memory);
-}
+import {IVM} from "../interfaces/IVM.sol";
 
 contract DelegatePortal {
     address public caller;
@@ -43,7 +40,7 @@ contract DelegatePortal {
 
     function _execute(bytes32[] calldata commands, bytes[] calldata state) internal returns (bytes[] memory) {
         (bool success, bytes memory ret)  =  address(VM).delegatecall(abi.encodeWithSelector(IVM.execute.selector, commands, state));
-        require(success);
+        require(success, string(ret));
         return abi.decode(ret, (bytes[]));
     }
 }
