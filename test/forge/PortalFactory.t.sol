@@ -3,39 +3,19 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import {PortalFactory} from "../../contracts/PortalFactory.sol";
+import {DumbPortal} from "../../contracts/test/DumbPortal.sol";
 import {Portal} from "../../contracts/Portal.sol";
-import {DestructVM} from "../../contracts/mocks/Destruct.sol";
-import {DelegatePortal} from "../../contracts/test/DelegatePortal.sol";
-
-contract PortalUser is Test {
-    PortalFactory internal factory;
-    Portal internal portal;
-
-    event VMData(bytes32[] commands, bytes[] state);
-    event SenderData(address sender, uint256 value);
-    event Deployed(Portal instance);
-
-    constructor(address _factory) {
-        factory = PortalFactory(_factory);
-    }
-
-    function deployPortal(bytes32[] memory commands, bytes[] memory state) public payable {
-        vm.expectEmit(true, true, true, true);
-        emit Deployed(Portal(factory.getAddress()));
-        factory.deploy(commands, state);
-        portal = Portal(factory.getAddress());
-    }
-}
+import {DestructPortal} from "../../contracts/test/DestructPortal.sol";
+import {PortalUser} from "./PortalUser.t.sol";
 
 contract PortalFactoryTest is Test {
-    Portal internal portalReference;
-    Portal internal portal;
+    DumbPortal internal portalReference;
+    DumbPortal internal portal;
     PortalFactory internal factory;
-    PortalFactory internal delegateFactory;
+    PortalFactory internal destructFactory;
     PortalUser internal user;
     PortalUser internal user2;
-    DelegatePortal internal delegatePortal;
-    DestructVM internal destructVM;
+    DestructPortal internal destructPortalReference;
 
     bytes32[] internal commands;
     bytes[] internal state;
@@ -47,19 +27,18 @@ contract PortalFactoryTest is Test {
     event SenderData(address sender, uint256 value);
 
     function setUp() public {
-        portalReference = new Portal();
+        portalReference = new DumbPortal();
+        destructPortalReference = new DestructPortal();
         factory = new PortalFactory(address(portalReference));
+        destructFactory = new PortalFactory(address(destructPortalReference));
         for (uint256 i = 0; i < 50; i++) {
             commands.push(keccak256("hello world"));
             state.push(bytes("hello world"));
         }
-        factory.deploy(commands, state);
-        portal = Portal(factory.getAddress());
+        factory.deploy(emptyCommands, emptyState);
+        portal = DumbPortal(factory.getAddress());
         user = new PortalUser(address(factory));
         user2 = new PortalUser(address(factory));
-        destructVM = new DestructVM();
-        delegatePortal = new DelegatePortal();
-        delegateFactory = new PortalFactory(address(delegatePortal));
     }
 
     function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {
@@ -73,52 +52,17 @@ contract PortalFactoryTest is Test {
     }
 
     // Attempt to self-destruct the Portal using call
-    function testDestroyPortalNoDelegate() public {
-        portalReference = new Portal();
-        factory = new PortalFactory(address(portalReference));
-        Portal p = Portal(factory.deploy(emptyCommands, emptyState));
-        p.execute(emptyCommands, emptyState);
-        assertEq(p.caller(), address(this));
-        p.execute(emptyCommands, emptyState);
-        assertEq(p.caller(), address(this));
-    }
-
-    // Attempt to self-destruct the Portal using delegatecall
-    function testDestroyDelegatePortal() public {
-        PortalFactory destructFactory = new PortalFactory(address(delegatePortal));
-        DelegatePortal p = DelegatePortal(address(destructFactory.deploy(emptyCommands, emptyState)));
-        assertEq(p.caller(), address(this));
-        // This call will destruct the users portal losing any ETH and state in the Portal
-        p.execute(emptyCommands, emptyState);
-        assertEq(p.caller(), address(0x0));
-        // Trying to call now will fail as the state is wiped. Check that msg.sender == caller fails
+    function testDestroyPortal() public {
+       DestructPortal p = DestructPortal(address(destructFactory.deploy(emptyCommands, emptyState)));
+       // destruct portal
+        p.execute(commands, state);
+        // state is wiped
+        assertEq(p.caller(), address(0));
+        assertFalse(p.init());
         vm.expectRevert(Portal.NotCaller.selector);
-        p.execute(emptyCommands, emptyState);
-        // Attempting to deploy a new portal will fail due to AlreadyExists check (factory storage wasn't wiped)
-        vm.expectRevert(PortalFactory.AlreadyExists.selector);
-        destructFactory.deploy(emptyCommands, emptyState);
+        p.execute(commands, state);
     }
 
-    function testEOAIsSender() public {
-        DelegatePortal dPortal = DelegatePortal(address((delegateFactory.deploy(emptyCommands, emptyState))));
-        vm.expectEmit(true, true, false, false);
-        emit SenderData(address(this), 0);
-        dPortal.execute(emptyCommands, emptyState);
-        /*
-         TODO: comparing to address(this) doesn't return the address alone
-              val: PortalFactoryTest: [0xb4c79dab8f259c7aee6e5b2aa729821864227e84])
-              val: 0xb42486fb2979f5f97072f2f4af6673782f846963)
-
-
-         assertEq(mockVM.lastSender(), address(this));
-        */
-    }
-
-    function testPortalIsSender() public {
-        vm.expectEmit(true, true, false, false);
-        emit SenderData(address(portal), 0);
-        portal.execute(emptyCommands, emptyState);
-    }
 
     function testExecuteNoState() public {
         portal.execute(emptyCommands, emptyState);
@@ -130,5 +74,9 @@ contract PortalFactoryTest is Test {
 
     function testDeployNoState() public {
         user2.deployPortal(emptyCommands, emptyState);
+    }
+
+    function testDeployLargeState() public {
+        user2.deployPortal(commands, state);
     }
 }

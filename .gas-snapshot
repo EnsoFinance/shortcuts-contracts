@@ -1,0 +1,5 @@
+PortalFactoryTest:testDeployLargeState() (gas: 532231)
+PortalFactoryTest:testDeployNoState() (gas: 137397)
+PortalFactoryTest:testDestroyPortal() (gas: 506350)
+PortalFactoryTest:testExecuteLargeState() (gas: 384947)
+PortalFactoryTest:testExecuteNoState() (gas: 17540)

@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "forge-std/Script.sol";
 import {PortalFactory} from "../contracts/PortalFactory.sol";
 import {Portal} from "../contracts/Portal.sol";
-import {MockVM} from "../contracts/mocks/MockVM.sol";
+import {DumbPortal} from "../contracts/test/DumbPortal.sol";
 
 contract Deploy is Script {
     bytes32[] commands;
