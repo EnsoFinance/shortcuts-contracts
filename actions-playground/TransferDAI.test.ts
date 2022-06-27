@@ -2,7 +2,7 @@ import {expect} from '../test/chai-setup';
 import {getNamedAccounts} from 'hardhat';
 import {BigNumber} from 'ethers';
 import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
-import {getMainnetSdk} from '@dethcrypto/eth-sdk-client';
+import {getMainnetSdk} from '../eth-sdk/sdk';
 
 import {setup, impersonateAccount} from '../test/utils';
 
