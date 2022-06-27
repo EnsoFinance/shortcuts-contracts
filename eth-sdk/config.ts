@@ -10,6 +10,7 @@ export default defineConfig({
       dai: '0x6b175474e89094c44da98b954eedeac495271d0f',
       stETH: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
       wstETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+      weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       euler: {
         markets: {
           proxy: '0x3520d5a913427E6F0D6A83E07ccD4A4da316e4d3',
