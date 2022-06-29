@@ -16,6 +16,7 @@ contract PortalFactoryTest is Test {
     PortalUser internal user;
     PortalUser internal user2;
     DestructPortal internal destructPortalReference;
+    DestructPortal internal destructPortal;
 
     bytes32[] internal commands;
     bytes[] internal state;
@@ -51,18 +52,34 @@ contract PortalFactoryTest is Test {
         portal.execute(c, s);
     }
 
-    // Attempt to self-destruct the Portal using call
-    function testDestroyPortal() public {
-       DestructPortal p = DestructPortal(address(destructFactory.deploy(emptyCommands, emptyState)));
-       // destruct portal
-        p.execute(commands, state);
-        // state is wiped
-        assertEq(p.caller(), address(0));
-        assertFalse(p.init());
-        vm.expectRevert(Portal.NotCaller.selector);
-        p.execute(commands, state);
+    function testDestroyRedeploy() public {
+        DestructPortal originalPortal = DestructPortal(address(destructFactory.deploy(emptyCommands, emptyState)));
+        originalPortal.execute(emptyCommands, emptyState);
+        // TODO: what is it exactly that prevents the clone from being redeployed?
+        // destructFactory.deploy(emptyCommands, emptyState);
     }
 
+    // Attempt to self-destruct the Portal using call
+    function testDestroyPortal() public {
+        destructPortal = DestructPortal(address(destructFactory.deploy(emptyCommands, emptyState)));
+        // destruct portal
+        destructPortal.execute(emptyCommands, emptyState);
+        // state is wiped
+        assertEq(destructPortal.caller(), address(0));
+        assertFalse(destructPortal.init());
+        vm.expectRevert(Portal.NotCaller.selector);
+        destructPortal.execute(emptyCommands, emptyState);
+        // NOTE: A caveat with selfdestruct is that it seems to maintain it's "codesize" until the end of the current transaction
+        assertTrue(address(destructPortal).code.length > 0);
+        assertTrue(address(portalReference).code.length > 0);
+    }
+
+    // Verify that destructPortal now has no code
+    function testDestructedCodesize() public {
+        assertTrue(address(destructPortal).code.length == 0);
+        // reference still has it's code
+        assertTrue(address(portalReference).code.length > 0);
+    }
 
     function testExecuteNoState() public {
         portal.execute(emptyCommands, emptyState);
