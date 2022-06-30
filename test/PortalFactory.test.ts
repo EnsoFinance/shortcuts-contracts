@@ -67,13 +67,13 @@ describe('Portal', function () {
     it('should not allow user to deploy multiple portals', async () => {
       const {userWithPortal} = await setup();
 
-      await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('AlreadyExists()');
+      await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
     });
 
     it('should not allow user to deploy multiple portals', async () => {
       const {userWithPortal} = await setup();
 
-      await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('AlreadyExists()');
+      await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
     });
 
     it('should not allow user to execute on other user portal', async () => {
