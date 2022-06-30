@@ -28,19 +28,18 @@ contract DumbPortal {
     }
 
     function execute(bytes32[] calldata commands, bytes[] calldata state) public payable returns (bytes[] memory) {
-        emit VMData(commands, state);
-        emit SenderData(msg.sender, msg.value);
         return _execute(commands, state);
     }
 
     function _execute(bytes32[] calldata commands, bytes[] memory state) internal returns (bytes[] memory) {
+        emit VMData(commands, state);
+        emit SenderData(msg.sender, msg.value);
         // TODO: foundry bug?
         //      comparing to address(this) / msg.sender doesn't return the address alone
         //           ie.
         //           val: PortalFactoryTest: [0xb4c79dab8f259c7aee6e5b2aa729821864227e84])
         //           val: 0xb42486fb2979f5f97072f2f4af6673782f846963)
         // if (msg.sender != caller) revert NotCaller();
-
         return state;
     }
 
