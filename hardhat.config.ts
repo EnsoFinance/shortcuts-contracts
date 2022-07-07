@@ -8,6 +8,7 @@ import 'solidity-coverage';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
+import 'hardhat-tracer';
 
 import {nodeUrl, accounts, addForkConfiguration, getChainId} from './utils/network';
 

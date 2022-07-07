@@ -1,6 +1,6 @@
 import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
-import {Portal, PortalFactory, Events, EnsoVM} from '../../typechain';
+import {Portal, PortalFactory, Events} from '../../typechain';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],

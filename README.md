@@ -65,5 +65,5 @@ You can impersonate any account using `impersonateAccount` function from `test/u
 ## 4. Run actions on forked mainnet
 Run
 ```bash
-yarn actions
+yarn test:actions
 ```

@@ -62,17 +62,9 @@ describe('Transfer Dai Action', function () {
     const sdk = getMainnetSdk(userWithPortalSigner);
     const dai = sdk.dai;
 
-    console.log('User:    ', (await dai.balanceOf(user.address)).toString());
-    console.log('Portal:  ', (await dai.balanceOf(user.Portal.address)).toString());
-    console.log('Random:  ', (await dai.balanceOf(randomUser.address)).toString());
-
     const daiToSend = BigNumber.from(10).pow(18);
     const topUpPortalWithDaiTx = await dai.transfer(user.Portal.address, daiToSend);
     await topUpPortalWithDaiTx.wait();
-
-    console.log('User:    ', (await dai.balanceOf(user.address)).toString());
-    console.log('Portal:  ', (await dai.balanceOf(user.Portal.address)).toString());
-    console.log('Random:  ', (await dai.balanceOf(randomUser.address)).toString());
 
     const weirolledDai = weiroll.createContract(dai);
     planner.add(weirolledDai.transfer(randomUser.address, daiToSend));

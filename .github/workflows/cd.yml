@@ -36,7 +36,7 @@ jobs:
         run: yarn --ignore-platform
 
       - name: Running tests
-        run: yarn test
+        run: yarn ci
 
       - name: Test deploy scripts
         run: yarn void:deploy
