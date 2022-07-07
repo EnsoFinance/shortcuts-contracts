@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.11;
-
+pragma solidity ^0.8.13;
 
 contract Destroyer {
     function kill() public returns (bytes[] memory data) {
@@ -9,7 +8,6 @@ contract Destroyer {
         return data;
     }
 }
-
 
 contract DestructPortal {
     address public caller;
@@ -36,8 +34,10 @@ contract DestructPortal {
     function execute(bytes32[] calldata commands, bytes[] calldata state) public returns (bytes[] memory data) {
         if (msg.sender != caller) revert NotCaller();
         Destroyer destroyer = new Destroyer();
-            (bool success, bytes memory ret)  =  address(destroyer).delegatecall(abi.encodeWithSelector(destroyer.kill.selector, commands, state));
-        emit DelegateCallReturn(success, ret);        
+        (bool success, bytes memory ret) = address(destroyer).delegatecall(
+            abi.encodeWithSelector(destroyer.kill.selector, commands, state)
+        );
+        emit DelegateCallReturn(success, ret);
         return data;
     }
 }

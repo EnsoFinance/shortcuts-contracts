@@ -68,7 +68,7 @@
     "format:fix": "prettier --write \"**/*.{ts,js,sol}\"",
     "compile": "hardhat compile",
     "void:deploy": "hardhat deploy --report-gas --export-all deployments/deployments.json",
-    "ci": "yarn test:hardhat && yarn test:actions",
+    "ci": " yarn test:forge && yarn test:hardhat && yarn test:actions",
     "test": "yarn test:hardhat",
     "test:hardhat": "cross-env REPORT_GAS=true HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true hardhat test",
     "test:forge": "forge test",
