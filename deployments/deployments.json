@@ -5,7 +5,7 @@
       "chainId": "31337",
       "contracts": {
         "Portal": {
-          "address": "0x3bBe8523ee35B4E21e31a51b66ff149d8E1D16b8",
+          "address": "0x6bb52BE538A1E5668a9c45626EDF2C590e86CA76",
           "abi": [
             {
               "inputs": [],
@@ -123,7 +123,7 @@
           ]
         },
         "PortalFactory": {
-          "address": "0x2851113Dc08D2f9fbF96e8B3cFEF6C8DC7253979",
+          "address": "0x66BB4da2B9191240483a97D01A97e4d95d602F47",
           "abi": [
             {
               "inputs": [
@@ -135,11 +135,6 @@
               ],
               "stateMutability": "nonpayable",
               "type": "constructor"
-            },
-            {
-              "inputs": [],
-              "name": "AlreadyExists",
-              "type": "error"
             },
             {
               "anonymous": false,
@@ -197,25 +192,6 @@
               "outputs": [
                 {
                   "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "name": "user",
-              "outputs": [
-                {
-                  "internalType": "contract Portal",
                   "name": "",
                   "type": "address"
                 }
