@@ -1,6 +1,6 @@
 {
   "name": "@ensofinance/v2-contracts",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "devDependencies": {
     "@dethcrypto/eth-sdk": "^0.3.2",
     "@dethcrypto/eth-sdk-client": "^0.1.6",
@@ -61,8 +61,8 @@
   "scripts": {
     "forge:dependencies": "git submodule update --init --recursive",
     "prepare": "yarn forge:dependencies && yarn hardhat typechain && yarn eth-sdk",
-    "clean": "rm -rf ./artifacts ./cache ./dist ./tsconfig.prod.tsbuildinfo",
-    "lint": "eslint \"**/*.{js,ts}\" && solhint src/**/*.sol",
+    "clean": "rm -rf ./artifacts ./cache ./dist ./tsconfig.prod.tsbuildinfo ./typechain",
+    "lint": "eslint \"**/*.{js,ts}\" && solhint src/**/*.sol", 
     "lint:fix": "eslint --fix \"**/*.{js,ts}\" && solhint --fix src/**/*.sol",
     "format": "prettier --check \"**/*.{ts,js,sol}\"",
     "format:fix": "prettier --write \"**/*.{ts,js,sol}\"",
