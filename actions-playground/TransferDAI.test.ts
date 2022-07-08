@@ -5,8 +5,7 @@ import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
 import {getMainnetSdk} from '@dethcrypto/eth-sdk-client';
 
 import {setup, impersonateAccount} from '../test/utils';
-
-const DAI_WHALE = '0x5d38b4e4783e34e2301a2a36c39a03c45798c4dd';
+const DAI_WHALE = '0xad0135af20fa82e106607257143d0060a7eb5cbf';
 
 const setupTransferDaiAction = async () => {
   const baseSetup = await setup();
@@ -19,11 +18,11 @@ const setupTransferDaiAction = async () => {
   const sdk = getMainnetSdk(deployerSigner);
 
   const dai = sdk.dai.connect(await impersonateAccount(DAI_WHALE));
+
   const topUpUserWithPortalTx = await dai.transfer(userWithPortal.address, BigNumber.from(10).pow(18).mul(10), {
     gasLimit: 100000,
   });
   await topUpUserWithPortalTx.wait();
-
   const topUpUserWithoutPortalTx = await dai.transfer(userWithoutPortal.address, BigNumber.from(10).pow(18).mul(10), {
     gasLimit: 100000,
   });
