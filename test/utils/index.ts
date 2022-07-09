@@ -1,6 +1,6 @@
 import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
-import {Portal, PortalFactory, Events} from '../../typechain';
+import {Portal, PortalFactory, Events, Utils} from '../../typechain';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],
@@ -56,10 +56,17 @@ export const setup = deployments.createFixture(async () => {
     autoMine: true,
   });
 
+  await deployments.deploy('Utils', {
+    from: deployer,
+    args: [],
+    autoMine: true,
+  });
+
   const contracts = {
     PortalFactory: <PortalFactory>await ethers.getContract('PortalFactory'),
     Portal: <Portal>await ethers.getContract('Portal'),
     Events: <Events>await ethers.getContract('Events'),
+    Utils: <Utils>await ethers.getContract('Utils'),
   };
 
   const [user, ...users] = await setupUsersWithPortals(await getUnnamedAccounts(), contracts);
