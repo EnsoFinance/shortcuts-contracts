@@ -27,6 +27,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   await deployPortalFactory();
+
+  const {deploy: deployUtils} = await deterministic('Utils', {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+    skipIfAlreadyDeployed: true,
+  });
+
+  await deployUtils();
 };
 export default func;
-func.tags = ['PortalFactory', 'Portal'];
+func.tags = ['PortalFactory', 'Portal', 'Utils'];
