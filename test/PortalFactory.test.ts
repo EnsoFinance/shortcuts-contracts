@@ -1,7 +1,7 @@
 import {expect} from './chai-setup';
 import {ethers} from 'hardhat';
 import {Contract, ContractTransaction, BigNumber} from 'ethers';
-import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
+import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
 import {setup} from './utils';
 
 async function expectEventFromPortal(
