@@ -1,10 +1,11 @@
 import {expect} from '../test/chai-setup';
 import {ethers, getNamedAccounts} from 'hardhat';
-import {BigNumber} from 'ethers';
-import {Planner, Contract as weiroll} from '@weiroll/weiroll.js';
+import {BigNumber, Contract} from 'ethers';
+import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
 import {getMainnetSdk} from '@dethcrypto/eth-sdk-client';
 
 import {setup, impersonateAccount} from '../test/utils';
+import {Result} from 'ethers/lib/utils';
 
 const DAI_WHALE = '0xad0135af20fa82e106607257143d0060a7eb5cbf';
 
@@ -28,10 +29,38 @@ const setupUniswapV3Action = async () => {
   };
 };
 
+const getStateIndexFromCommand = (command: string) => parseInt(command.slice(13, 14));
+const decodeResult = (types: string[], result: Result) => {
+  if (types.length > 1) types.unshift('uint');
+  const decoded = ethers.utils.defaultAbiCoder.decode(types, result);
+  const ret: Record<string, any> = {};
+  Object.entries(decoded).forEach(([key, value]) => {
+    if (isNaN(parseFloat(key))) ret[key] = value;
+  });
+  return ret;
+};
+
 const getTimestamp = async (Utils: any, blockTimestamp: any, minutes = 20) => {
   const minutesAsSeconds = await Utils.mul(minutes, 60);
   const timestamp = await Utils.add(blockTimestamp, minutesAsSeconds);
   return timestamp;
+};
+
+const getTimestampWeiroll = async (Portal: any, Utils: any, Events: any, blockTimestamp: any, minutes = 20) => {
+  const planner = new Planner();
+  const weirolledUtils = weiroll.createContract(Utils);
+  const weirolledEvents = weiroll.createContract(Events);
+
+  const minutesAsSeconds = planner.add(weirolledUtils.mul(minutes, 60));
+  const timestamp = planner.add(weirolledUtils.add(blockTimestamp, minutesAsSeconds));
+  planner.add(weirolledEvents.logUint(timestamp));
+
+  const {commands, state} = planner.plan();
+
+  const stateIndex = getStateIndexFromCommand(commands[commands.length - 1]);
+  const data = await Portal.callStatic.execute(commands, state);
+
+  return decodeResult(['uint timestamp'], data[stateIndex]);
 };
 
 const getAmountOut = async (Quoter: any, Utils: any, tokenIn: string, tokenOut: string, amountIn: BigNumber) => {
@@ -47,8 +76,54 @@ const getAmountOut = async (Quoter: any, Utils: any, tokenIn: string, tokenOut: 
   return {fee: best.key, amountOut: best.value};
 };
 
+const getAmountOutWeiroll = async (
+  Portal: any,
+  Quoter: any,
+  Events: any,
+  Utils: any,
+  tokenIn: string,
+  tokenOut: string,
+  amountIn: BigNumber
+) => {
+  const planner = new Planner();
+  const weirolledUtils = weiroll.createContract(Utils);
+  const weirolledEvents = weiroll.createContract(Events);
+  const weirolledQuoter = weiroll.createContract(Quoter);
+
+  const amountOut1 = planner.add(weirolledQuoter.quoteExactInputSingle(tokenIn, tokenOut, 10000, amountIn, 0));
+  const amountOut2 = planner.add(weirolledQuoter.quoteExactInputSingle(tokenIn, tokenOut, 3000, amountIn, 0));
+  const amountOut3 = planner.add(weirolledQuoter.quoteExactInputSingle(tokenIn, tokenOut, 500, amountIn, 0));
+  const amountOut4 = planner.add(weirolledQuoter.quoteExactInputSingle(tokenIn, tokenOut, 100, amountIn, 0));
+
+  const max1 = planner.add(weirolledUtils.maxWithKey(10000, amountOut1, 3000, amountOut2).rawValue());
+  const max2 = planner.add(weirolledUtils.maxWithKey(500, amountOut3, 100, amountOut4).rawValue());
+
+  const maxFee1Bytes = planner.add(weirolledUtils.extractElement(max1, 0));
+  const maxAmountOut1Bytes = planner.add(weirolledUtils.extractElement(max1, 1));
+  const maxFee2Bytes = planner.add(weirolledUtils.extractElement(max2, 0));
+  const maxAmountOut2Bytes = planner.add(weirolledUtils.extractElement(max2, 1));
+
+  const maxFee1 = planner.add(weirolledUtils.bytes32ToUint256(maxFee1Bytes));
+  const maxAmountOut1 = planner.add(weirolledUtils.bytes32ToUint256(maxAmountOut1Bytes));
+
+  const maxFee2 = planner.add(weirolledUtils.bytes32ToUint256(maxFee2Bytes));
+  const maxAmountOut2 = planner.add(weirolledUtils.bytes32ToUint256(maxAmountOut2Bytes));
+
+  const best = planner.add(weirolledUtils.maxWithKey(maxFee1, maxAmountOut1, maxFee2, maxAmountOut2).rawValue());
+  planner.add(weirolledEvents.logBytes(best));
+
+  const {commands, state} = planner.plan();
+
+  const stateIndex = getStateIndexFromCommand(commands[commands.length - 1]);
+  const data = await Portal.callStatic.execute(commands, state);
+
+  return decodeResult(['uint fee', 'uint amountOut'], data[stateIndex]);
+};
+
 describe('Swap on uniswap', function () {
   it('unix deadline', async () => {
+    const {Utils} = await setup();
+
     const provider = await ethers.getDefaultProvider();
     const blockNumber = await provider.getBlockNumber();
     const block = await provider.getBlock(blockNumber);
@@ -58,14 +133,14 @@ describe('Swap on uniswap', function () {
 
     const minutes = 20;
 
-    const timestamp = block.timestamp + minutes * 60;
-    console.log('Timestamp', timestamp);
+    const timestamp = await getTimestamp(Utils, block.timestamp, minutes);
+    console.log('Timestamp', timestamp.toNumber());
 
     expect(timestamp).to.be.gt(0);
   });
 
-  it('unix deadline (weiroll)', async function () {
-    const {Utils} = await setup();
+  it('unix deadline (portal)', async function () {
+    const {Utils, Events, userWithPortal} = await setup();
 
     const provider = await ethers.getDefaultProvider();
     const blockNumber = await provider.getBlockNumber();
@@ -73,51 +148,13 @@ describe('Swap on uniswap', function () {
 
     const minutes = 20;
 
-    const timestamp = await getTimestamp(Utils, block.timestamp, minutes);
+    const {timestamp} = await getTimestampWeiroll(userWithPortal.Portal, Utils, Events, block.timestamp, minutes);
     console.log('Timestamp', timestamp.toNumber());
 
     expect(timestamp).to.be.gt(0);
   });
 
   it('quote amount', async () => {
-    const sdk = getMainnetSdk(ethers.getDefaultProvider());
-    const FEES = [10000, 3000, 500, 100];
-
-    const tokenIn = sdk.WETH.address;
-    const tokenOut = sdk.dai.address;
-
-    const res = await Promise.all(
-      FEES.map(async (fee) => {
-        const amountOut = await sdk.uniswap.Quoter.callStatic.quoteExactInputSingle(
-          tokenIn,
-          tokenOut,
-          fee,
-          BigNumber.from(10).pow(18),
-          0
-        );
-
-        return {
-          fee,
-          amountOut,
-        };
-      })
-    );
-
-    res.sort((a, b) => {
-      if (a.amountOut.gt(b.amountOut)) return -1;
-      if (a.amountOut.lt(b.amountOut)) return 1;
-      return 0;
-    });
-
-    const best = res[0];
-    console.log('Fee', best.fee);
-    console.log('Amount out', best.amountOut);
-
-    expect(best.fee).to.be.gt(0);
-    expect(best.amountOut).to.be.gt(0);
-  });
-
-  it('quote amount (weiroll)', async () => {
     const {Utils} = await setup();
     const sdk = getMainnetSdk(ethers.getDefaultProvider());
 
@@ -134,6 +171,27 @@ describe('Swap on uniswap', function () {
 
     expect(best.fee).to.be.gt(0);
     expect(best.amountOut).to.be.gt(0);
+  });
+
+  it('quote amount (portal)', async () => {
+    const {Utils, Events, userWithPortal} = await setup();
+    const sdk = getMainnetSdk(ethers.getDefaultProvider());
+
+    const {fee, amountOut} = await getAmountOutWeiroll(
+      userWithPortal.Portal,
+      sdk.uniswap.Quoter,
+      Events,
+      Utils,
+      sdk.dai.address,
+      sdk.WETH.address,
+      BigNumber.from(10).pow(18)
+    );
+
+    console.log('Fee', fee.toNumber());
+    console.log('Amount out', amountOut);
+
+    expect(fee).to.be.gt(0);
+    expect(amountOut).to.be.gt(0);
   });
 
   it('swap amount', async () => {
