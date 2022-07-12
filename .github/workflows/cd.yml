@@ -14,6 +14,7 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       ETH_NODE_URI_MAINNET: ${{ secrets.ETH_NODE_URI_MAINNET }}
       ETHERSCAN_KEY: ${{ secrets.ETHERSCAN_KEY }}
+      MNEMONIC: ${{secrets.MNEMONIC}}
 
     steps:
       - name: Checkout the code

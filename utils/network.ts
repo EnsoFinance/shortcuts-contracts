@@ -44,7 +44,9 @@ export function getMnemonic(networkName?: string): string {
 }
 
 export function accounts(networkName?: string): {mnemonic: string} {
-  return {mnemonic: getMnemonic(networkName)};
+  const mnemonic = getMnemonic(networkName);
+
+  return {mnemonic};
 }
 
 export function addForkConfiguration(networks: NetworksUserConfig): NetworksUserConfig {
