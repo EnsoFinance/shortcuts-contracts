@@ -42,14 +42,49 @@ const config: HardhatUserConfig = {
       accounts: accounts(),
       chainId: getChainId(),
     },
+    kovan: {
+      url: nodeUrl('kovan'),
+      accounts: accounts('kovan'),
+      saveDeployments: true,
+    },
+    goerli: {
+      url: nodeUrl('goerli'),
+      accounts: accounts('goerli'),
+      saveDeployments: true,
+    },
     mainnet: {
       url: nodeUrl('mainnet'),
       accounts: accounts('mainnet'),
       saveDeployments: true,
     },
-    kovan: {
-      url: nodeUrl('kovan'),
-      accounts: accounts('kovan'),
+    arbitrum: {
+      url: nodeUrl('arbitrum'),
+      accounts: accounts('arbitrum'),
+      saveDeployments: true,
+    },
+    optimism: {
+      url: nodeUrl('optimism'),
+      accounts: accounts('optimism'),
+      saveDeployments: true,
+    },
+    polygon: {
+      url: nodeUrl('polygon'),
+      accounts: accounts('polygon'),
+      saveDeployments: true,
+    },
+    bsc: {
+      url: nodeUrl('bsc'),
+      accounts: accounts('bsc'),
+      saveDeployments: true,
+    },
+    gnosis: {
+      url: nodeUrl('gnosis'),
+      accounts: accounts('gnosis'),
+      saveDeployments: true,
+    },
+    avalanche: {
+      url: nodeUrl('avalanche'),
+      accounts: accounts('avalanche'),
       saveDeployments: true,
     },
   }),
