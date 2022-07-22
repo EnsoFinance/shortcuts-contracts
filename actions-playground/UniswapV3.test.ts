@@ -1,6 +1,6 @@
 import {expect} from '../test/chai-setup';
 import {ethers, getNamedAccounts} from 'hardhat';
-import {BigNumber, Contract} from 'ethers';
+import {BigNumber, providers} from 'ethers';
 import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
 import {getMainnetSdk} from '@dethcrypto/eth-sdk-client';
 
@@ -122,9 +122,10 @@ const getAmountOutWeiroll = async (
 
 describe('Swap on uniswap', function () {
   it('unix deadline', async () => {
-    const {Utils} = await setup();
+    const {Utils, userWithPortal} = await setup();
 
-    const provider = await ethers.getDefaultProvider();
+    const signer = await impersonateAccount(userWithPortal.address);
+    const provider = signer.provider as providers.JsonRpcProvider;
     const blockNumber = await provider.getBlockNumber();
     const block = await provider.getBlock(blockNumber);
 
@@ -142,7 +143,8 @@ describe('Swap on uniswap', function () {
   it('unix deadline (portal)', async function () {
     const {Utils, Events, userWithPortal} = await setup();
 
-    const provider = await ethers.getDefaultProvider();
+    const signer = await impersonateAccount(userWithPortal.address);
+    const provider = signer.provider as providers.JsonRpcProvider;
     const blockNumber = await provider.getBlockNumber();
     const block = await provider.getBlock(blockNumber);
 
@@ -155,8 +157,10 @@ describe('Swap on uniswap', function () {
   });
 
   it('quote amount', async () => {
-    const {Utils} = await setup();
-    const sdk = getMainnetSdk(ethers.getDefaultProvider());
+    const {Utils, userWithPortal} = await setup();
+
+    const signer = await impersonateAccount(userWithPortal.address);
+    const sdk = getMainnetSdk(signer);
 
     const best = await getAmountOut(
       sdk.uniswap.Quoter,
@@ -175,7 +179,8 @@ describe('Swap on uniswap', function () {
 
   it('quote amount (portal)', async () => {
     const {Utils, Events, userWithPortal} = await setup();
-    const sdk = getMainnetSdk(ethers.getDefaultProvider());
+    const signer = await impersonateAccount(userWithPortal.address);
+    const sdk = getMainnetSdk(signer);
 
     const {fee, amountOut} = await getAmountOutWeiroll(
       userWithPortal.Portal,
@@ -198,8 +203,8 @@ describe('Swap on uniswap', function () {
     const {userWithPortal, Utils} = await setupUniswapV3Action();
     const userWithPortalSigner = await impersonateAccount(userWithPortal.address);
 
-    const sdk = getMainnetSdk(ethers.getDefaultProvider());
-    const provider = await ethers.getDefaultProvider();
+    const sdk = getMainnetSdk(userWithPortalSigner);
+    const provider = userWithPortalSigner.provider as providers.JsonRpcProvider;
     const blockNumber = await provider.getBlockNumber();
     const block = await provider.getBlock(blockNumber);
 
@@ -233,8 +238,8 @@ describe('Swap on uniswap', function () {
     const {userWithPortal, Utils} = await setupUniswapV3Action();
     const userWithPortalSigner = await impersonateAccount(userWithPortal.address);
 
-    const sdk = getMainnetSdk(ethers.getDefaultProvider());
-    const provider = await ethers.getDefaultProvider();
+    const sdk = getMainnetSdk(userWithPortalSigner);
+    const provider = userWithPortalSigner.provider as providers.JsonRpcProvider;
     const blockNumber = await provider.getBlockNumber();
     const block = await provider.getBlock(blockNumber);
 
