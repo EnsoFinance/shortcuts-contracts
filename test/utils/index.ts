@@ -85,3 +85,8 @@ export async function impersonateAccount(address: string): Promise<Signer> {
 
   return signer;
 }
+
+export async function forwardBlockchainTime(seconds: number) {
+  await network.provider.send('evm_increaseTime', [seconds]);
+  await network.provider.send('evm_mine');
+}
