@@ -50,7 +50,6 @@ describe('Portal', function () {
 
       const weirolledEvents = weiroll.createContract(Events);
       const planner = new Planner();
-
       planner.add(weirolledEvents.logString(message));
       planner.add(weirolledEvents.logUint(number));
 
@@ -60,8 +59,40 @@ describe('Portal', function () {
 
       await expect(tx).to.emit(user.PortalFactory, 'Deployed').withArgs(portalAddress);
 
+      await expectEventFromPortal(tx, Events, 'LogUint', message);
       await expectEventFromPortal(tx, Events, 'LogString', message);
-      await expectEventFromPortal(tx, Events, 'LogUint', number.toString());
+    });
+
+    it.only('should allow to execute with value while deploying portal when transferring value', async () => {
+      const {userWithoutPortal: user, PayableEvents} = await setup();
+
+      console.log('START OF FAILING TEST');
+
+      const portalAddress = await user.PortalFactory.getAddress();
+
+      const message = "I'm deploying a portal!";
+      const number = BigNumber.from(42);
+
+      const weirolledEvents = weiroll.createContract(PayableEvents);
+      const planner = new Planner();
+      const value = 1;
+
+      planner.add(weirolledEvents.logValue().withValue(value));
+
+      planner.add(weirolledEvents.logString(message));
+      planner.add(weirolledEvents.logUint(number));
+
+      const {commands, state} = planner.plan();
+
+      const tx = await user.PortalFactory.deploy(commands, state, {
+        value: value,
+      });
+
+      await expect(tx).to.emit(user.PortalFactory, 'Deployed').withArgs(portalAddress);
+
+      await expectEventFromPortal(tx, PayableEvents, 'LogUint', value.toString());
+      await expectEventFromPortal(tx, PayableEvents, 'LogString', message);
+      await expectEventFromPortal(tx, PayableEvents, 'LogUint', number.toString());
     });
 
     it('should not allow user to deploy multiple portals', async () => {
