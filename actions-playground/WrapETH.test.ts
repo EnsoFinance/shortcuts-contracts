@@ -44,15 +44,46 @@ describe('Wrap ETH Action', function () {
     planner.add(weirolledWETH.deposit().withValue(ethToWrap));
     const {commands, state} = planner.plan();
 
-    const weirollTx = await userWithPortal.Portal.execute(commands, state, {gasLimit: 100000, value: ethToWrap});
+    const weirollTx = await userWithPortal.Portal.execute(commands, state, {value: ethToWrap});
     await weirollTx.wait();
 
     const balance = await weth.balanceOf(userWithPortal.Portal.address);
     expect(balance).to.equal(ethToWrap);
   });
 
-  it('should wrap ETH with Portal and transfer it to user', async () => {
+  it.only('should wrap ETH with Portal during deployment through PortalFactory', async () => {
+    const {userWithoutPortal} = await setupWrapEthAction();
+
+    console.log('WRAP ACTION WHEN PORTAL IS NOT DEPLOYED');
+    const userWithPortalSigner = await impersonateAccount(userWithoutPortal.address);
+
+    const ethToWrap = BigNumber.from(10).pow(18);
+
+    const sdk = getMainnetSdk(userWithPortalSigner);
+    const weth = sdk.WETH;
+
+    const planner = new Planner();
+
+    console.log('Test PortalFactory Address: ', userWithoutPortal.PortalFactory.address);
+    console.log('Test Caller Address: ', userWithoutPortal.address);
+
+    const weirolledWETH = weiroll.createContract(weth);
+    planner.add(weirolledWETH.deposit().withValue(ethToWrap));
+    const {commands, state} = planner.plan();
+
+    const weirollTx = await userWithoutPortal.PortalFactory.deploy(commands, state, {
+      value: ethToWrap,
+    });
+    await weirollTx.wait();
+
+    const balance = await weth.balanceOf(userWithoutPortal.Portal.address);
+    expect(balance).to.equal(ethToWrap);
+  });
+
+  it.only('should wrap ETH with Portal and transfer it to user', async () => {
     const {userWithPortal} = await setupWrapEthAction();
+
+    console.log('WRAP ACTION WHEN PORTAL IS DEPLOYED');
     const userWithPortalSigner = await impersonateAccount(userWithPortal.address);
 
     const sdk = getMainnetSdk(userWithPortalSigner);
@@ -68,7 +99,7 @@ describe('Wrap ETH Action', function () {
 
     const {commands, state} = planner.plan();
 
-    const weirollTx = await userWithPortal.Portal.execute(commands, state, {gasLimit: 100000, value: ethToWrap});
+    const weirollTx = await userWithPortal.Portal.execute(commands, state, {value: ethToWrap});
     await weirollTx.wait();
 
     const userWethBalance = await weth.balanceOf(userWithPortal.address);

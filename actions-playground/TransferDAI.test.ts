@@ -75,4 +75,29 @@ describe('Transfer Dai Action', function () {
     const balance = await dai.balanceOf(randomUser.address);
     expect(balance).to.equal(daiToSend);
   });
+
+  it('should transfer DAI with Portal during deployment through PortalFactory', async () => {
+    const {userWithPortal: user, users} = await setupTransferDaiAction();
+    const randomUser = users[0];
+
+    const userWithPortalSigner = await impersonateAccount(user.address);
+    const planner = new Planner();
+
+    const sdk = getMainnetSdk(userWithPortalSigner);
+    const dai = sdk.dai;
+
+    const daiToSend = BigNumber.from(10).pow(18);
+    const topUpPortalWithDaiTx = await dai.transfer(user.Portal.address, daiToSend);
+    await topUpPortalWithDaiTx.wait();
+
+    const weirolledDai = weiroll.createContract(dai);
+    planner.add(weirolledDai.transfer(randomUser.address, daiToSend));
+    const {commands, state} = planner.plan();
+
+    const weirollTx = await user.Portal.execute(commands, state);
+    await weirollTx.wait();
+
+    const balance = await dai.balanceOf(randomUser.address);
+    expect(balance).to.equal(daiToSend);
+  });
 });
