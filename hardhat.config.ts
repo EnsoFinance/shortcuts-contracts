@@ -39,7 +39,7 @@ const config: HardhatUserConfig = {
     },
     localhost: {
       url: nodeUrl('localhost'),
-      accounts: accounts(),
+      accounts: accounts('localhost'),
       chainId: getChainId(),
     },
     kovan: {
