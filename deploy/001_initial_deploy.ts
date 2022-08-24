@@ -4,7 +4,7 @@ import {DeployFunction} from 'hardhat-deploy/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployments, getNamedAccounts} = hre;
 
-  const {deterministic} = deployments;
+  const {deterministic, execute, deploy} = deployments;
 
   const {deployer} = await getNamedAccounts();
 
@@ -27,6 +27,36 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   await deployPortalFactory();
+
+  const {deploy: deployBalance, address: balanceAddress} = await deterministic('Balance', {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+    skipIfAlreadyDeployed: true,
+  });
+
+  await deployBalance();
+
+  await deploy('Utils', {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+    skipIfAlreadyDeployed: true,
+  });
+
+  await execute(
+    'Utils',
+    {
+      from: deployer,
+      log: true,
+      autoMine: true,
+    },
+    'updateUtils',
+    'Balance',
+    balanceAddress
+  );
 };
 export default func;
 func.tags = ['PortalFactory', 'Portal'];
