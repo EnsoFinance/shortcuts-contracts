@@ -10,7 +10,7 @@ import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
 import 'hardhat-tracer';
 
-import {nodeUrl, accounts, addForkConfiguration, getChainId} from './utils/network';
+import {nodeUrl, accounts, addForkConfiguration} from './utils/network';
 
 dotenv.config();
 
@@ -40,7 +40,6 @@ const config: HardhatUserConfig = {
     localhost: {
       url: nodeUrl('localhost'),
       accounts: accounts('localhost'),
-      chainId: getChainId(),
     },
     kovan: {
       url: nodeUrl('kovan'),
