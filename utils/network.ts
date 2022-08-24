@@ -95,19 +95,3 @@ export function addForkConfiguration(networks: NetworksUserConfig): NetworksUser
   };
   return newNetworks;
 }
-
-export function getChainId(networkName?: string): number {
-  if (networkName) {
-    const chainId = process.env['CHAIN_ID_' + networkName.toUpperCase()];
-    if (chainId && chainId !== '') {
-      return Number(chainId);
-    }
-  }
-
-  const chainId = process.env.CHAIN_ID;
-  if (!chainId || chainId === '') {
-    return 31337;
-  }
-
-  return Number(chainId);
-}
