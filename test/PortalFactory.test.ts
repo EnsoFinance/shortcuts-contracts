@@ -32,7 +32,7 @@ describe('Portal', function () {
 
       const message = 'Hello World!';
 
-      const weirolledEvents = weiroll.createContract(Events);
+      const weirolledEvents = weiroll.createContract(Events as any);
       planner.add(weirolledEvents.logString(message));
       const {commands, state} = planner.plan();
       const tx = await userWithPortal.Portal.execute(commands, state);
@@ -48,7 +48,7 @@ describe('Portal', function () {
       const message = "I'm deploying a portal!";
       const number = BigNumber.from(42);
 
-      const weirolledEvents = weiroll.createContract(Events);
+      const weirolledEvents = weiroll.createContract(Events as any);
       const planner = new Planner();
       planner.add(weirolledEvents.logString(message));
       planner.add(weirolledEvents.logUint(number));
@@ -69,7 +69,7 @@ describe('Portal', function () {
 
       const number = BigNumber.from(42);
 
-      const weirolledEvents = weiroll.createContract(PayableEvents);
+      const weirolledEvents = weiroll.createContract(PayableEvents as any);
       const planner = new Planner();
       const value = 1;
 
