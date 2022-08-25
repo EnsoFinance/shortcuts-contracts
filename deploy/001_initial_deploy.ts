@@ -28,7 +28,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   await deployPortalFactory();
 
-  const {deploy: deployBalance, address: balanceAddress} = await deterministic('Balance', {
+  const {deploy: deployBalance} = await deterministic('BalanceV1', {
     from: deployer,
     args: [],
     log: true,
@@ -37,26 +37,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   await deployBalance();
-
-  await deploy('Utils', {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await execute(
-    'Utils',
-    {
-      from: deployer,
-      log: true,
-      autoMine: true,
-    },
-    'updateUtils',
-    'Balance',
-    balanceAddress
-  );
 };
 export default func;
 func.tags = ['PortalFactory', 'Portal'];
