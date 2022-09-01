@@ -1,6 +1,15 @@
 import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
-import {Portal, PortalFactory, Events, PayableEvents} from '../../typechain';
+import {
+  Portal,
+  PortalFactory,
+  Events,
+  PayableEvents,
+  TupleFactory,
+  BasicV1,
+  TuplerV1,
+  FormatterV1,
+} from '../../typechain';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],
@@ -46,8 +55,6 @@ export async function setupUsersWithPortals<
 }
 
 export const setup = deployments.createFixture(async () => {
-  await deployments.fixture('PortalFactory');
-
   const {deployer} = await getNamedAccounts();
 
   await deployments.deploy('Events', {
@@ -62,22 +69,41 @@ export const setup = deployments.createFixture(async () => {
     autoMine: true,
   });
 
+  await deployments.deploy('TupleFactory', {
+    from: deployer,
+    args: [],
+    autoMine: true,
+  });
+
   const contracts = {
-    PortalFactory: <PortalFactory>await ethers.getContract('PortalFactory'),
-    Portal: <Portal>await ethers.getContract('Portal'),
-    Events: <Events>await ethers.getContract('Events'),
-    PayableEvents: <PayableEvents>await ethers.getContract('PayableEvents'),
+    core: {
+      PortalFactory: <PortalFactory>await ethers.getContract('PortalFactory'),
+      Portal: <Portal>await ethers.getContract('Portal'),
+    },
+    utils: {
+      BasicV1: <BasicV1>await ethers.getContract('BasicV1'),
+      TuplerV1: <TuplerV1>await ethers.getContract('TuplerV1'),
+      FormatterV1: <FormatterV1>await ethers.getContract('FormatterV1'),
+    },
+    testing: {
+      Events: <Events>await ethers.getContract('Events'),
+      PayableEvents: <PayableEvents>await ethers.getContract('PayableEvents'),
+      TupleFactory: <TupleFactory>await ethers.getContract('TupleFactory'),
+    },
   };
 
-  const [user, secondUserWithPortal, ...users] = await setupUsersWithPortals(await getUnnamedAccounts(), contracts);
+  const [user, secondUserWithPortal, ...users] = await setupUsersWithPortals(
+    await getUnnamedAccounts(),
+    contracts.core
+  );
 
-  const deployerUser = await setupUserWithPortal(deployer, contracts);
+  const deployerUser = await setupUserWithPortal(deployer, contracts.core);
   await deployerUser.PortalFactory.deploy([], []);
 
   await secondUserWithPortal.PortalFactory.deploy([], []);
 
   return {
-    ...contracts,
+    contracts,
     users,
     userWithPortal: deployerUser,
     userWithoutPortal: user,
