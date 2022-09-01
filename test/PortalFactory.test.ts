@@ -26,7 +26,12 @@ describe('Portal', function () {
     });
 
     it('should execute on already deployed portal', async () => {
-      const {userWithPortal, Events} = await setup();
+      const {
+        userWithPortal,
+        contracts: {
+          testing: {Events},
+        },
+      } = await setup();
 
       const planner = new Planner();
 
@@ -41,7 +46,12 @@ describe('Portal', function () {
     });
 
     it('should allow to execute while deploying portal', async () => {
-      const {userWithoutPortal: user, Events} = await setup();
+      const {
+        userWithoutPortal: user,
+        contracts: {
+          testing: {Events},
+        },
+      } = await setup();
 
       const portalAddress = await user.PortalFactory.getAddress();
 
@@ -64,7 +74,12 @@ describe('Portal', function () {
     });
 
     it('should allow to execute with value while deploying portal when transferring value', async () => {
-      const {userWithoutPortal: user, PayableEvents} = await setup();
+      const {
+        userWithoutPortal: user,
+        contracts: {
+          testing: {PayableEvents},
+        },
+      } = await setup();
       const portalAddress = await user.PortalFactory.getAddress();
 
       const number = BigNumber.from(42);
@@ -101,7 +116,13 @@ describe('Portal', function () {
     });
 
     it('should not allow user to execute on other user portal', async () => {
-      const {userWithPortal, userWithoutPortal: impostor, Portal} = await setup();
+      const {
+        userWithPortal,
+        userWithoutPortal: impostor,
+        contracts: {
+          core: {Portal},
+        },
+      } = await setup();
 
       impostor.Portal = Portal.attach(userWithPortal.Portal.address).connect(await ethers.getSigner(impostor.address));
       await expect(impostor.Portal.execute([], [])).to.be.revertedWith('NotCaller()');
