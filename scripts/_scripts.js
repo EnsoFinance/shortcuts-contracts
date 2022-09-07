@@ -76,7 +76,11 @@ async function performAction(rawArgs) {
     );
   } else if (firstArg === 'deploy') {
     const {fixedArgs, extra} = parseArgs(args, 1, {});
-    await execute(`hardhat --network ${fixedArgs[0]} deploy --report-gas ${extra.join(' ')}`);
+    await execute(
+      `hardhat --network ${fixedArgs[0]} deploy --report-gas --export-all deployments/deployments.json ${extra.join(
+        ' '
+      )}`
+    );
   } else if (firstArg === 'verify') {
     const {fixedArgs, extra} = parseArgs(args, 1, {});
     const network = fixedArgs[0];
