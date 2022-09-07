@@ -617,8 +617,8 @@
       "name": "hardhat",
       "chainId": "31337",
       "contracts": {
-        "Portal": {
-          "address": "0xF7D66db0E9D63d044FF3515b96a48caEF86475cB",
+        "EnsoWallet": {
+          "address": "0x92e4F6D782C6750fa5084542400fE342e38A1964",
           "abi": [
             {
               "inputs": [],
@@ -735,14 +735,14 @@
             }
           ]
         },
-        "PortalFactory": {
-          "address": "0x2EE9D3e8e48735Ac1eFD6061E2Fc17165822378D",
+        "EnsoWalletFactory": {
+          "address": "0x62f90bB98851469c24d250066adcFA53147C6866",
           "abi": [
             {
               "inputs": [
                 {
                   "internalType": "address",
-                  "name": "portal_",
+                  "name": "EnsoWallet_",
                   "type": "address"
                 }
               ],
@@ -754,7 +754,7 @@
               "inputs": [
                 {
                   "indexed": false,
-                  "internalType": "contract Portal",
+                  "internalType": "contract EnsoWallet",
                   "name": "instance",
                   "type": "address"
                 }
@@ -778,12 +778,25 @@
               "name": "deploy",
               "outputs": [
                 {
-                  "internalType": "contract Portal",
+                  "internalType": "contract EnsoWallet",
                   "name": "instance",
                   "type": "address"
                 }
               ],
               "stateMutability": "payable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "ensoWallet",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
               "type": "function"
             },
             {
@@ -798,15 +811,96 @@
               ],
               "stateMutability": "view",
               "type": "function"
-            },
+            }
+          ]
+        },
+        "EnsoShortcutsHelper": {
+          "address": "0x68D11bcf0e8266842D1cB28C62d61E4Ab970e4B1",
+          "abi": [
             {
-              "inputs": [],
-              "name": "portalImplementation",
+              "inputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "input",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "bytes32ToAddress",
               "outputs": [
                 {
                   "internalType": "address",
                   "name": "",
                   "type": "address"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "input",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "bytes32ToUint256",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
+              "name": "bytesToString",
+              "outputs": [
+                {
+                  "internalType": "string",
+                  "name": "",
+                  "type": "string"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "balanceAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "getBalance",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "balance",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getBlockTimestamp",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
                 }
               ],
               "stateMutability": "view",

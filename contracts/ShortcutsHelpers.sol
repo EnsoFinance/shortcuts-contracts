@@ -1,7 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-contract FormatterV1 {
+contract EnsoShortcutsHelper {
+    uint256 constant VERSION = 1;
+
+    function getBalance(address balanceAddress) public view returns (uint256 balance) {
+        return address(balanceAddress).balance;
+    }
+
+    function getBlockTimestamp() public view returns (uint256 timestamp) {
+        return block.timestamp;
+    }
+
     function bytesToString(bytes calldata input) public pure returns (string memory) {
         return string(abi.encodePacked(input));
     }

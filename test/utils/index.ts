@@ -1,15 +1,6 @@
 import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
-import {
-  Portal,
-  PortalFactory,
-  Events,
-  PayableEvents,
-  TupleFactory,
-  BasicV1,
-  TuplerV1,
-  FormatterV1,
-} from '../../typechain';
+import {EnsoWallet, EnsoWalletFactory, Events, PayableEvents, TupleFactory, EnsoShortcutsHelper} from '../../typechain';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],
@@ -35,21 +26,21 @@ export async function setupUser<T extends {[contractName: string]: Contract}>(
   return user as {address: string} & T;
 }
 
-export async function setupUserWithPortal<
-  T extends {[contractName: string]: Contract; Portal: Portal; PortalFactory: PortalFactory}
+export async function setupUserWithEnsoWallet<
+  T extends {[contractName: string]: Contract; EnsoWallet: EnsoWallet; EnsoWalletFactory: EnsoWalletFactory}
 >(address: string, contracts: T): Promise<{address: string} & T> {
   const user = await setupUser(address, contracts);
-  const portalAddress = await user['PortalFactory'].getAddress();
-  user['Portal'] = contracts.Portal.attach(portalAddress).connect(await ethers.getSigner(address));
+  const EnsoWalletAddress = await user['EnsoWalletFactory'].getAddress();
+  user['EnsoWallet'] = contracts.EnsoWallet.attach(EnsoWalletAddress).connect(await ethers.getSigner(address));
   return user;
 }
 
-export async function setupUsersWithPortals<
-  T extends {[contractName: string]: Contract; Portal: Portal; PortalFactory: PortalFactory}
+export async function setupUsersWithEnsoWallets<
+  T extends {[contractName: string]: Contract; EnsoWallet: EnsoWallet; EnsoWalletFactory: EnsoWalletFactory}
 >(addresses: string[], contracts: T): Promise<({address: string} & T)[]> {
   const users: ({address: string} & T)[] = [];
   for (const address of addresses) {
-    users.push(await setupUserWithPortal(address, contracts));
+    users.push(await setupUserWithEnsoWallet(address, contracts));
   }
   return users;
 }
@@ -77,13 +68,11 @@ export const setup = deployments.createFixture(async () => {
 
   const contracts = {
     core: {
-      PortalFactory: <PortalFactory>await ethers.getContract('PortalFactory'),
-      Portal: <Portal>await ethers.getContract('Portal'),
+      EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContract('EnsoWalletFactory'),
+      EnsoWallet: <EnsoWallet>await ethers.getContract('EnsoWallet'),
     },
     utils: {
-      BasicV1: <BasicV1>await ethers.getContract('BasicV1'),
-      TuplerV1: <TuplerV1>await ethers.getContract('TuplerV1'),
-      FormatterV1: <FormatterV1>await ethers.getContract('FormatterV1'),
+      EnsoShortcutsHelper: <EnsoShortcutsHelper>await ethers.getContract('EnsoShortcutsHelper'),
     },
     testing: {
       Events: <Events>await ethers.getContract('Events'),
@@ -92,21 +81,21 @@ export const setup = deployments.createFixture(async () => {
     },
   };
 
-  const [user, secondUserWithPortal, ...users] = await setupUsersWithPortals(
+  const [user, secondUserWithEnsoWallet, ...users] = await setupUsersWithEnsoWallets(
     await getUnnamedAccounts(),
     contracts.core
   );
 
-  const deployerUser = await setupUserWithPortal(deployer, contracts.core);
-  await deployerUser.PortalFactory.deploy([], []);
+  const deployerUser = await setupUserWithEnsoWallet(deployer, contracts.core);
+  await deployerUser.EnsoWalletFactory.deploy([], []);
 
-  await secondUserWithPortal.PortalFactory.deploy([], []);
+  await secondUserWithEnsoWallet.EnsoWalletFactory.deploy([], []);
 
   return {
     contracts,
     users,
-    userWithPortal: deployerUser,
-    userWithoutPortal: user,
+    userWithEnsoWallet: deployerUser,
+    userWithoutEnsoWallet: user,
   };
 });
 

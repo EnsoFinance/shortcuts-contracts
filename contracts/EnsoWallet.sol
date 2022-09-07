@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import {VM} from "@ensofinance/weiroll/contracts/VM.sol";
 
-contract Portal is VM {
+contract EnsoWallet is VM {
     address public caller;
     bool public initialized;
 

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.13;
 
-contract DumbPortal {
+contract DumbEnsoWallet {
     address public caller;
 
     event VMData(bytes32[] commands, bytes[] state);
@@ -37,7 +37,7 @@ contract DumbPortal {
         // TODO: foundry bug?
         //      comparing to address(this) / msg.sender doesn't return the address alone
         //           ie.
-        //           val: PortalFactoryTest: [0xb4c79dab8f259c7aee6e5b2aa729821864227e84])
+        //           val: EnsoWalletFactoryTest: [0xb4c79dab8f259c7aee6e5b2aa729821864227e84])
         //           val: 0xb42486fb2979f5f97072f2f4af6673782f846963)
         // if (msg.sender != caller) revert NotCaller();
         return state;

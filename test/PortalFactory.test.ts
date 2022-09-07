@@ -4,7 +4,7 @@ import {Contract, ContractTransaction, BigNumber} from 'ethers';
 import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
 import {setup} from './utils';
 
-async function expectEventFromPortal(
+async function expectEventFromEnsoWallet(
   tx: ContractTransaction,
   emitterContract: Contract,
   eventName: string,
@@ -15,19 +15,19 @@ async function expectEventFromPortal(
     .withArgs(...eventArgs);
 }
 
-describe('Portal', function () {
-  describe('PortalFactory', async () => {
+describe('EnsoWallet', function () {
+  describe('EnsoWalletFactory', async () => {
     it('should predict address before deploy', async () => {
-      const {userWithoutPortal: user} = await setup();
-      const predict = await user.PortalFactory.getAddress();
+      const {userWithoutEnsoWallet: user} = await setup();
+      const predict = await user.EnsoWalletFactory.getAddress();
 
-      const tx = await user.PortalFactory.deploy([], []);
-      await expect(tx).to.emit(user.PortalFactory, 'Deployed').withArgs(predict);
+      const tx = await user.EnsoWalletFactory.deploy([], []);
+      await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(predict);
     });
 
-    it('should execute on already deployed portal', async () => {
+    it('should execute on already deployed EnsoWallet', async () => {
       const {
-        userWithPortal,
+        userWithEnsoWallet,
         contracts: {
           testing: {Events},
         },
@@ -40,22 +40,22 @@ describe('Portal', function () {
       const weirolledEvents = weiroll.createContract(Events as any);
       planner.add(weirolledEvents.logString(message));
       const {commands, state} = planner.plan();
-      const tx = await userWithPortal.Portal.execute(commands, state);
+      const tx = await userWithEnsoWallet.EnsoWallet.execute(commands, state);
 
-      await expectEventFromPortal(tx, Events, 'LogString', message);
+      await expectEventFromEnsoWallet(tx, Events, 'LogString', message);
     });
 
-    it('should allow to execute while deploying portal', async () => {
+    it('should allow to execute while deploying EnsoWallet', async () => {
       const {
-        userWithoutPortal: user,
+        userWithoutEnsoWallet: user,
         contracts: {
           testing: {Events},
         },
       } = await setup();
 
-      const portalAddress = await user.PortalFactory.getAddress();
+      const EnsoWalletAddress = await user.EnsoWalletFactory.getAddress();
 
-      const message = "I'm deploying a portal!";
+      const message = "I'm deploying a EnsoWallet!";
       const number = BigNumber.from(42);
 
       const weirolledEvents = weiroll.createContract(Events as any);
@@ -65,22 +65,22 @@ describe('Portal', function () {
 
       const {commands, state} = planner.plan();
 
-      const tx = await user.PortalFactory.deploy(commands, state);
+      const tx = await user.EnsoWalletFactory.deploy(commands, state);
 
-      await expect(tx).to.emit(user.PortalFactory, 'Deployed').withArgs(portalAddress);
+      await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress);
 
-      await expectEventFromPortal(tx, Events, 'LogUint', number.toString());
-      await expectEventFromPortal(tx, Events, 'LogString', message);
+      await expectEventFromEnsoWallet(tx, Events, 'LogUint', number.toString());
+      await expectEventFromEnsoWallet(tx, Events, 'LogString', message);
     });
 
-    it('should allow to execute with value while deploying portal when transferring value', async () => {
+    it('should allow to execute with value while deploying EnsoWallet when transferring value', async () => {
       const {
-        userWithoutPortal: user,
+        userWithoutEnsoWallet: user,
         contracts: {
           testing: {PayableEvents},
         },
       } = await setup();
-      const portalAddress = await user.PortalFactory.getAddress();
+      const EnsoWalletAddress = await user.EnsoWalletFactory.getAddress();
 
       const number = BigNumber.from(42);
 
@@ -93,39 +93,41 @@ describe('Portal', function () {
 
       const {commands, state} = planner.plan();
 
-      const tx = await user.PortalFactory.deploy(commands, state, {
+      const tx = await user.EnsoWalletFactory.deploy(commands, state, {
         value: value,
       });
 
-      await expect(tx).to.emit(user.PortalFactory, 'Deployed').withArgs(portalAddress);
+      await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress);
 
-      await expectEventFromPortal(tx, PayableEvents, 'LogUint', value.toString());
-      await expectEventFromPortal(tx, PayableEvents, 'LogUint', number.toString());
+      await expectEventFromEnsoWallet(tx, PayableEvents, 'LogUint', value.toString());
+      await expectEventFromEnsoWallet(tx, PayableEvents, 'LogUint', number.toString());
     });
 
-    it('should not allow user to deploy multiple portals', async () => {
-      const {userWithPortal} = await setup();
+    it('should not allow user to deploy multiple EnsoWallets', async () => {
+      const {userWithEnsoWallet} = await setup();
 
-      await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
+      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
     });
 
-    it('should not allow user to deploy multiple portals', async () => {
-      const {userWithPortal} = await setup();
+    it('should not allow user to deploy multiple EnsoWallets', async () => {
+      const {userWithEnsoWallet} = await setup();
 
-      await expect(userWithPortal.PortalFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
+      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
     });
 
-    it('should not allow user to execute on other user portal', async () => {
+    it('should not allow user to execute on other user EnsoWallet', async () => {
       const {
-        userWithPortal,
-        userWithoutPortal: impostor,
+        userWithEnsoWallet,
+        userWithoutEnsoWallet: impostor,
         contracts: {
-          core: {Portal},
+          core: {EnsoWallet},
         },
       } = await setup();
 
-      impostor.Portal = Portal.attach(userWithPortal.Portal.address).connect(await ethers.getSigner(impostor.address));
-      await expect(impostor.Portal.execute([], [])).to.be.revertedWith('NotCaller()');
+      impostor.EnsoWallet = EnsoWallet.attach(userWithEnsoWallet.EnsoWallet.address).connect(
+        await ethers.getSigner(impostor.address)
+      );
+      await expect(impostor.EnsoWallet.execute([], [])).to.be.revertedWith('NotCaller()');
     });
   });
 });

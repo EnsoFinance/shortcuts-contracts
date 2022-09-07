@@ -8,7 +8,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {deployer} = await getNamedAccounts();
 
-  const {deploy: deployPortal, address: portalAddress} = await deterministic('Portal', {
+  const {deploy: deployEnsoWallet, address: EnsoWalletAddress} = await deterministic('EnsoWallet', {
     from: deployer,
     args: [],
     log: true,
@@ -16,29 +16,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     skipIfAlreadyDeployed: true,
   });
 
-  await deployPortal();
+  await deployEnsoWallet();
 
-  const {deploy: deployPortalFactory} = await deterministic('PortalFactory', {
+  const {deploy: deployEnsoWalletFactory} = await deterministic('EnsoWalletFactory', {
     from: deployer,
-    args: [portalAddress],
+    args: [EnsoWalletAddress],
     log: true,
     autoMine: true,
     skipIfAlreadyDeployed: true,
   });
 
-  await deployPortalFactory();
+  await deployEnsoWalletFactory();
 
-  const {deploy: deployBasicV1} = await deterministic('BasicV1', {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await deployBasicV1();
-
-  const {deploy: deployTuplerV1} = await deterministic('TuplerV1', {
+  const {deploy: deployEnsoShortcutsHelper} = await deterministic('EnsoShortcutsHelper', {
     from: deployer,
     args: [],
     log: true,
@@ -46,17 +36,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     skipIfAlreadyDeployed: true,
   });
 
-  await deployTuplerV1();
-
-  const {deploy: deployFormatterV1} = await deterministic('FormatterV1', {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await deployFormatterV1();
+  await deployEnsoShortcutsHelper();
 };
 export default func;
-func.tags = ['PortalFactory', 'Portal'];
+func.tags = ['EnsoWalletFactory', 'EnsoWallet', 'EnsoShortcutsHelper'];
