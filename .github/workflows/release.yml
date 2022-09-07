@@ -44,6 +44,4 @@ jobs:
         run: yarn void:deploy
 
       - name: Release
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn package:publish
