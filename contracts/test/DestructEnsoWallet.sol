@@ -9,7 +9,7 @@ contract Destroyer {
     }
 }
 
-contract DestructPortal {
+contract DestructEnsoWallet {
     address public caller;
     bool public init;
 
