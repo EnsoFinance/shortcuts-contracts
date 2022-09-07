@@ -70,19 +70,24 @@ contract PortalFactoryTest is Test {
     }
 
     // Attempt to self-destruct the Portal using call
-    function testDestroyPortal() public {
+    function testTryToDestroyPortal() public {
         destructPortal = DestructPortal(address(destructFactory2.deploy(emptyCommands, emptyState)));
+
+        assertEq(destructPortal.caller(), address(this));
         // destruct portal
         destructPortal.execute(emptyCommands, emptyState);
-        // state is wiped
-        assertEq(destructPortal.caller(), address(0));
-        assertFalse(destructPortal.init());
-        vm.expectRevert(Portal.NotCaller.selector);
+
+        // state is not wiped
+        assertEq(destructPortal.caller(), address(this));
+        assertTrue(destructPortal.init());
+
         destructPortal.execute(emptyCommands, emptyState);
         address destructPortalAddr = address(destructPortal);
         // NOTE: A caveat with selfdestruct is that it seems to maintain it's "codesize" until the end of the current transaction
         bytes32 codeHash;
-        assembly { codeHash := extcodehash(destructPortalAddr) }
+        assembly {
+            codeHash := extcodehash(destructPortalAddr)
+        }
         assertTrue(codeHash != bytes32(0) && codeHash != EOACodeHash);
         assertTrue(address(destructPortal).code.length > 0);
         assertTrue(address(portalReference).code.length > 0);
@@ -92,7 +97,9 @@ contract PortalFactoryTest is Test {
     function testDestructedCodesize() public {
         bytes32 codeHash;
         address destructPortalAddr = address(destroyedPortal);
-        assembly { codeHash := extcodehash(destructPortalAddr) }
+        assembly {
+            codeHash := extcodehash(destructPortalAddr)
+        }
         assertTrue(codeHash == bytes32(0));
         assertTrue(address(destroyedPortal).code.length == 0);
         // reference still has it's code
