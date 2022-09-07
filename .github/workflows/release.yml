@@ -1,9 +1,8 @@
-name: Release NPM Package
+name: Build, Test and Release NPM Package
 on:
-  workflow_call:
-    secrets:
-      NPM_TOKEN:
-        required: true
+  push:
+    branches:
+      - main
 
 jobs:
   release:
