@@ -86,6 +86,11 @@ const config: HardhatUserConfig = {
       accounts: accounts('avalanche'),
       saveDeployments: true,
     },
+    rinkeby: {
+      url: nodeUrl('rinkeby'),
+      accounts: accounts('rinkeby'),
+      saveDeployments: true,
+    },
   }),
   paths: {
     sources: 'contracts',
