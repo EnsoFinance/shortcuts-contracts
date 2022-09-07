@@ -1,0 +1,50 @@
+name: Release NPM Package
+on:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      ETH_NODE_URI_MAINNET: ${{ secrets.ETH_NODE_URI_MAINNET }}
+      ETHERSCAN_KEY: ${{ secrets.ETHERSCAN_KEY }}
+      MNEMONIC: ${{secrets.MNEMONIC}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          always-auth: true
+          registry-url: https://registry.npmjs.org
+          scope: '@ensofinance'
+
+      - name: Install dependencies
+        run: yarn --ignore-platform
+
+      - name: Running tests
+        run: yarn ci
+
+      - name: Test deploy scripts
+        run: yarn void:deploy
+
+      - name: Release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: yarn package:publish
