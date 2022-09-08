@@ -11,6 +11,11 @@ describe('Utils', async () => {
       EnsoShortcutsHelper = <EnsoShortcutsHelper>await ethers.getContract('EnsoShortcutsHelper');
     });
 
+    it('has VERSION', async () => {
+      const currentVersion = 2n;
+      expect(await EnsoShortcutsHelper.VERSION()).to.eq(currentVersion);
+    });
+
     it('getBalance', async () => {
       const {deployer: testAddress} = await getNamedAccounts();
       expect(await EnsoShortcutsHelper.getBalance(testAddress)).to.eq(await ethers.provider.getBalance(testAddress));
@@ -60,6 +65,76 @@ describe('Utils', async () => {
       const negativeInt256 = constants.MinInt256;
 
       await expect(EnsoShortcutsHelper.int256ToUint256(negativeInt256)).to.revertedWith('Value must be positive');
+    });
+
+    it('max', async () => {
+      const higherValue = ethers.constants.MaxUint256;
+      const lowerValue = ethers.constants.One;
+
+      expect(await EnsoShortcutsHelper.max(higherValue, lowerValue)).to.eq(higherValue);
+    });
+
+    it('min', async () => {
+      const higherValue = ethers.constants.MaxUint256;
+      const lowerValue = ethers.constants.One;
+
+      expect(await EnsoShortcutsHelper.min(higherValue, lowerValue)).to.eq(lowerValue);
+    });
+
+    it('average', async () => {
+      const one = ethers.constants.One;
+      const two = ethers.constants.Two;
+      const expected = one;
+
+      expect(await EnsoShortcutsHelper.average(one, two)).to.eq(expected);
+    });
+
+    it('average', async () => {
+      const a = ethers.constants.Two;
+      const b = ethers.constants.Two;
+      const expected = ethers.constants.Two;
+
+      expect(await EnsoShortcutsHelper.average(a, b)).to.eq(expected);
+    });
+
+    it('add', async () => {
+      const a = ethers.constants.One;
+      const b = ethers.constants.Two;
+      const expected = a.add(b);
+
+      expect(await EnsoShortcutsHelper.add(a, b)).to.eq(expected);
+    });
+
+    it('sub', async () => {
+      const a = ethers.constants.Two;
+      const b = ethers.constants.One;
+      const expected = a.sub(b);
+
+      expect(await EnsoShortcutsHelper.sub(a, b)).to.eq(expected);
+    });
+
+    it('div', async () => {
+      const a = ethers.constants.Two;
+      const b = ethers.constants.One;
+      const expected = a.div(b);
+
+      expect(await EnsoShortcutsHelper.div(a, b)).to.eq(expected);
+    });
+
+    it('mod without remainder', async () => {
+      const a = ethers.constants.Two.mul(3);
+      const b = ethers.constants.Two;
+      const expected = a.mod(b);
+
+      expect(await EnsoShortcutsHelper.mod(a, b)).to.eq(expected);
+    });
+
+    it('mod with remainder', async () => {
+      const a = ethers.constants.Two.mul(4);
+      const b = ethers.constants.Two.add(1);
+      const expected = a.mod(b);
+
+      expect(await EnsoShortcutsHelper.mod(a, b)).to.eq(expected);
     });
   });
 });
