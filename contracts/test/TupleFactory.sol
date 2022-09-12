@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.16;
 
 struct Example {
     uint256 a;
@@ -14,7 +14,7 @@ contract TupleFactory {
     Example exampleStruct = Example(exampleInt1, exampleString);
 
     string[] exampleStringArray;
-    uint[] exampleIntArray;
+    uint256[] exampleIntArray;
     Example[] exampleStructArray;
     bytes10 exampleBytes;
 
