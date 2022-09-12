@@ -2,6 +2,8 @@ import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
 import {EnsoWallet, EnsoWalletFactory, Events, PayableEvents, TupleFactory, EnsoShortcutsHelper} from '../../typechain';
 
+let vitalik = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],
   contracts: T
@@ -87,9 +89,10 @@ export const setup = deployments.createFixture(async () => {
   );
 
   const deployerUser = await setupUserWithEnsoWallet(deployer, contracts.core);
-  await deployerUser.EnsoWalletFactory.deploy([], []);
+  const walletAdmin = vitalik
+  await deployerUser.EnsoWalletFactory.deploy(walletAdmin, [], []);
 
-  await secondUserWithEnsoWallet.EnsoWalletFactory.deploy([], []);
+  await secondUserWithEnsoWallet.EnsoWalletFactory.deploy(walletAdmin, [], []);
 
   return {
     contracts,

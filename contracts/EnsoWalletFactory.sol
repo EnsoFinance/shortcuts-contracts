@@ -4,7 +4,7 @@ pragma solidity ^0.8.16;
 
 import "./EnsoWallet.sol";
 import {Clones} from "./Libraries/Clones.sol";
-import {ClonableTransparentUpgradeableProxy} from "../../contracts/helpers/ClonableTransparentUpgradeableProxy.sol";
+import {ClonableTransparentUpgradeableProxy} from "./helpers/ClonableTransparentUpgradeableProxy.sol";
 
 contract EnsoWalletFactory {
     using Clones for address;
@@ -30,6 +30,6 @@ contract EnsoWalletFactory {
     }
 
     function getAddress() public view returns (address payable) {
-        return payable(ensoWallet.predictDeterministicAddress(msg.sender, address(this)));
+        return payable(address(_clonableTUPTemplate).predictDeterministicAddress(msg.sender, address(this)));
     }
 }

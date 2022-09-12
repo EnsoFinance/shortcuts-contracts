@@ -17,11 +17,13 @@ async function expectEventFromEnsoWallet(
 
 describe('EnsoWallet', function () {
   describe('EnsoWalletFactory', async () => {
+    let vitalik = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+
     it('should predict address before deploy', async () => {
       const {userWithoutEnsoWallet: user} = await setup();
       const predict = await user.EnsoWalletFactory.getAddress();
-
-      const tx = await user.EnsoWalletFactory.deploy([], []);
+      const walletAdmin = vitalik
+      const tx = await user.EnsoWalletFactory.deploy(vitalik, [], []);
       await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(predict);
     });
 
@@ -64,8 +66,8 @@ describe('EnsoWallet', function () {
       planner.add(weirolledEvents.logUint(number));
 
       const {commands, state} = planner.plan();
-
-      const tx = await user.EnsoWalletFactory.deploy(commands, state);
+      const walletAdmin = vitalik
+      const tx = await user.EnsoWalletFactory.deploy(vitalik, commands, state);
 
       await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress);
 
@@ -92,8 +94,8 @@ describe('EnsoWallet', function () {
       planner.add(weirolledEvents.logUint(number));
 
       const {commands, state} = planner.plan();
-
-      const tx = await user.EnsoWalletFactory.deploy(commands, state, {
+      const walletAdmin = vitalik
+      const tx = await user.EnsoWalletFactory.deploy(vitalik, commands, state, {
         value: value,
       });
 
@@ -105,14 +107,14 @@ describe('EnsoWallet', function () {
 
     it('should not allow user to deploy multiple EnsoWallets', async () => {
       const {userWithEnsoWallet} = await setup();
-
-      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
+      const walletAdmin = vitalik
+      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy(vitalik, [], [])).to.be.revertedWith('ERC1167: create2 failed');
     });
 
     it('should not allow user to deploy multiple EnsoWallets', async () => {
       const {userWithEnsoWallet} = await setup();
-
-      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
+      const walletAdmin = vitalik
+      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy(vitalik, [], [])).to.be.revertedWith('ERC1167: create2 failed');
     });
 
     it('should not allow user to execute on other user EnsoWallet', async () => {
