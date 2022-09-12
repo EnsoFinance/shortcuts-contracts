@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.16;
 
 import "forge-std/Test.sol";
 import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
 
-import {ClonableTransparentUpgradeableProxy} from "../../helpers/ClonableTransparentUpgradeableProxy.sol";
-import {IClonableTransparentUpgradeableProxy} from "../../interfaces/IClonableTransparentUpgradeableProxy.sol";
+import {ClonableTransparentUpgradeableProxy} from "../../contracts/helpers/ClonableTransparentUpgradeableProxy.sol";
+import {IClonableTransparentUpgradeableProxy} from "../../contracts/interfaces/IClonableTransparentUpgradeableProxy.sol";
 import {EnsoWallet} from "../../contracts/EnsoWallet.sol";
 import {IEnsoWallet} from "../../contracts/EnsoWallet.sol";
 
 import {EnsoShortcutsHelper} from "../../contracts/ShortcutsHelpers.sol";
 
 interface IEnsoShortcutsHelper {
-    function getBlockTimestamp() external view returns(uint256);
+    function getBlockTimestamp() external view returns (uint256);
 }
 
 interface ITransparentUpgradeableProxy {
@@ -20,31 +20,31 @@ interface ITransparentUpgradeableProxy {
 }
 
 contract ClonableUpgradeableProxyTest is Test {
-
     IClonableTransparentUpgradeableProxy private _clonableTUPTemplate;
     address private _admin;
 
     function setUp() public {
-        _admin = address(69420); 
+        _admin = address(69420);
         // note: for TUP admin calls proxy functions but cannot call implementation functions, and vice-versa
 
         address firstImplementation = address(new EnsoShortcutsHelper());
-        _clonableTUPTemplate = new ClonableTransparentUpgradeableProxy(firstImplementation, _admin); 
+        _clonableTUPTemplate = new ClonableTransparentUpgradeableProxy(firstImplementation, _admin);
     }
 
     function testClone() public {
-        bytes32 salt = keccak256(abi.encode("name of my first pet"));        
+        bytes32 salt = keccak256(abi.encode("name of my first pet"));
         address clone = Clones.cloneDeterministic(address(_clonableTUPTemplate), salt);
 
         address someOtherImplementation = address(new EnsoShortcutsHelper());
         IClonableTransparentUpgradeableProxy(clone).initialize(someOtherImplementation, _admin);
         assertEq(
-            IEnsoShortcutsHelper(clone).getBlockTimestamp(), 
-            IEnsoShortcutsHelper(someOtherImplementation).getBlockTimestamp());
+            IEnsoShortcutsHelper(clone).getBlockTimestamp(),
+            IEnsoShortcutsHelper(someOtherImplementation).getBlockTimestamp()
+        );
     }
 
     function testCloneWithInitialization() public {
-        bytes32 salt = keccak256(abi.encode("mother's maiden name"));        
+        bytes32 salt = keccak256(abi.encode("mother's maiden name"));
         address clone = Clones.cloneDeterministic(address(_clonableTUPTemplate), salt);
 
         address anotherImplementation = address(new EnsoWallet());
@@ -55,15 +55,16 @@ contract ClonableUpgradeableProxyTest is Test {
     }
 
     function testCloneThenUpgrade() public {
-        bytes32 salt = keccak256(abi.encode("first 4 of my social"));        
+        bytes32 salt = keccak256(abi.encode("first 4 of my social"));
         address clone = Clones.cloneDeterministic(address(_clonableTUPTemplate), salt);
 
         address anotherImplementation = address(new EnsoShortcutsHelper());
         IClonableTransparentUpgradeableProxy(clone).initialize(anotherImplementation, _admin);
 
         assertEq(
-            IEnsoShortcutsHelper(clone).getBlockTimestamp(), 
-            IEnsoShortcutsHelper(anotherImplementation).getBlockTimestamp());
+            IEnsoShortcutsHelper(clone).getBlockTimestamp(),
+            IEnsoShortcutsHelper(anotherImplementation).getBlockTimestamp()
+        );
 
         address newImplementation = address(new EnsoWallet());
         vm.startPrank(_admin);

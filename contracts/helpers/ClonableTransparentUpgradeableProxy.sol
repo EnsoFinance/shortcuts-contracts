@@ -6,9 +6,16 @@ import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.so
 import "../interfaces/IClonableTransparentUpgradeableProxy.sol";
 import "./CloneInitializable.sol";
 
-contract ClonableTransparentUpgradeableProxy is IClonableTransparentUpgradeableProxy, TransparentUpgradeableProxy, CloneInitializable {
-    
-    constructor(address _logic, address admin_) public payable TransparentUpgradeableProxy(_logic, admin_, new bytes(0)) initializer {}
+contract ClonableTransparentUpgradeableProxy is
+    IClonableTransparentUpgradeableProxy,
+    TransparentUpgradeableProxy,
+    CloneInitializable
+{
+    constructor(address _logic, address admin_)
+        payable
+        TransparentUpgradeableProxy(_logic, admin_, new bytes(0))
+        initializer
+    {}
 
     function initialize(address _logic, address admin_) external override initializer {
         assert(__ADMIN_SLOT == bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1));
@@ -17,7 +24,7 @@ contract ClonableTransparentUpgradeableProxy is IClonableTransparentUpgradeableP
         __setImplementation(_logic);
     }
 
-    function getImplementation() external view override returns(address) {
+    function getImplementation() external view override returns (address) {
         return _implementation();
     }
 
