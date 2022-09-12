@@ -2,7 +2,7 @@
 // OpenZeppelin Contracts v4.4.1 (proxy/Clones.sol)
 // Modified from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/proxy/Clones.sol
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.16;
 
 library Clones {
     /**
