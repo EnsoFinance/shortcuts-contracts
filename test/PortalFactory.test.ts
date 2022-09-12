@@ -3,7 +3,7 @@ import {ethers} from 'hardhat';
 import {Contract, ContractTransaction, BigNumber} from 'ethers';
 import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
 import {setup} from './utils';
-
+   
 async function expectEventFromEnsoWallet(
   tx: ContractTransaction,
   emitterContract: Contract,
