@@ -23,7 +23,7 @@ describe('EnsoWallet', function () {
       const {userWithoutEnsoWallet: user} = await setup();
       const predict = await user.EnsoWalletFactory.getAddress();
       const walletAdmin = vitalik
-      const tx = await user.EnsoWalletFactory.deploy(vitalik, [], []);
+      const tx = await user.EnsoWalletFactory.deploy(walletAdmin, [], []);
       await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(predict);
     });
 
@@ -67,7 +67,7 @@ describe('EnsoWallet', function () {
 
       const {commands, state} = planner.plan();
       const walletAdmin = vitalik
-      const tx = await user.EnsoWalletFactory.deploy(vitalik, commands, state);
+      const tx = await user.EnsoWalletFactory.deploy(walletAdmin, commands, state);
 
       await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress);
 
@@ -95,7 +95,7 @@ describe('EnsoWallet', function () {
 
       const {commands, state} = planner.plan();
       const walletAdmin = vitalik
-      const tx = await user.EnsoWalletFactory.deploy(vitalik, commands, state, {
+      const tx = await user.EnsoWalletFactory.deploy(walletAdmin, commands, state, {
         value: value,
       });
 
@@ -108,13 +108,13 @@ describe('EnsoWallet', function () {
     it('should not allow user to deploy multiple EnsoWallets', async () => {
       const {userWithEnsoWallet} = await setup();
       const walletAdmin = vitalik
-      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy(vitalik, [], [])).to.be.revertedWith('ERC1167: create2 failed');
+      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy(walletAdmin, [], [])).to.be.revertedWith('ERC1167: create2 failed');
     });
 
     it('should not allow user to deploy multiple EnsoWallets', async () => {
       const {userWithEnsoWallet} = await setup();
       const walletAdmin = vitalik
-      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy(vitalik, [], [])).to.be.revertedWith('ERC1167: create2 failed');
+      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy(walletAdmin, [], [])).to.be.revertedWith('ERC1167: create2 failed');
     });
 
     it('should not allow user to execute on other user EnsoWallet', async () => {
