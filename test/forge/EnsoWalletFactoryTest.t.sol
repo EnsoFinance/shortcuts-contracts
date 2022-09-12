@@ -20,6 +20,8 @@ contract EnsoWalletFactoryTest is Test {
     DestructEnsoWallet internal destroyedEnsoWallet;
     DestructEnsoWallet internal destructEnsoWallet;
 
+    address walletAdmin;
+
     bytes32 immutable EOACodeHash = 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470;
 
     bytes32[] internal commands;
@@ -41,11 +43,12 @@ contract EnsoWalletFactoryTest is Test {
             commands.push(keccak256("hello world"));
             state.push(bytes("hello world"));
         }
-        factory.deploy(emptyCommands, emptyState);
+        walletAdmin = address(42069);
+        factory.deploy(walletAdmin, emptyCommands, emptyState);
         ensoWallet = DumbEnsoWallet(factory.getAddress());
         user = new EnsoWalletUser(address(factory));
         user2 = new EnsoWalletUser(address(factory));
-        destroyedEnsoWallet = DestructEnsoWallet(address(destructFactory.deploy(emptyCommands, emptyState)));
+        destroyedEnsoWallet = DestructEnsoWallet(address(destructFactory.deploy(walletAdmin, emptyCommands, emptyState)));
         // destruct EnsoWallet
         destroyedEnsoWallet.execute(emptyCommands, emptyState);
     }
@@ -63,7 +66,7 @@ contract EnsoWalletFactoryTest is Test {
     function testDestroyRedeploy() public {
         // code is wiped
         assertTrue(address(destroyedEnsoWallet).code.length == 0);
-        destructFactory.deploy(emptyCommands, emptyState);
+        destructFactory.deploy(walletAdmin, emptyCommands, emptyState);
         assertEq(destroyedEnsoWallet.caller(), address(this));
         assertTrue(destroyedEnsoWallet.init());
         assertFalse(address(destroyedEnsoWallet).code.length == 0);
@@ -71,7 +74,7 @@ contract EnsoWalletFactoryTest is Test {
 
     // Attempt to self-destruct the EnsoWallet using call
     function testTryToDestroyEnsoWallet() public {
-        destructEnsoWallet = DestructEnsoWallet(address(destructFactory2.deploy(emptyCommands, emptyState)));
+        destructEnsoWallet = DestructEnsoWallet(address(destructFactory2.deploy(walletAdmin, emptyCommands, emptyState)));
 
         assertEq(destructEnsoWallet.caller(), address(this));
         // destruct EnsoWallet
@@ -104,7 +107,7 @@ contract EnsoWalletFactoryTest is Test {
         assertTrue(address(destroyedEnsoWallet).code.length == 0);
         // reference still has it's code
         assertTrue(address(ensoWalletReference).code.length > 0);
-        destroyedEnsoWallet = DestructEnsoWallet(address(destructFactory.deploy(emptyCommands, emptyState)));
+        destroyedEnsoWallet = DestructEnsoWallet(address(destructFactory.deploy(walletAdmin, emptyCommands, emptyState)));
     }
 
     function testExecuteNoState() public {

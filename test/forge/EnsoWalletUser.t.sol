@@ -21,8 +21,10 @@ contract EnsoWalletUser is Test {
     function deployEnsoWallet(bytes32[] memory commands, bytes[] memory state) public payable {
         vm.expectEmit(true, true, true, true);
         emit Deployed(EnsoWallet(factory.getAddress()));
-        factory.deploy(commands, state);
+        address walletAdmin = address(42069);
+        factory.deploy(walletAdmin, commands, state);
         wallet = DumbEnsoWallet(factory.getAddress());
+        require(address(wallet) != address(0), "is zero address");
         assertEq(wallet.caller(), address(this));
     }
 }
