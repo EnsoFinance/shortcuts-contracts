@@ -8,6 +8,16 @@ import {EnsoWallet} from "../../contracts/EnsoWallet.sol";
 import {DestructEnsoWallet} from "../../contracts/test/DestructEnsoWallet.sol";
 import {EnsoWalletUser} from "./EnsoWalletUser.t.sol";
 
+import {EnsoShortcutsHelper} from "../../contracts/ShortcutsHelpers.sol";
+
+interface IEnsoShortcutsHelper {
+    function getBlockTimestamp() external view returns (uint256);
+}
+
+interface ITransparentUpgradeableProxy {
+    function upgradeTo(address newImplementation) external;
+}
+
 contract EnsoWalletFactoryTest is Test {
     DumbEnsoWallet internal ensoWalletReference;
     DumbEnsoWallet internal ensoWallet;
@@ -124,5 +134,17 @@ contract EnsoWalletFactoryTest is Test {
 
     function testDeployLargeState() public {
         user2.deployEnsoWallet(commands, state);
+    }
+
+    function testUpgradeWallet(bytes32[] memory c, bytes[] memory s) public {
+        user.deployEnsoWallet(c, s);
+        vm.startPrank(address(42069)); // walletAdmin
+        address someOtherImplementation = address(new EnsoShortcutsHelper());
+        ITransparentUpgradeableProxy(address(user.wallet())).upgradeTo(someOtherImplementation);
+        vm.stopPrank();
+        assertEq(
+            IEnsoShortcutsHelper(address(user.wallet())).getBlockTimestamp(),
+            IEnsoShortcutsHelper(someOtherImplementation).getBlockTimestamp()
+        );
     }
 }

@@ -8,7 +8,7 @@ import {EnsoWallet} from "../../contracts/EnsoWallet.sol";
 
 contract EnsoWalletUser is Test {
     EnsoWalletFactory internal factory;
-    DumbEnsoWallet internal wallet;
+    DumbEnsoWallet public wallet;
 
     event VMData(bytes32[] commands, bytes[] state);
     event SenderData(address sender, uint256 value);
