@@ -53,6 +53,7 @@ describe('Wrap ETH Action', function () {
 
   it('should wrap ETH with EnsoWallet during deployment through EnsoWalletFactory', async () => {
     const {userWithoutEnsoWallet} = await setupWrapEthAction();
+    const walletAdmin = userWithoutEnsoWallet.address;
 
     const userWithEnsoWalletSigner = await impersonateAccount(userWithoutEnsoWallet.address);
 
@@ -67,7 +68,7 @@ describe('Wrap ETH Action', function () {
     planner.add(weirolledWETH.deposit().withValue(ethToWrap));
     const {commands, state} = planner.plan();
 
-    const weirollTx = await userWithoutEnsoWallet.EnsoWalletFactory.deploy(commands, state, {
+    const weirollTx = await userWithoutEnsoWallet.EnsoWalletFactory.deploy(walletAdmin, commands, state, {
       value: ethToWrap,
     });
     await weirollTx.wait();
