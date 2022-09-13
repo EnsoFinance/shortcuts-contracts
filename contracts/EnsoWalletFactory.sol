@@ -19,7 +19,7 @@ contract EnsoWalletFactory {
         _clonableTUPTemplate = new ClonableTransparentUpgradeableProxy(ensoWallet, address(this));
     }
 
-    function deploy(address walletAdmin, bytes32[] calldata commands, bytes[] calldata state) public payable returns (EnsoWallet instance) {
+    function deploy(address walletAdmin, bytes32[] calldata commands, bytes[] calldata state) external payable returns (EnsoWallet instance) {
         instance = EnsoWallet(payable(
           address(_clonableTUPTemplate).cloneDeterministic(msg.sender)
         ));
