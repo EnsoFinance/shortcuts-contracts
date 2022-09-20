@@ -2,31 +2,31 @@
 
 pragma solidity ^0.8.16;
 
-import "./proxy/Proxy.sol";
+import "./EnsoWallet.sol";
+import { IBeacon, Proxy } from "./proxy/Proxy.sol";
 
-contract EnsoWalletFactory {
+contract EnsoWalletFactory is IBeacon {
 
     address public ensoWallet;
 
-    event Deployed(address instance);
+    event Deployed(EnsoWallet instance);
 
     constructor(address ensoWallet_) {
         ensoWallet = ensoWallet_;
     }
 
-    function deploy(bytes32[] calldata commands, bytes[] calldata state) public payable returns (address instance) {
+    function deploy(bytes32[] calldata commands, bytes[] calldata state) public payable returns (EnsoWallet instance) {
         try new Proxy{ salt: keccak256(abi.encodePacked(msg.sender)) }() returns (Proxy proxy) {
-            proxy.upgradeToAndCall{ value: msg.value }(ensoWallet, abi.encodeWithSelector(
-                bytes4(keccak256("initialize(address,bytes32[],bytes[])")),
-                msg.sender,
-                commands,
-                state
-            ));
-            instance = address(proxy);
+            instance = EnsoWallet(payable(address(proxy)));
+            instance.initialize{ value: msg.value }(msg.sender, commands, state);
             emit Deployed(instance);
         } catch {
             revert("create2 failed");
         }
+    }
+
+    function implementation() external view override returns (address) {
+        return ensoWallet;
     }
 
     function getAddress() public view returns (address) {
