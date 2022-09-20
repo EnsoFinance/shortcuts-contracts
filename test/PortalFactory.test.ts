@@ -106,13 +106,7 @@ describe('EnsoWallet', function () {
     it('should not allow user to deploy multiple EnsoWallets', async () => {
       const {userWithEnsoWallet} = await setup();
 
-      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
-    });
-
-    it('should not allow user to deploy multiple EnsoWallets', async () => {
-      const {userWithEnsoWallet} = await setup();
-
-      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy([], [])).to.be.revertedWith('ERC1167: create2 failed');
+      await expect(userWithEnsoWallet.EnsoWalletFactory.deploy([], [])).to.be.revertedWith('create2 failed');
     });
 
     it('should not allow user to execute on other user EnsoWallet', async () => {
