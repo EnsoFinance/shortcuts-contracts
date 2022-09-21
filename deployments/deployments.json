@@ -1499,7 +1499,7 @@
       "chainId": "31337",
       "contracts": {
         "EnsoWallet": {
-          "address": "0x92e4F6D782C6750fa5084542400fE342e38A1964",
+          "address": "0x736F0a99Ed81819354195880AE35807015860fe5",
           "abi": [
             {
               "inputs": [],
@@ -1617,7 +1617,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x62f90bB98851469c24d250066adcFA53147C6866",
+          "address": "0xD9025c7484387Af1f8f74352a2e933BF9548263b",
           "abi": [
             {
               "inputs": [
@@ -1695,8 +1695,115 @@
             }
           ]
         },
-        "EnsoShortcutsHelper": {
-          "address": "0xd14F3988348E6a95D49F0081C61757F8cefA003C",
+        "EnsoShortcutsHelpers": {
+          "address": "0x648D49827Ec2e58D0a68dFcC8Ba304b07984C70F",
+          "abi": [
+            {
+              "inputs": [],
+              "name": "VERSION",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "input",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "bytes32ToAddress",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "input",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "bytes32ToUint256",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
+              "name": "bytesToString",
+              "outputs": [
+                {
+                  "internalType": "string",
+                  "name": "",
+                  "type": "string"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "balanceAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "getBalance",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "balance",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "getBlockTimestamp",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ]
+        },
+        "SignedMathHelpers": {
+          "address": "0x2c606FB40CbdfFeFCD3D0670Bfe46e5d49d76729",
           "abi": [
             {
               "inputs": [],
@@ -1762,63 +1869,6 @@
             {
               "inputs": [
                 {
-                  "internalType": "bytes32",
-                  "name": "input",
-                  "type": "bytes32"
-                }
-              ],
-              "name": "bytes32ToAddress",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "input",
-                  "type": "bytes32"
-                }
-              ],
-              "name": "bytes32ToUint256",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "input",
-                  "type": "bytes"
-                }
-              ],
-              "name": "bytesToString",
-              "outputs": [
-                {
-                  "internalType": "string",
-                  "name": "",
-                  "type": "string"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
                   "internalType": "uint256",
                   "name": "a",
                   "type": "uint256"
@@ -1838,38 +1888,6 @@
                 }
               ],
               "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "balanceAddress",
-                  "type": "address"
-                }
-              ],
-              "name": "getBalance",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "balance",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "getBlockTimestamp",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "timestamp",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
               "type": "function"
             },
             {

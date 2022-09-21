@@ -25,7 +25,7 @@
     "dotenv": "^16.0.0",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
-    "ethereum-waffle": "^3.4.4",
+    "ethereum-waffle": "^4.0.7",
     "ethers": "^5.6.7",
     "fs-extra": "^10.1.0",
     "hardhat": "^2.9.6",

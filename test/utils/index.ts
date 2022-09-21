@@ -1,6 +1,13 @@
 import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
-import {EnsoWallet, EnsoWalletFactory, Events, PayableEvents, TupleFactory, EnsoShortcutsHelper} from '../../typechain';
+import {
+  EnsoWallet,
+  EnsoWalletFactory,
+  Events,
+  PayableEvents,
+  TupleFactory,
+  EnsoShortcutsHelpers,
+} from '../../typechain';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],
@@ -72,7 +79,7 @@ export const setup = deployments.createFixture(async () => {
       EnsoWallet: <EnsoWallet>await ethers.getContract('EnsoWallet'),
     },
     utils: {
-      EnsoShortcutsHelper: <EnsoShortcutsHelper>await ethers.getContract('EnsoShortcutsHelper'),
+      EnsoShortcutsHelpers: <EnsoShortcutsHelpers>await ethers.getContract('EnsoShortcutsHelpers'),
     },
     testing: {
       Events: <Events>await ethers.getContract('Events'),
