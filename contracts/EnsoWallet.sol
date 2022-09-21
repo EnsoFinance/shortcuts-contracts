@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
-import {VM} from "@ensofinance/weiroll/contracts/VM.sol";
+import { VM } from "@ensofinance/weiroll/contracts/VM.sol";
+import "./interfaces/IEnsoWallet.sol";
 
-contract EnsoWallet is VM {
+contract EnsoWallet is IEnsoWallet, VM {
     address public caller;
     bool public initialized;
 
@@ -18,7 +19,7 @@ contract EnsoWallet is VM {
         address caller_,
         bytes32[] calldata commands,
         bytes[] calldata state
-    ) external payable {
+    ) external override payable {
         if (initialized) revert AlreadyInit();
         caller = caller_;
         if (commands.length != 0) {
