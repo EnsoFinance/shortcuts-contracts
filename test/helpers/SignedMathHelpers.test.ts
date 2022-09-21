@@ -1,6 +1,7 @@
 import {expect} from '../chai-setup';
 import {ethers} from 'hardhat';
 import {SignedMathHelpers} from '../../typechain';
+import {BigNumber} from 'ethers';
 
 describe('EnsoHelpers', async () => {
   describe('SignedMathHelpers', () => {
@@ -15,20 +16,28 @@ describe('EnsoHelpers', async () => {
       expect(await signedMathHelpers.VERSION()).to.eq(currentVersion);
     });
     it('max', async () => {
-      const higherValue = ethers.constants.MaxUint256;
+      const higherValue = ethers.constants.MaxInt256;
       const lowerValue = ethers.constants.One;
 
       expect(await signedMathHelpers.max(higherValue, lowerValue)).to.eq(higherValue);
     });
 
     it('min', async () => {
-      const higherValue = ethers.constants.MaxUint256;
-      const lowerValue = ethers.constants.One;
+      const higherValue = ethers.constants.MaxInt256;
+      const lowerValue = ethers.constants.MinInt256;
 
       expect(await signedMathHelpers.min(higherValue, lowerValue)).to.eq(lowerValue);
     });
 
     it('average', async () => {
+      const a = ethers.constants.One;
+      const b = BigNumber.from(3);
+      const expected = ethers.constants.Two;
+
+      expect(await signedMathHelpers.average(a, b)).to.eq(expected);
+    });
+
+    it('average rounding down', async () => {
       const one = ethers.constants.One;
       const two = ethers.constants.Two;
       const expected = one;
@@ -36,12 +45,12 @@ describe('EnsoHelpers', async () => {
       expect(await signedMathHelpers.average(one, two)).to.eq(expected);
     });
 
-    it('average', async () => {
-      const a = ethers.constants.Two;
-      const b = ethers.constants.Two;
-      const expected = ethers.constants.Two;
+    it('average of min and max equals 0', async () => {
+      const one = ethers.constants.MaxInt256;
+      const two = ethers.constants.MinInt256;
+      const expected = ethers.constants.Zero;
 
-      expect(await signedMathHelpers.average(a, b)).to.eq(expected);
+      expect(await signedMathHelpers.average(one, two)).to.eq(expected);
     });
 
     it('add', async () => {
@@ -52,12 +61,26 @@ describe('EnsoHelpers', async () => {
       expect(await signedMathHelpers.add(a, b)).to.eq(expected);
     });
 
+    it('add reverts on overflow', async () => {
+      const a = ethers.constants.One;
+      const b = ethers.constants.MaxInt256;
+
+      await expect(signedMathHelpers.add(a, b)).to.be.reverted;
+    });
+
     it('sub', async () => {
       const a = ethers.constants.Two;
       const b = ethers.constants.One;
       const expected = a.sub(b);
 
       expect(await signedMathHelpers.sub(a, b)).to.eq(expected);
+    });
+
+    it('sub reverts on underflow', async () => {
+      const a = ethers.constants.MinInt256;
+      const b = ethers.constants.One;
+
+      await expect(signedMathHelpers.sub(a, b)).to.be.reverted;
     });
 
     it('div', async () => {
@@ -68,20 +91,11 @@ describe('EnsoHelpers', async () => {
       expect(await signedMathHelpers.div(a, b)).to.eq(expected);
     });
 
-    it('mod without remainder', async () => {
-      const a = ethers.constants.Two.mul(3);
-      const b = ethers.constants.Two;
-      const expected = a.mod(b);
+    it('div reverts on 0', async () => {
+      const a = ethers.constants.Two;
+      const b = ethers.constants.Zero;
 
-      expect(await signedMathHelpers.mod(a, b)).to.eq(expected);
-    });
-
-    it('mod with remainder', async () => {
-      const a = ethers.constants.Two.mul(4);
-      const b = ethers.constants.Two.add(1);
-      const expected = a.mod(b);
-
-      expect(await signedMathHelpers.mod(a, b)).to.eq(expected);
+      await expect(signedMathHelpers.div(a, b)).to.be.reverted;
     });
   });
 });

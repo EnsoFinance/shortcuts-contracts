@@ -1696,7 +1696,7 @@
           ]
         },
         "EnsoShortcutsHelpers": {
-          "address": "0x648D49827Ec2e58D0a68dFcC8Ba304b07984C70F",
+          "address": "0x72BE1C2B725D3C337f19b53E029dEd5630F1441F",
           "abi": [
             {
               "inputs": [],
@@ -1799,11 +1799,49 @@
               ],
               "stateMutability": "view",
               "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "value",
+                  "type": "int256"
+                }
+              ],
+              "name": "int256ToUint256",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                }
+              ],
+              "name": "uint256ToInt256",
+              "outputs": [
+                {
+                  "internalType": "int256",
+                  "name": "",
+                  "type": "int256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
             }
           ]
         },
-        "SignedMathHelpers": {
-          "address": "0x2c606FB40CbdfFeFCD3D0670Bfe46e5d49d76729",
+        "MathHelpers": {
+          "address": "0x683a1B16038041a1AAf09A4517daC3c16ad1C6A1",
           "abi": [
             {
               "inputs": [],
@@ -2005,6 +2043,211 @@
                   "internalType": "uint256",
                   "name": "",
                   "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            }
+          ]
+        },
+        "SignedMathHelpers": {
+          "address": "0x2194C49E54e16f393115E9c2e3bfbDdEe5A43c7E",
+          "abi": [
+            {
+              "inputs": [],
+              "name": "VERSION",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "n",
+                  "type": "int256"
+                }
+              ],
+              "name": "abs",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "a",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "b",
+                  "type": "int256"
+                }
+              ],
+              "name": "add",
+              "outputs": [
+                {
+                  "internalType": "int256",
+                  "name": "",
+                  "type": "int256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "a",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "b",
+                  "type": "int256"
+                }
+              ],
+              "name": "average",
+              "outputs": [
+                {
+                  "internalType": "int256",
+                  "name": "",
+                  "type": "int256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "a",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "b",
+                  "type": "int256"
+                }
+              ],
+              "name": "div",
+              "outputs": [
+                {
+                  "internalType": "int256",
+                  "name": "",
+                  "type": "int256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "a",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "b",
+                  "type": "int256"
+                }
+              ],
+              "name": "max",
+              "outputs": [
+                {
+                  "internalType": "int256",
+                  "name": "",
+                  "type": "int256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "a",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "b",
+                  "type": "int256"
+                }
+              ],
+              "name": "min",
+              "outputs": [
+                {
+                  "internalType": "int256",
+                  "name": "",
+                  "type": "int256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "a",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "b",
+                  "type": "int256"
+                }
+              ],
+              "name": "mul",
+              "outputs": [
+                {
+                  "internalType": "int256",
+                  "name": "",
+                  "type": "int256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "int256",
+                  "name": "a",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "b",
+                  "type": "int256"
+                }
+              ],
+              "name": "sub",
+              "outputs": [
+                {
+                  "internalType": "int256",
+                  "name": "",
+                  "type": "int256"
                 }
               ],
               "stateMutability": "pure",
