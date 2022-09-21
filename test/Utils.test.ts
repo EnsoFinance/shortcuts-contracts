@@ -1,6 +1,7 @@
 import {expect} from './chai-setup';
 import {ethers, getNamedAccounts} from 'hardhat';
 import {EnsoShortcutsHelper} from '../typechain';
+import {BigNumber, constants} from 'ethers';
 
 describe('Utils', async () => {
   describe('EnsoShortcutsHelper', () => {
@@ -36,6 +37,29 @@ describe('Utils', async () => {
       expect(await EnsoShortcutsHelper.bytes32ToUint256(ethers.utils.hexZeroPad(testNumber.toHexString(), 32))).to.eq(
         testNumber
       );
+    });
+
+    it('uint256ToInt256 works for number in range of int256', async () => {
+      const uint256InRangeOfInt256 = BigNumber.from(12345678);
+      expect(await EnsoShortcutsHelper.uint256ToInt256(uint256InRangeOfInt256)).to.eq(uint256InRangeOfInt256);
+    });
+
+    it('uint256ToInt256 reverts for number out of range of int256', async () => {
+      const uint256OutOfRangeOfInt256 = constants.MaxInt256.add(1);
+      await expect(EnsoShortcutsHelper.uint256ToInt256(uint256OutOfRangeOfInt256)).to.revertedWith(
+        'Value does not fit in an int256'
+      );
+    });
+
+    it('int256ToUint256 works for positive number', async () => {
+      const positiveInt256 = constants.MaxInt256;
+      expect(await EnsoShortcutsHelper.int256ToUint256(positiveInt256)).to.eq(positiveInt256);
+    });
+
+    it('int256ToUint256 reverts for negative numbers', async () => {
+      const negativeInt256 = constants.MinInt256;
+
+      await expect(EnsoShortcutsHelper.int256ToUint256(negativeInt256)).to.revertedWith('Value must be positive');
     });
   });
 });
