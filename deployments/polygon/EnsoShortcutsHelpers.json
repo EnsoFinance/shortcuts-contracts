@@ -1,0 +1,220 @@
+{
+  "address": "0x3ec73f79aE071fD72961A371c738939131A7123C",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "VERSION",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "input",
+          "type": "bytes32"
+        }
+      ],
+      "name": "bytes32ToAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "input",
+          "type": "bytes32"
+        }
+      ],
+      "name": "bytes32ToUint256",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "input",
+          "type": "bytes"
+        }
+      ],
+      "name": "bytesToString",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "balanceAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBlockTimestamp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "int256",
+          "name": "value",
+          "type": "int256"
+        }
+      ],
+      "name": "int256ToUint256",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "uint256ToInt256",
+      "outputs": [
+        {
+          "internalType": "int256",
+          "name": "",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x12916cf573111cd9f2f971e7cf8b1860cd677118d051fd340cbcc97591a51b9d",
+  "receipt": {
+    "to": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
+    "from": "0xf754916D90B109AE8E405FD34064cF6Df23947eb",
+    "contractAddress": null,
+    "transactionIndex": 50,
+    "gasUsed": "275698",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000800000000000000000000100000000000000000000000000000000000000000000000000000000000080000000000001000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000004000800000000000000001000000008000000000000000000000100000000000000000024000008000000000000000000000000000000000000000000000100000",
+    "blockHash": "0xf00bbc052b16a4622eb34eed3844cbb53e708ec7088d5f2958cfcd781047c365",
+    "transactionHash": "0x12916cf573111cd9f2f971e7cf8b1860cd677118d051fd340cbcc97591a51b9d",
+    "logs": [
+      {
+        "transactionIndex": 50,
+        "blockNumber": 33620941,
+        "transactionHash": "0x12916cf573111cd9f2f971e7cf8b1860cd677118d051fd340cbcc97591a51b9d",
+        "address": "0x0000000000000000000000000000000000001010",
+        "topics": [
+          "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
+          "0x0000000000000000000000000000000000000000000000000000000000001010",
+          "0x000000000000000000000000f754916d90b109ae8e405fd34064cf6df23947eb",
+          "0x00000000000000000000000067b94473d81d0cd00849d563c94d0432ac988b49"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000001d626048acccf20000000000000000000000000000000000000000000000053e1cc81e1f4226bf0000000000000000000000000000000000000000000025cc58fd3a5ab9bce4ae0000000000000000000000000000000000000000000000053dff65bdd69559cd0000000000000000000000000000000000000000000025cc591a9cbb0269b1a0",
+        "logIndex": 222,
+        "blockHash": "0xf00bbc052b16a4622eb34eed3844cbb53e708ec7088d5f2958cfcd781047c365"
+      }
+    ],
+    "blockNumber": 33620941,
+    "cumulativeGasUsed": "8162077",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "409b66573237965fd0ec3859c137dc04",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"VERSION\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"input\",\"type\":\"bytes32\"}],\"name\":\"bytes32ToAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"input\",\"type\":\"bytes32\"}],\"name\":\"bytes32ToUint256\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"name\":\"bytesToString\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"balanceAddress\",\"type\":\"address\"}],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBlockTimestamp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"value\",\"type\":\"int256\"}],\"name\":\"int256ToUint256\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"uint256ToInt256\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet. This contract functions allow to dynamically get the data during Shortcut transaction execution that usually would be read between transactions\",\"kind\":\"dev\",\"methods\":{\"bytes32ToAddress(bytes32)\":{\"details\":\"Returns `input` bytes32 as address.\"},\"bytes32ToUint256(bytes32)\":{\"details\":\"Returns `input` bytes32 as uint256.\"},\"bytesToString(bytes)\":{\"details\":\"Returns `input` bytes as string.\"},\"getBalance(address)\":{\"details\":\"Returns the ether balance of given `balanceAdderess`.\"},\"getBlockTimestamp()\":{\"details\":\"Returns the current block timestamp.\"},\"int256ToUint256(int256)\":{\"details\":\"Returns int256 `value` as uint256.\"},\"uint256ToInt256(uint256)\":{\"details\":\"Returns uint256 `value` as int256.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/helpers/EnsoShortcutsHelpers.sol\":\"EnsoShortcutsHelpers\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":2000},\"remappings\":[]},\"sources\":{\"contracts/helpers/EnsoShortcutsHelpers.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\n/**\\n * @dev SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet.\\n *\\n * This contract functions allow to dynamically get the data during Shortcut transaction execution\\n * that usually would be read between transactions\\n */\\ncontract EnsoShortcutsHelpers {\\n    uint256 public constant VERSION = 2;\\n\\n    /**\\n     * @dev Returns the ether balance of given `balanceAdderess`.\\n     */\\n    function getBalance(address balanceAddress) external view returns (uint256 balance) {\\n        return address(balanceAddress).balance;\\n    }\\n\\n    /**\\n     * @dev Returns the current block timestamp.\\n     */\\n    function getBlockTimestamp() external view returns (uint256 timestamp) {\\n        return block.timestamp;\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes as string.\\n     */\\n    function bytesToString(bytes calldata input) external pure returns (string memory) {\\n        return string(abi.encodePacked(input));\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes32 as uint256.\\n     */\\n    function bytes32ToUint256(bytes32 input) external pure returns (uint256) {\\n        return uint256(input);\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes32 as address.\\n     */\\n    function bytes32ToAddress(bytes32 input) external pure returns (address) {\\n        return address(uint160(uint256(input)));\\n    }\\n\\n    /**\\n     * @dev Returns uint256 `value` as int256.\\n     */\\n    function uint256ToInt256(uint256 value) public pure returns (int256) {\\n        require(value <= uint256(type(int256).max), \\\"Value does not fit in an int256\\\");\\n        return int256(value);\\n    }\\n\\n    /**\\n     * @dev Returns int256 `value` as uint256.\\n     */\\n    function int256ToUint256(int256 value) public pure returns (uint256) {\\n        require(value >= 0, \\\"Value must be positive\\\");\\n        return uint256(value);\\n    }\\n}\\n\",\"keccak256\":\"0x56df18e7f8cbaeec1f80d509716d87169829c1edae81c9ff0f2268ad66ed9137\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610407806100206000396000f3fe608060405234801561001057600080fd5b50600436106100885760003560e01c8063b004cd0d1161005b578063b004cd0d1461010f578063ddcd522014610122578063f8b2cb4f14610130578063ffa1ad741461015857600080fd5b8063294dc2231461008d57806339614e4f146100b35780635ced058e146100d3578063796b89b914610109575b600080fd5b6100a061009b36600461028d565b610160565b6040519081526020015b60405180910390f35b6100c66100c13660046102a6565b6101d5565b6040516100aa9190610318565b6100e46100e136600461028d565b90565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016100aa565b426100a0565b6100a061011d36600461028d565b610201565b6100a06100e136600461028d565b6100a061013e366004610384565b73ffffffffffffffffffffffffffffffffffffffff163190565b6100a0600281565b6000808212156101d1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601660248201527f56616c7565206d75737420626520706f7369746976650000000000000000000060448201526064015b60405180910390fd5b5090565b606082826040516020016101ea9291906103c1565b604051602081830303815290604052905092915050565b60007f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8211156101d1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f56616c756520646f6573206e6f742066697420696e20616e20696e743235360060448201526064016101c8565b60006020828403121561029f57600080fd5b5035919050565b600080602083850312156102b957600080fd5b823567ffffffffffffffff808211156102d157600080fd5b818501915085601f8301126102e557600080fd5b8135818111156102f457600080fd5b86602082850101111561030657600080fd5b60209290920196919550909350505050565b600060208083528351808285015260005b8181101561034557858101830151858201604001528201610329565b5060006040828601015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168501019250505092915050565b60006020828403121561039657600080fd5b813573ffffffffffffffffffffffffffffffffffffffff811681146103ba57600080fd5b9392505050565b818382376000910190815291905056fea26469706673582212205c8cc54af5618a84b337c1de3f06a106c33ed6c7f7f945270507fae459068d5e64736f6c63430008100033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100885760003560e01c8063b004cd0d1161005b578063b004cd0d1461010f578063ddcd522014610122578063f8b2cb4f14610130578063ffa1ad741461015857600080fd5b8063294dc2231461008d57806339614e4f146100b35780635ced058e146100d3578063796b89b914610109575b600080fd5b6100a061009b36600461028d565b610160565b6040519081526020015b60405180910390f35b6100c66100c13660046102a6565b6101d5565b6040516100aa9190610318565b6100e46100e136600461028d565b90565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016100aa565b426100a0565b6100a061011d36600461028d565b610201565b6100a06100e136600461028d565b6100a061013e366004610384565b73ffffffffffffffffffffffffffffffffffffffff163190565b6100a0600281565b6000808212156101d1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601660248201527f56616c7565206d75737420626520706f7369746976650000000000000000000060448201526064015b60405180910390fd5b5090565b606082826040516020016101ea9291906103c1565b604051602081830303815290604052905092915050565b60007f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8211156101d1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f56616c756520646f6573206e6f742066697420696e20616e20696e743235360060448201526064016101c8565b60006020828403121561029f57600080fd5b5035919050565b600080602083850312156102b957600080fd5b823567ffffffffffffffff808211156102d157600080fd5b818501915085601f8301126102e557600080fd5b8135818111156102f457600080fd5b86602082850101111561030657600080fd5b60209290920196919550909350505050565b600060208083528351808285015260005b8181101561034557858101830151858201604001528201610329565b5060006040828601015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168501019250505092915050565b60006020828403121561039657600080fd5b813573ffffffffffffffffffffffffffffffffffffffff811681146103ba57600080fd5b9392505050565b818382376000910190815291905056fea26469706673582212205c8cc54af5618a84b337c1de3f06a106c33ed6c7f7f945270507fae459068d5e64736f6c63430008100033",
+  "devdoc": {
+    "details": "SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet. This contract functions allow to dynamically get the data during Shortcut transaction execution that usually would be read between transactions",
+    "kind": "dev",
+    "methods": {
+      "bytes32ToAddress(bytes32)": {
+        "details": "Returns `input` bytes32 as address."
+      },
+      "bytes32ToUint256(bytes32)": {
+        "details": "Returns `input` bytes32 as uint256."
+      },
+      "bytesToString(bytes)": {
+        "details": "Returns `input` bytes as string."
+      },
+      "getBalance(address)": {
+        "details": "Returns the ether balance of given `balanceAdderess`."
+      },
+      "getBlockTimestamp()": {
+        "details": "Returns the current block timestamp."
+      },
+      "int256ToUint256(int256)": {
+        "details": "Returns int256 `value` as uint256."
+      },
+      "uint256ToInt256(uint256)": {
+        "details": "Returns uint256 `value` as int256."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}
