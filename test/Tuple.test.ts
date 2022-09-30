@@ -7,7 +7,7 @@ import {Contract} from 'ethers';
 
 describe('TupleHelpers', async () => {
   const testInt = ethers.utils.hexZeroPad('0xcafe', 32);
-  const testString = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Hello World!'.repeat(5)));
+  const testString = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Hello World!'.repeat(5))).padEnd(130, '0'); //64 bytes * 2 char/byte + 2 (0x)
   const testIntArray =
     '0x' + ['0xcafe', '0xdead', '0xbeef'].map((item) => ethers.utils.hexZeroPad(item, 32).replace('0x', '')).join('');
   let user: {
