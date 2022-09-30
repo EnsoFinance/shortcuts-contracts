@@ -7,6 +7,7 @@ import {
   PayableEvents,
   TupleFactory,
   EnsoShortcutsHelpers,
+  TupleHelpers
 } from '../../typechain';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
@@ -80,6 +81,7 @@ export const setup = deployments.createFixture(async () => {
     },
     utils: {
       EnsoShortcutsHelpers: <EnsoShortcutsHelpers>await ethers.getContract('EnsoShortcutsHelpers'),
+      TupleHelpers: <TupleHelpers>await ethers.getContract('TupleHelpers'),
     },
     testing: {
       Events: <Events>await ethers.getContract('Events'),

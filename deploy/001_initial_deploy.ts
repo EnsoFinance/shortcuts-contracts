@@ -57,6 +57,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   await deploySignedMathHelpers();
+
+  const {deploy: deployTupleHelpers} = await deterministic('TupleHelpers', {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+    skipIfAlreadyDeployed: true,
+  });
+
+  await deployTupleHelpers();
 };
 export default func;
-func.tags = ['EnsoWalletFactory', 'EnsoWallet', 'EnsoShortcutsHelpers', 'MathHelpers', 'SignedMathHelpers'];
+func.tags = ['EnsoWalletFactory', 'EnsoWallet', 'EnsoShortcutsHelpers', 'MathHelpers', 'SignedMathHelpers', 'TupleHelpers'];
