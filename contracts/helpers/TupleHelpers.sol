@@ -6,7 +6,6 @@ contract TupleHelpers {
         assembly {
             // let offset := mul(add(index, 1), 32)
             // return(add(tuple, offset), 32)
-
             return(add(tuple, mul(add(index, 1), 32)), 32)
         }
     }
@@ -17,9 +16,7 @@ contract TupleHelpers {
             let offset := add(mload(add(tuple, mul(add(index, 1), 32))), 32)
             let length := mload(add(tuple, offset))
             if gt(mod(length, 32), 0) {
-              let multiples := div(length, 32)
-              multiples := add(multiples, 1)
-              length := mul(multiples, 32)
+              length := mul(add(div(length, 32), 1), 32)
             }
             return(add(tuple, add(offset, 32)), length)
             //return(add(tuple, add(add(mload(add(tuple, mul(add(index, 1), 32))), 32), 32)), mload(add(tuple, add(mload(add(tuple, mul(add(index, 1), 32))), 32))))
@@ -44,9 +41,7 @@ contract TupleHelpers {
                     let paramOffset := add(offset, mload(add(tuple, add(offset, mul(i, 32)))))
                     let paramLength := add(mload(add(tuple, paramOffset)), 32)
                     if gt(mod(paramLength, 32), 0) {
-                      let multiples := div(paramLength, 32)
-                      multiples := add(multiples, 1)
-                      paramLength := mul(multiples, 32)
+                      paramLength := mul(add(div(paramLength, 32), 1), 32)
                     }
                     length := add(length, paramLength)
                     //length := add(length, add(mload(add(tuple, add(add(mload(add(tuple, mul(add(index, 1), 32))), 32),mload(add(tuple, add(add(mload(add(tuple, mul(add(index, 1), 32))), 32), mul(i, 32))))))),32))
@@ -84,9 +79,7 @@ contract TupleHelpers {
                 let paramOffset := add(offset, mul(add(i, 1), 32))
                 let paramLength := mload(add(tuple, paramOffset))
                 if gt(mod(paramLength, 32), 0) {
-                  let multiples := div(paramLength, 32)
-                  multiples := add(multiples, 1)
-                  paramLength := mul(multiples, 32)
+                  paramLength := mul(add(div(paramLength, 32), 1), 32)
                 }
                 length := add(length, paramLength)
                 //length := add(length, mload(add(tuple, add(add(mload(add(tuple, mul(add(index, 1), 32))), 32), mul(add(i, 1), 32)))))
@@ -120,7 +113,6 @@ contract TupleHelpers {
                         // let paramOffset := add(tupleOffset, mload(add(tuple, add(tupleOffset, mul(add(j,1), 32)))))
                         // let paramLength := add(mload(add(tuple, paramOffset)),32)
                         // length := add(length, paramLength)
-
                         length := add(length, add(mload(add(tuple, add(add(add(mload(add(tuple, mul(add(index, 1), 32))), 32),mload(add(tuple, add(add(mload(add(tuple, mul(add(index, 1), 32))), 32), mul(i, 32))))), mload(add(tuple, add(add(add(mload(add(tuple, mul(add(index, 1), 32))), 32),mload(add(tuple, add(add(mload(add(tuple, mul(add(index, 1), 32))), 32), mul(i, 32))))), mul(add(j,1), 32))))))),32))
                     }
                 }
