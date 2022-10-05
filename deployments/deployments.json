@@ -244,7 +244,7 @@
           ]
         },
         "EnsoWallet": {
-          "address": "0x92e4F6D782C6750fa5084542400fE342e38A1964",
+          "address": "0xD422acd2C55A971DA69F5788B66454f2a157F3c7",
           "abi": [
             {
               "inputs": [],
@@ -362,7 +362,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x62f90bB98851469c24d250066adcFA53147C6866",
+          "address": "0x8C358f8B7b36Ab76b9Dd3711FBe253598fe6aa87",
           "abi": [
             {
               "inputs": [
@@ -1599,7 +1599,7 @@
           ]
         },
         "EnsoWallet": {
-          "address": "0x92e4F6D782C6750fa5084542400fE342e38A1964",
+          "address": "0xD422acd2C55A971DA69F5788B66454f2a157F3c7",
           "abi": [
             {
               "inputs": [],
@@ -1717,7 +1717,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x62f90bB98851469c24d250066adcFA53147C6866",
+          "address": "0x8C358f8B7b36Ab76b9Dd3711FBe253598fe6aa87",
           "abi": [
             {
               "inputs": [
@@ -2860,7 +2860,7 @@
           ]
         },
         "EnsoWallet": {
-          "address": "0x92e4F6D782C6750fa5084542400fE342e38A1964",
+          "address": "0xD422acd2C55A971DA69F5788B66454f2a157F3c7",
           "abi": [
             {
               "inputs": [],
@@ -2978,7 +2978,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x62f90bB98851469c24d250066adcFA53147C6866",
+          "address": "0x8C358f8B7b36Ab76b9Dd3711FBe253598fe6aa87",
           "abi": [
             {
               "inputs": [
