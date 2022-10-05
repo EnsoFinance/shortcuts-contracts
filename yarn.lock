@@ -54,17 +54,17 @@
     typechain "8.0.0"
     zod "^3.11.5"
 
-"@ensofinance/weiroll.js@^0.3.3":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@ensofinance/weiroll.js/-/weiroll.js-0.3.4.tgz#da5f0b415f84bd3d1687ca4b3482e58ff08e679a"
-  integrity sha512-rP3SsfwImhw7RDADvgAHtRO6B04gQ/r2wGYVVjehLfCmMCiCyrSgIP9S2xgr/4lkykPOS+d7tYCQsDc2IWEQMw==
+"@ensofinance/weiroll.js@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@ensofinance/weiroll.js/-/weiroll.js-0.4.0.tgz#688207df19d40b866b2f1a1518c053353023c054"
+  integrity sha512-4Lcbu7XShdB65SpAR5mY0dOJOw6U3EVyeuAuyr4dlaGF7c6I+g3t9EyeAfKSqP9l+1wJnrb2B/sese+aQj9FyQ==
   dependencies:
     ethers "^5.3.1"
 
-"@ensofinance/weiroll@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@ensofinance/weiroll/-/weiroll-1.3.0.tgz#d6c8e74dcf98f56fc20c23cffab3b25891c5f81c"
-  integrity sha512-9BszivCUhEnhNIBV62yN/1oOjLJAbr022bBWMA6FAMy653wxzTHOdOedgB4egNfKv4CWS3Cf45WL7MGQpZ+C6g==
+"@ensofinance/weiroll@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@ensofinance/weiroll/-/weiroll-1.4.0.tgz#82773bee45be4d35309ae6ba9d1b03f6b42508d4"
+  integrity sha512-53GHrzXVTwiAKy8Versjq3VFG6UMmox6dwvSO1rwLosu3WzW+6wvlXyZQ2prPLIthpoRcQ/56GEmVUCY6Kt1cQ==
 
 "@eslint/eslintrc@^1.3.1":
   version "1.3.1"
