@@ -104,4 +104,15 @@ contract MathHelpers {
     function mod(uint256 a, uint256 b) external pure returns (uint256) {
         return a % b;
     }
+
+    /**
+     * @dev Returns the results a math operation if a condition is met. Otherwise returns the 'a' value without any modification.
+     */
+    function conditional(bool condition, bytes4 method, uint256 a, uint256 b) external view returns (uint256) {
+        if (condition) {
+            (bool success, bytes memory n) = address(this).staticcall(abi.encodeWithSelector(method, a, b));
+            if (success) return abi.decode(n, (uint256));
+        }
+        return a;
+    }
 }

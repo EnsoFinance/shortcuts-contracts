@@ -113,5 +113,25 @@ describe('EnsoHelpers', async () => {
 
       await expect(mathHelpers.mod(a, b)).to.be.reverted;
     });
+
+    it('should add under true condition', async () => {
+      const condition = true;
+      const method = mathHelpers.interface.getSighash('add');
+      const a = ethers.constants.One;
+      const b = ethers.constants.Two;
+      const expected = a.add(b);
+
+      expect(await mathHelpers.conditional(condition, method, a, b)).to.eq(expected);
+    });
+
+    it('should not add under false condition', async () => {
+      const condition = false;
+      const method = mathHelpers.interface.getSighash('add');
+      const a = ethers.constants.One;
+      const b = ethers.constants.Two;
+      const expected = a;
+
+      expect(await mathHelpers.conditional(condition, method, a, b)).to.eq(expected);
+    });
   });
 });
