@@ -25,6 +25,59 @@ contract EnsoShortcutsHelpers {
     }
 
     /**
+     * @dev Returns a value depending on a truth condition
+     */
+    function toggle(bool condition, uint256 a, uint256 b) external pure returns (uint256) {
+        if (condition) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
+    /**
+     * @dev Returns bool for a == b
+     */
+    function isEqual(uint256 a, uint256 b) external pure returns (bool) {
+        return a == b;
+    }
+
+    /**
+     * @dev Returns bool for a < b
+     */
+    function isLessThan(uint256 a, uint256 b) external pure returns (bool) {
+        return a < b;
+    }
+
+    /**
+     * @dev Returns bool for a <= b
+     */
+    function isEqualOrLessThan(uint256 a, uint256 b) external pure returns (bool) {
+        return a <= b;
+    }
+
+    /**
+     * @dev Returns bool for a > b
+     */
+    function isGreaterThan(uint256 a, uint256 b) external pure returns (bool) {
+        return a > b;
+    }
+
+    /**
+     * @dev Returns bool for a >= b
+     */
+    function isEqualOrGreaterThan(uint256 a, uint256 b) external pure returns (bool) {
+        return a >= b;
+    }
+
+    /**
+     * @dev Returns bool for a == b
+     */
+    function isAddressEqual(address a, address b) external pure returns (bool) {
+        return a == b;
+    }
+
+    /**
      * @dev Returns `input` bytes as string.
      */
     function bytesToString(bytes calldata input) external pure returns (string memory) {
