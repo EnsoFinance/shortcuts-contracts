@@ -36,6 +36,13 @@ contract EnsoShortcutsHelpers {
     }
 
     /**
+     * @dev Returns the inverse bool
+     */
+    function not(bool condition) external pure returns (bool) {
+        return !condition;
+    }
+
+    /**
      * @dev Returns bool for a == b
      */
     function isEqual(uint256 a, uint256 b) external pure returns (bool) {
