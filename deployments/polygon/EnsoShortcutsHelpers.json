@@ -1,5 +1,5 @@
 {
-  "address": "0x3ec73f79aE071fD72961A371c738939131A7123C",
+  "address": "0x5b022fC123825299Ac0b48b29477b5af4314014D",
   "abi": [
     {
       "inputs": [],
@@ -125,6 +125,198 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "a",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "b",
+          "type": "address"
+        }
+      ],
+      "name": "isAddressEqual",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "a",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "b",
+          "type": "uint256"
+        }
+      ],
+      "name": "isEqual",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "a",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "b",
+          "type": "uint256"
+        }
+      ],
+      "name": "isEqualOrGreaterThan",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "a",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "b",
+          "type": "uint256"
+        }
+      ],
+      "name": "isEqualOrLessThan",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "a",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "b",
+          "type": "uint256"
+        }
+      ],
+      "name": "isGreaterThan",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "a",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "b",
+          "type": "uint256"
+        }
+      ],
+      "name": "isLessThan",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "condition",
+          "type": "bool"
+        }
+      ],
+      "name": "not",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "condition",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "a",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "b",
+          "type": "uint256"
+        }
+      ],
+      "name": "toggle",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "value",
           "type": "uint256"
@@ -142,44 +334,44 @@
       "type": "function"
     }
   ],
-  "transactionHash": "0x12916cf573111cd9f2f971e7cf8b1860cd677118d051fd340cbcc97591a51b9d",
+  "transactionHash": "0x3f0808b48e79d458ea18d2a60adaee81a776531c44dc567ad9a26b208b823d4e",
   "receipt": {
     "to": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
     "from": "0xf754916D90B109AE8E405FD34064cF6Df23947eb",
     "contractAddress": null,
-    "transactionIndex": 50,
-    "gasUsed": "275698",
-    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000800000000000000000000100000000000000000000000000000000000000000000000000000000000080000000000001000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000004000800000000000000001000000008000000000000000000000100000000000000000024000008000000000000000000000000000000000000000000000100000",
-    "blockHash": "0xf00bbc052b16a4622eb34eed3844cbb53e708ec7088d5f2958cfcd781047c365",
-    "transactionHash": "0x12916cf573111cd9f2f971e7cf8b1860cd677118d051fd340cbcc97591a51b9d",
+    "transactionIndex": 88,
+    "gasUsed": "388334",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000002000000000000000000800000000000000000000110000000000000000000000000000000000000000000000000000000000080000000000001000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000004000000000000000000001000000000000000000000000000000100000000000000000004000088000000000000000000000000000000000000000000000100000",
+    "blockHash": "0xd44a80fd17dff98b9b8191ee97abfceaa1de7463a73809b9c12d76e743e5c7b5",
+    "transactionHash": "0x3f0808b48e79d458ea18d2a60adaee81a776531c44dc567ad9a26b208b823d4e",
     "logs": [
       {
-        "transactionIndex": 50,
-        "blockNumber": 33620941,
-        "transactionHash": "0x12916cf573111cd9f2f971e7cf8b1860cd677118d051fd340cbcc97591a51b9d",
+        "transactionIndex": 88,
+        "blockNumber": 34325453,
+        "transactionHash": "0x3f0808b48e79d458ea18d2a60adaee81a776531c44dc567ad9a26b208b823d4e",
         "address": "0x0000000000000000000000000000000000001010",
         "topics": [
           "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
           "0x0000000000000000000000000000000000000000000000000000000000001010",
           "0x000000000000000000000000f754916d90b109ae8e405fd34064cf6df23947eb",
-          "0x00000000000000000000000067b94473d81d0cd00849d563c94d0432ac988b49"
+          "0x00000000000000000000000002f70172f7f490653665c9bfac0666147c8af1f5"
         ],
-        "data": "0x000000000000000000000000000000000000000000000000001d626048acccf20000000000000000000000000000000000000000000000053e1cc81e1f4226bf0000000000000000000000000000000000000000000025cc58fd3a5ab9bce4ae0000000000000000000000000000000000000000000000053dff65bdd69559cd0000000000000000000000000000000000000000000025cc591a9cbb0269b1a0",
-        "logIndex": 222,
-        "blockHash": "0xf00bbc052b16a4622eb34eed3844cbb53e708ec7088d5f2958cfcd781047c365"
+        "data": "0x000000000000000000000000000000000000000000000000002b642511ae20620000000000000000000000000000000000000000000000053d016e00e1a5230c00000000000000000000000000000000000000000000001f3e6792c5b634e72b0000000000000000000000000000000000000000000000053cd609dbcff702aa00000000000000000000000000000000000000000000001f3e92f6eac7e3078d",
+        "logIndex": 314,
+        "blockHash": "0xd44a80fd17dff98b9b8191ee97abfceaa1de7463a73809b9c12d76e743e5c7b5"
       }
     ],
-    "blockNumber": 33620941,
-    "cumulativeGasUsed": "8162077",
+    "blockNumber": 34325453,
+    "cumulativeGasUsed": "11774224",
     "status": 1,
     "byzantium": true
   },
   "args": [],
-  "numDeployments": 1,
-  "solcInputHash": "409b66573237965fd0ec3859c137dc04",
-  "metadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"VERSION\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"input\",\"type\":\"bytes32\"}],\"name\":\"bytes32ToAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"input\",\"type\":\"bytes32\"}],\"name\":\"bytes32ToUint256\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"name\":\"bytesToString\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"balanceAddress\",\"type\":\"address\"}],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBlockTimestamp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"value\",\"type\":\"int256\"}],\"name\":\"int256ToUint256\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"uint256ToInt256\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet. This contract functions allow to dynamically get the data during Shortcut transaction execution that usually would be read between transactions\",\"kind\":\"dev\",\"methods\":{\"bytes32ToAddress(bytes32)\":{\"details\":\"Returns `input` bytes32 as address.\"},\"bytes32ToUint256(bytes32)\":{\"details\":\"Returns `input` bytes32 as uint256.\"},\"bytesToString(bytes)\":{\"details\":\"Returns `input` bytes as string.\"},\"getBalance(address)\":{\"details\":\"Returns the ether balance of given `balanceAdderess`.\"},\"getBlockTimestamp()\":{\"details\":\"Returns the current block timestamp.\"},\"int256ToUint256(int256)\":{\"details\":\"Returns int256 `value` as uint256.\"},\"uint256ToInt256(uint256)\":{\"details\":\"Returns uint256 `value` as int256.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/helpers/EnsoShortcutsHelpers.sol\":\"EnsoShortcutsHelpers\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":2000},\"remappings\":[]},\"sources\":{\"contracts/helpers/EnsoShortcutsHelpers.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\n/**\\n * @dev SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet.\\n *\\n * This contract functions allow to dynamically get the data during Shortcut transaction execution\\n * that usually would be read between transactions\\n */\\ncontract EnsoShortcutsHelpers {\\n    uint256 public constant VERSION = 2;\\n\\n    /**\\n     * @dev Returns the ether balance of given `balanceAdderess`.\\n     */\\n    function getBalance(address balanceAddress) external view returns (uint256 balance) {\\n        return address(balanceAddress).balance;\\n    }\\n\\n    /**\\n     * @dev Returns the current block timestamp.\\n     */\\n    function getBlockTimestamp() external view returns (uint256 timestamp) {\\n        return block.timestamp;\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes as string.\\n     */\\n    function bytesToString(bytes calldata input) external pure returns (string memory) {\\n        return string(abi.encodePacked(input));\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes32 as uint256.\\n     */\\n    function bytes32ToUint256(bytes32 input) external pure returns (uint256) {\\n        return uint256(input);\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes32 as address.\\n     */\\n    function bytes32ToAddress(bytes32 input) external pure returns (address) {\\n        return address(uint160(uint256(input)));\\n    }\\n\\n    /**\\n     * @dev Returns uint256 `value` as int256.\\n     */\\n    function uint256ToInt256(uint256 value) public pure returns (int256) {\\n        require(value <= uint256(type(int256).max), \\\"Value does not fit in an int256\\\");\\n        return int256(value);\\n    }\\n\\n    /**\\n     * @dev Returns int256 `value` as uint256.\\n     */\\n    function int256ToUint256(int256 value) public pure returns (uint256) {\\n        require(value >= 0, \\\"Value must be positive\\\");\\n        return uint256(value);\\n    }\\n}\\n\",\"keccak256\":\"0x56df18e7f8cbaeec1f80d509716d87169829c1edae81c9ff0f2268ad66ed9137\",\"license\":\"MIT\"}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b50610407806100206000396000f3fe608060405234801561001057600080fd5b50600436106100885760003560e01c8063b004cd0d1161005b578063b004cd0d1461010f578063ddcd522014610122578063f8b2cb4f14610130578063ffa1ad741461015857600080fd5b8063294dc2231461008d57806339614e4f146100b35780635ced058e146100d3578063796b89b914610109575b600080fd5b6100a061009b36600461028d565b610160565b6040519081526020015b60405180910390f35b6100c66100c13660046102a6565b6101d5565b6040516100aa9190610318565b6100e46100e136600461028d565b90565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016100aa565b426100a0565b6100a061011d36600461028d565b610201565b6100a06100e136600461028d565b6100a061013e366004610384565b73ffffffffffffffffffffffffffffffffffffffff163190565b6100a0600281565b6000808212156101d1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601660248201527f56616c7565206d75737420626520706f7369746976650000000000000000000060448201526064015b60405180910390fd5b5090565b606082826040516020016101ea9291906103c1565b604051602081830303815290604052905092915050565b60007f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8211156101d1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f56616c756520646f6573206e6f742066697420696e20616e20696e743235360060448201526064016101c8565b60006020828403121561029f57600080fd5b5035919050565b600080602083850312156102b957600080fd5b823567ffffffffffffffff808211156102d157600080fd5b818501915085601f8301126102e557600080fd5b8135818111156102f457600080fd5b86602082850101111561030657600080fd5b60209290920196919550909350505050565b600060208083528351808285015260005b8181101561034557858101830151858201604001528201610329565b5060006040828601015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168501019250505092915050565b60006020828403121561039657600080fd5b813573ffffffffffffffffffffffffffffffffffffffff811681146103ba57600080fd5b9392505050565b818382376000910190815291905056fea26469706673582212205c8cc54af5618a84b337c1de3f06a106c33ed6c7f7f945270507fae459068d5e64736f6c63430008100033",
-  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100885760003560e01c8063b004cd0d1161005b578063b004cd0d1461010f578063ddcd522014610122578063f8b2cb4f14610130578063ffa1ad741461015857600080fd5b8063294dc2231461008d57806339614e4f146100b35780635ced058e146100d3578063796b89b914610109575b600080fd5b6100a061009b36600461028d565b610160565b6040519081526020015b60405180910390f35b6100c66100c13660046102a6565b6101d5565b6040516100aa9190610318565b6100e46100e136600461028d565b90565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016100aa565b426100a0565b6100a061011d36600461028d565b610201565b6100a06100e136600461028d565b6100a061013e366004610384565b73ffffffffffffffffffffffffffffffffffffffff163190565b6100a0600281565b6000808212156101d1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601660248201527f56616c7565206d75737420626520706f7369746976650000000000000000000060448201526064015b60405180910390fd5b5090565b606082826040516020016101ea9291906103c1565b604051602081830303815290604052905092915050565b60007f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8211156101d1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f56616c756520646f6573206e6f742066697420696e20616e20696e743235360060448201526064016101c8565b60006020828403121561029f57600080fd5b5035919050565b600080602083850312156102b957600080fd5b823567ffffffffffffffff808211156102d157600080fd5b818501915085601f8301126102e557600080fd5b8135818111156102f457600080fd5b86602082850101111561030657600080fd5b60209290920196919550909350505050565b600060208083528351808285015260005b8181101561034557858101830151858201604001528201610329565b5060006040828601015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168501019250505092915050565b60006020828403121561039657600080fd5b813573ffffffffffffffffffffffffffffffffffffffff811681146103ba57600080fd5b9392505050565b818382376000910190815291905056fea26469706673582212205c8cc54af5618a84b337c1de3f06a106c33ed6c7f7f945270507fae459068d5e64736f6c63430008100033",
+  "numDeployments": 2,
+  "solcInputHash": "99e5ec2fca31f3a2b0fc5b66a6a885cb",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"VERSION\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"input\",\"type\":\"bytes32\"}],\"name\":\"bytes32ToAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"input\",\"type\":\"bytes32\"}],\"name\":\"bytes32ToUint256\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"input\",\"type\":\"bytes\"}],\"name\":\"bytesToString\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"balanceAddress\",\"type\":\"address\"}],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBlockTimestamp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"value\",\"type\":\"int256\"}],\"name\":\"int256ToUint256\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"a\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"b\",\"type\":\"address\"}],\"name\":\"isAddressEqual\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"a\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"b\",\"type\":\"uint256\"}],\"name\":\"isEqual\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"a\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"b\",\"type\":\"uint256\"}],\"name\":\"isEqualOrGreaterThan\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"a\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"b\",\"type\":\"uint256\"}],\"name\":\"isEqualOrLessThan\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"a\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"b\",\"type\":\"uint256\"}],\"name\":\"isGreaterThan\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"a\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"b\",\"type\":\"uint256\"}],\"name\":\"isLessThan\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"condition\",\"type\":\"bool\"}],\"name\":\"not\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"condition\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"a\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"b\",\"type\":\"uint256\"}],\"name\":\"toggle\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"uint256ToInt256\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet. This contract functions allow to dynamically get the data during Shortcut transaction execution that usually would be read between transactions\",\"kind\":\"dev\",\"methods\":{\"bytes32ToAddress(bytes32)\":{\"details\":\"Returns `input` bytes32 as address.\"},\"bytes32ToUint256(bytes32)\":{\"details\":\"Returns `input` bytes32 as uint256.\"},\"bytesToString(bytes)\":{\"details\":\"Returns `input` bytes as string.\"},\"getBalance(address)\":{\"details\":\"Returns the ether balance of given `balanceAdderess`.\"},\"getBlockTimestamp()\":{\"details\":\"Returns the current block timestamp.\"},\"int256ToUint256(int256)\":{\"details\":\"Returns int256 `value` as uint256.\"},\"isAddressEqual(address,address)\":{\"details\":\"Returns bool for a == b\"},\"isEqual(uint256,uint256)\":{\"details\":\"Returns bool for a == b\"},\"isEqualOrGreaterThan(uint256,uint256)\":{\"details\":\"Returns bool for a >= b\"},\"isEqualOrLessThan(uint256,uint256)\":{\"details\":\"Returns bool for a <= b\"},\"isGreaterThan(uint256,uint256)\":{\"details\":\"Returns bool for a > b\"},\"isLessThan(uint256,uint256)\":{\"details\":\"Returns bool for a < b\"},\"not(bool)\":{\"details\":\"Returns the inverse bool\"},\"toggle(bool,uint256,uint256)\":{\"details\":\"Returns a value depending on a truth condition\"},\"uint256ToInt256(uint256)\":{\"details\":\"Returns uint256 `value` as int256.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/helpers/EnsoShortcutsHelpers.sol\":\"EnsoShortcutsHelpers\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":2000},\"remappings\":[]},\"sources\":{\"contracts/helpers/EnsoShortcutsHelpers.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.16;\\n\\n/**\\n * @dev SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet.\\n *\\n * This contract functions allow to dynamically get the data during Shortcut transaction execution\\n * that usually would be read between transactions\\n */\\ncontract EnsoShortcutsHelpers {\\n    uint256 public constant VERSION = 2;\\n\\n    /**\\n     * @dev Returns the ether balance of given `balanceAdderess`.\\n     */\\n    function getBalance(address balanceAddress) external view returns (uint256 balance) {\\n        return address(balanceAddress).balance;\\n    }\\n\\n    /**\\n     * @dev Returns the current block timestamp.\\n     */\\n    function getBlockTimestamp() external view returns (uint256 timestamp) {\\n        return block.timestamp;\\n    }\\n\\n    /**\\n     * @dev Returns a value depending on a truth condition\\n     */\\n    function toggle(bool condition, uint256 a, uint256 b) external pure returns (uint256) {\\n        if (condition) {\\n            return a;\\n        } else {\\n            return b;\\n        }\\n    }\\n\\n    /**\\n     * @dev Returns the inverse bool\\n     */\\n    function not(bool condition) external pure returns (bool) {\\n        return !condition;\\n    }\\n\\n    /**\\n     * @dev Returns bool for a == b\\n     */\\n    function isEqual(uint256 a, uint256 b) external pure returns (bool) {\\n        return a == b;\\n    }\\n\\n    /**\\n     * @dev Returns bool for a < b\\n     */\\n    function isLessThan(uint256 a, uint256 b) external pure returns (bool) {\\n        return a < b;\\n    }\\n\\n    /**\\n     * @dev Returns bool for a <= b\\n     */\\n    function isEqualOrLessThan(uint256 a, uint256 b) external pure returns (bool) {\\n        return a <= b;\\n    }\\n\\n    /**\\n     * @dev Returns bool for a > b\\n     */\\n    function isGreaterThan(uint256 a, uint256 b) external pure returns (bool) {\\n        return a > b;\\n    }\\n\\n    /**\\n     * @dev Returns bool for a >= b\\n     */\\n    function isEqualOrGreaterThan(uint256 a, uint256 b) external pure returns (bool) {\\n        return a >= b;\\n    }\\n\\n    /**\\n     * @dev Returns bool for a == b\\n     */\\n    function isAddressEqual(address a, address b) external pure returns (bool) {\\n        return a == b;\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes as string.\\n     */\\n    function bytesToString(bytes calldata input) external pure returns (string memory) {\\n        return string(abi.encodePacked(input));\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes32 as uint256.\\n     */\\n    function bytes32ToUint256(bytes32 input) external pure returns (uint256) {\\n        return uint256(input);\\n    }\\n\\n    /**\\n     * @dev Returns `input` bytes32 as address.\\n     */\\n    function bytes32ToAddress(bytes32 input) external pure returns (address) {\\n        return address(uint160(uint256(input)));\\n    }\\n\\n    /**\\n     * @dev Returns uint256 `value` as int256.\\n     */\\n    function uint256ToInt256(uint256 value) public pure returns (int256) {\\n        require(value <= uint256(type(int256).max), \\\"Value does not fit in an int256\\\");\\n        return int256(value);\\n    }\\n\\n    /**\\n     * @dev Returns int256 `value` as uint256.\\n     */\\n    function int256ToUint256(int256 value) public pure returns (uint256) {\\n        require(value >= 0, \\\"Value must be positive\\\");\\n        return uint256(value);\\n    }\\n}\\n\",\"keccak256\":\"0xfd8ee83c28d6d7fb9cda101cf04114cba086fcbbe3974833fbe6818fc5996e13\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5061060f806100206000396000f3fe608060405234801561001057600080fd5b50600436106101005760003560e01c8063b0ad3a5f11610097578063e9970b6c11610066578063e9970b6c14610227578063f158392614610239578063f8b2cb4f14610265578063ffa1ad741461028d57600080fd5b8063b0ad3a5f146101e2578063ba5f9e81146101f4578063dcf6a59214610207578063ddcd52201461021957600080fd5b80635ced058e116100d35780635ced058e146101805780636e7a43a3146101b6578063796b89b9146101c9578063b004cd0d146101cf57600080fd5b8063294dc2231461010557806339614e4f1461012b5780633ced224a1461014b578063503971021461016d575b600080fd5b6101186101133660046103db565b610295565b6040519081526020015b60405180910390f35b61013e6101393660046103f4565b61030a565b6040516101229190610466565b61015d6101593660046104d2565b1490565b6040519015158152602001610122565b61015d61017b3660046104d2565b101590565b61019161018e3660046103db565b90565b60405173ffffffffffffffffffffffffffffffffffffffff9091168152602001610122565b61015d6101c43660046104d2565b111590565b42610118565b6101186101dd3660046103db565b610336565b61015d6101f0366004610509565b1590565b610118610202366004610524565b6103c2565b61015d6102153660046104d2565b1090565b61011861018e3660046103db565b61015d6102353660046104d2565b1190565b61015d61024736600461057b565b73ffffffffffffffffffffffffffffffffffffffff90811691161490565b6101186102733660046105ae565b73ffffffffffffffffffffffffffffffffffffffff163190565b610118600281565b600080821215610306576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601660248201527f56616c7565206d75737420626520706f7369746976650000000000000000000060448201526064015b60405180910390fd5b5090565b6060828260405160200161031f9291906105c9565b604051602081830303815290604052905092915050565b60007f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff821115610306576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f56616c756520646f6573206e6f742066697420696e20616e20696e743235360060448201526064016102fd565b600083156103d15750816103d4565b50805b9392505050565b6000602082840312156103ed57600080fd5b5035919050565b6000806020838503121561040757600080fd5b823567ffffffffffffffff8082111561041f57600080fd5b818501915085601f83011261043357600080fd5b81358181111561044257600080fd5b86602082850101111561045457600080fd5b60209290920196919550909350505050565b600060208083528351808285015260005b8181101561049357858101830151858201604001528201610477565b5060006040828601015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168501019250505092915050565b600080604083850312156104e557600080fd5b50508035926020909101359150565b8035801515811461050457600080fd5b919050565b60006020828403121561051b57600080fd5b6103d4826104f4565b60008060006060848603121561053957600080fd5b610542846104f4565b95602085013595506040909401359392505050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461050457600080fd5b6000806040838503121561058e57600080fd5b61059783610557565b91506105a560208401610557565b90509250929050565b6000602082840312156105c057600080fd5b6103d482610557565b818382376000910190815291905056fea2646970667358221220b88e8f69e2c1b2f2216efaf432a2638f5b244514e0b4461b5be75ce04854bbcf64736f6c63430008100033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101005760003560e01c8063b0ad3a5f11610097578063e9970b6c11610066578063e9970b6c14610227578063f158392614610239578063f8b2cb4f14610265578063ffa1ad741461028d57600080fd5b8063b0ad3a5f146101e2578063ba5f9e81146101f4578063dcf6a59214610207578063ddcd52201461021957600080fd5b80635ced058e116100d35780635ced058e146101805780636e7a43a3146101b6578063796b89b9146101c9578063b004cd0d146101cf57600080fd5b8063294dc2231461010557806339614e4f1461012b5780633ced224a1461014b578063503971021461016d575b600080fd5b6101186101133660046103db565b610295565b6040519081526020015b60405180910390f35b61013e6101393660046103f4565b61030a565b6040516101229190610466565b61015d6101593660046104d2565b1490565b6040519015158152602001610122565b61015d61017b3660046104d2565b101590565b61019161018e3660046103db565b90565b60405173ffffffffffffffffffffffffffffffffffffffff9091168152602001610122565b61015d6101c43660046104d2565b111590565b42610118565b6101186101dd3660046103db565b610336565b61015d6101f0366004610509565b1590565b610118610202366004610524565b6103c2565b61015d6102153660046104d2565b1090565b61011861018e3660046103db565b61015d6102353660046104d2565b1190565b61015d61024736600461057b565b73ffffffffffffffffffffffffffffffffffffffff90811691161490565b6101186102733660046105ae565b73ffffffffffffffffffffffffffffffffffffffff163190565b610118600281565b600080821215610306576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601660248201527f56616c7565206d75737420626520706f7369746976650000000000000000000060448201526064015b60405180910390fd5b5090565b6060828260405160200161031f9291906105c9565b604051602081830303815290604052905092915050565b60007f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff821115610306576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f56616c756520646f6573206e6f742066697420696e20616e20696e743235360060448201526064016102fd565b600083156103d15750816103d4565b50805b9392505050565b6000602082840312156103ed57600080fd5b5035919050565b6000806020838503121561040757600080fd5b823567ffffffffffffffff8082111561041f57600080fd5b818501915085601f83011261043357600080fd5b81358181111561044257600080fd5b86602082850101111561045457600080fd5b60209290920196919550909350505050565b600060208083528351808285015260005b8181101561049357858101830151858201604001528201610477565b5060006040828601015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168501019250505092915050565b600080604083850312156104e557600080fd5b50508035926020909101359150565b8035801515811461050457600080fd5b919050565b60006020828403121561051b57600080fd5b6103d4826104f4565b60008060006060848603121561053957600080fd5b610542846104f4565b95602085013595506040909401359392505050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461050457600080fd5b6000806040838503121561058e57600080fd5b61059783610557565b91506105a560208401610557565b90509250929050565b6000602082840312156105c057600080fd5b6103d482610557565b818382376000910190815291905056fea2646970667358221220b88e8f69e2c1b2f2216efaf432a2638f5b244514e0b4461b5be75ce04854bbcf64736f6c63430008100033",
   "devdoc": {
     "details": "SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet. This contract functions allow to dynamically get the data during Shortcut transaction execution that usually would be read between transactions",
     "kind": "dev",
@@ -201,6 +393,30 @@
       },
       "int256ToUint256(int256)": {
         "details": "Returns int256 `value` as uint256."
+      },
+      "isAddressEqual(address,address)": {
+        "details": "Returns bool for a == b"
+      },
+      "isEqual(uint256,uint256)": {
+        "details": "Returns bool for a == b"
+      },
+      "isEqualOrGreaterThan(uint256,uint256)": {
+        "details": "Returns bool for a >= b"
+      },
+      "isEqualOrLessThan(uint256,uint256)": {
+        "details": "Returns bool for a <= b"
+      },
+      "isGreaterThan(uint256,uint256)": {
+        "details": "Returns bool for a > b"
+      },
+      "isLessThan(uint256,uint256)": {
+        "details": "Returns bool for a < b"
+      },
+      "not(bool)": {
+        "details": "Returns the inverse bool"
+      },
+      "toggle(bool,uint256,uint256)": {
+        "details": "Returns a value depending on a truth condition"
       },
       "uint256ToInt256(uint256)": {
         "details": "Returns uint256 `value` as int256."
