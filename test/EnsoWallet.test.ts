@@ -48,6 +48,6 @@ describe('EnsoWallet', async () => {
     impostor.EnsoWallet = EnsoWallet.attach(userWithEnsoWallet.EnsoWallet.address).connect(
       await ethers.getSigner(impostor.address)
     );
-    await expect(impostor.EnsoWallet.execute([], [])).to.be.revertedWith('NotCaller');
+    await expect(impostor.EnsoWallet.execute([], [])).to.be.revertedWith('NotOwner');
   });
 });
