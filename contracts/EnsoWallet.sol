@@ -2,21 +2,14 @@
 pragma solidity ^0.8.16;
 
 import "@ensofinance/weiroll/contracts/VM.sol";
-import "./libraries/StorageAPI.sol";
+import "./BasicWallet.sol";
 import "./interfaces/IEnsoWallet.sol";
 
-contract EnsoWallet is IEnsoWallet, VM {
+contract EnsoWallet is IEnsoWallet, VM, BasicWallet {
     using StorageAPI for bytes32;
-
-    // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967
-    bytes32 private constant OWNER = bytes32(uint256(keccak256("enso.wallet.owner")) - 1);
 
     // Already initialized
     error AlreadyInit();
-    // Not owner
-    error NotOwner();
-    // Invalid address
-    error InvalidAddress();
 
     function initialize(
         address caller,
@@ -33,11 +26,9 @@ contract EnsoWallet is IEnsoWallet, VM {
     function execute(bytes32[] calldata commands, bytes[] calldata state)
         external
         payable
+        onlyOwner
         returns (bytes[] memory returnData)
     {
-        if (msg.sender != OWNER.getAddress()) revert NotOwner();
         returnData = _execute(commands, state);
     }
-
-    receive() external payable {}
 }
