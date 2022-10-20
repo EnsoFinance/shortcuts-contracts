@@ -13,8 +13,9 @@ contract EnsoBeacon is IBeacon {
     address public pendingAdmin;
     address public pendingDelegate;
 
-    event CoreUpgraded(address newImplementation);
-    event FallbackUpgraded(address newImplementation);
+    event CoreUpgraded(address previousImplementation, address newImplementation);
+    event FallbackUpgraded(address previousImplementation, address newImplementation);
+    event EmergencyUpgrade(address previousImplementation, address newImplementation);
     event AdminTransferred(address previousAdmin, address newAdmin);
     event AdminTransferStarted(address previousAdmin, address newAdmin);
     event DelegationTransferred(address previousDelegate, address newDelegate);
@@ -48,24 +49,29 @@ contract EnsoBeacon is IBeacon {
         return coreImplementation;
     }
 
-    function emergencyStop() external onlyDelegate {
-        coreImplementation = fallbackImplementation;
-        emit CoreUpgraded(fallbackImplementation);
+    function emergencyUpgrade() external onlyDelegate {
+        address previousImplementation = coreImplementation;
+        address newImplementation = fallbackImplementation;
+        coreImplementation = newImplementation;
+        emit CoreUpgraded(previousImplementation, newImplementation);
+        emit EmergencyUpgrade(previousImplementation, newImplementation);
     }
 
     // TODO: update should probably be on a timelock for added security
     function upgradeCore(address newImplementation) external onlyAdmin {
         if (newImplementation == address(0)) revert InvalidImplementation();
         if (newImplementation == coreImplementation) revert InvalidImplementation();
+        address previousImplementation = coreImplementation;
         coreImplementation = newImplementation;
-        emit CoreUpgraded(newImplementation);
+        emit CoreUpgraded(previousImplementation, newImplementation);
     }
 
     function upgradeFallback(address newImplementation) external onlyAdmin {
         if (newImplementation == address(0)) revert InvalidImplementation();
         if (newImplementation == fallbackImplementation) revert InvalidImplementation();
+        address previousImplementation = fallbackImplementation;
         fallbackImplementation = newImplementation;
-        emit FallbackUpgraded(newImplementation);
+        emit FallbackUpgraded(previousImplementation, newImplementation);
     }
 
     function transferAdministration(address newAdmin) external onlyAdmin {
