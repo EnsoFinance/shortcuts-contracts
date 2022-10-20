@@ -23,6 +23,6 @@ contract EnsoWalletUser is Test {
         emit Deployed(EnsoWallet(factory.getAddress()));
         factory.deploy(commands, state);
         wallet = DumbEnsoWallet(factory.getAddress());
-        assertEq(wallet.caller(), address(this));
+        assertEq(wallet.owner(), address(this));
     }
 }

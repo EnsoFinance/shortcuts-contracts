@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.16;
 
+import "../BasicWallet.sol";
+
 contract Destroyer {
     function kill() public returns (bytes[] memory data) {
         selfdestruct(payable(msg.sender));
@@ -9,9 +11,8 @@ contract Destroyer {
     }
 }
 
-contract DestructEnsoWallet {
-    address public caller;
-    bool public init;
+contract DestructEnsoWallet is BasicWallet {
+    using StorageAPI for bytes32;
 
     event DelegateCallReturn(bool success, bytes ret);
 
@@ -19,20 +20,18 @@ contract DestructEnsoWallet {
     error NotCaller();
 
     function initialize(
-        address caller_,
+        address caller,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
-        if (init) revert AlreadyInit();
-        caller = caller_;
-        init = true;
+        if (OWNER.getAddress() != address(0)) revert AlreadyInit();
+        OWNER.setAddress(caller);
         if (commands.length != 0) {
             execute(commands, state);
         }
     }
 
-    function execute(bytes32[] calldata commands, bytes[] calldata state) public returns (bytes[] memory data) {
-        if (msg.sender != caller) revert NotCaller();
+    function execute(bytes32[] calldata commands, bytes[] calldata state) public onlyOwner returns (bytes[] memory data) {
         Destroyer destroyer = new Destroyer();
         (bool success, bytes memory ret) = address(destroyer).delegatecall(
             abi.encodeWithSelector(destroyer.kill.selector, commands, state)

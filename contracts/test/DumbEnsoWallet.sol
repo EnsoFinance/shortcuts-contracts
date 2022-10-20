@@ -2,8 +2,10 @@
 
 pragma solidity ^0.8.16;
 
-contract DumbEnsoWallet {
-    address public caller;
+import "../BasicWallet.sol";
+
+contract DumbEnsoWallet is BasicWallet {
+    using StorageAPI for bytes32;
 
     event VMData(bytes32[] commands, bytes[] state);
     event SenderData(address sender, uint256 value);
@@ -16,12 +18,12 @@ contract DumbEnsoWallet {
     error InvalidAddress();
 
     function initialize(
-        address caller_,
+        address caller,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
-        if (caller != address(0)) revert AlreadyInit();
-        caller = caller_;
+        if (OWNER.getAddress() != address(0)) revert AlreadyInit();
+        OWNER.setAddress(caller);
         if (commands.length != 0) {
             execute(commands, state);
         }
@@ -42,6 +44,4 @@ contract DumbEnsoWallet {
         // if (msg.sender != caller) revert NotCaller();
         return state;
     }
-
-    receive() external payable {}
 }
