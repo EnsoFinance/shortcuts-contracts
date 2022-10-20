@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
-import { VM } from "@ensofinance/weiroll/contracts/VM.sol";
-import { ERC1271 } from "./wallet/ERC1271.sol";
-import { BasicWallet, StorageAPI } from "./wallet/BasicWallet.sol";
-import { IEnsoWallet } from "./interfaces/IEnsoWallet.sol";
+import "@ensofinance/weiroll/contracts/VM.sol";
+import "./wallet/ERC1271.sol";
+import "./wallet/BasicWallet.sol";
+import "./interfaces/IEnsoWallet.sol";
 
 contract EnsoWallet is IEnsoWallet, VM, ERC1271, BasicWallet {
     using StorageAPI for bytes32;
