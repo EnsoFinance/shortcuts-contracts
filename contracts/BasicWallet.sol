@@ -4,9 +4,11 @@ pragma solidity ^0.8.16;
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
+import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "./libraries/StorageAPI.sol";
 
-contract BasicWallet {
+contract BasicWallet is ERC721Holder, ERC1155Holder {
     using StorageAPI for bytes32;
     using SafeERC20 for IERC20;
 
@@ -61,6 +63,10 @@ contract BasicWallet {
     ) external onlyOwner {
         // safeBatchTransferFrom will validate the array lengths
         erc1155.safeBatchTransferFrom(address(this), msg.sender, ids, amounts, new bytes(0));
+    }
+
+    function owner() public view returns (address) {
+        return OWNER.getAddress();
     }
 
     receive() external payable {}
