@@ -5,27 +5,32 @@ pragma solidity ^0.8.16;
 import "./interfaces/IBeacon.sol";
 
 contract EnsoBeacon is IBeacon {
-    address public governance;
-    address public executive;
+    address public admin;
+    address public delegate;
     address public coreImplementation;
     address public fallbackImplementation;
 
-    event NewCore(address newImplementation);
-    event NewFallback(address newImplementation);
-    event NewGovernance(address newGovernance);
-    event NewExecutive(address newExecutive);
+    address public pendingAdmin;
+    address public pendingDelegate;
+
+    event CoreUpgraded(address newImplementation);
+    event FallbackUpgraded(address newImplementation);
+    event AdminTransferred(address previousAdmin, address newAdmin);
+    event AdminTransferStarted(address previousAdmin, address newAdmin);
+    event DelegationTransferred(address previousDelegate, address newDelegate);
+    event DelegationTransferStarted(address previousDelegate, address newDelegate);
 
     error InvalidImplementation();
     error InvalidAccount();
     error NotPermitted();
 
-    modifier onlyGovernance {
-        if (msg.sender != governance) revert NotPermitted();
+    modifier onlyAdmin {
+        if (msg.sender != admin) revert NotPermitted();
         _;
     }
 
-    modifier onlyExecutive {
-        if (msg.sender != executive) revert NotPermitted();
+    modifier onlyDelegate {
+        if (msg.sender != delegate) revert NotPermitted();
         _;
     }
 
@@ -33,8 +38,8 @@ contract EnsoBeacon is IBeacon {
         address coreImplementation_,
         address fallbackImplementation_
     ) {
-        governance = msg.sender;
-        executive = msg.sender;
+        admin = msg.sender;
+        delegate = msg.sender;
         coreImplementation = coreImplementation_;
         fallbackImplementation = fallbackImplementation_;
     }
@@ -43,39 +48,53 @@ contract EnsoBeacon is IBeacon {
         return coreImplementation;
     }
 
-    function emergencyStop() external onlyExecutive {
+    function emergencyStop() external onlyDelegate {
         coreImplementation = fallbackImplementation;
-        emit NewCore(fallbackImplementation);
+        emit CoreUpgraded(fallbackImplementation);
     }
 
     // TODO: update should probably be on a timelock for added security
-    function updateCore(address newImplementation) external onlyGovernance {
+    function upgradeCore(address newImplementation) external onlyAdmin {
         if (newImplementation == address(0)) revert InvalidImplementation();
         if (newImplementation == coreImplementation) revert InvalidImplementation();
         coreImplementation = newImplementation;
-        emit NewCore(newImplementation);
+        emit CoreUpgraded(newImplementation);
     }
 
-    function updateFallback(address newImplementation) external onlyGovernance {
+    function upgradeFallback(address newImplementation) external onlyAdmin {
         if (newImplementation == address(0)) revert InvalidImplementation();
         if (newImplementation == fallbackImplementation) revert InvalidImplementation();
         fallbackImplementation = newImplementation;
-        emit NewFallback(newImplementation);
+        emit FallbackUpgraded(newImplementation);
     }
 
-    // TODO: switch to 2 step process?
-    function updateGovernance(address newGovernance) external onlyGovernance {
-        if (newGovernance == address(0)) revert InvalidAccount();
-        if (newGovernance == executive) revert InvalidAccount();
-        executive = newGovernance;
-        emit NewGovernance(newGovernance);
+    function transferAdministration(address newAdmin) external onlyAdmin {
+        if (newAdmin == address(0)) revert InvalidAccount();
+        if (newAdmin == admin) revert InvalidAccount();
+        pendingAdmin = newAdmin;
+        emit AdminTransferStarted(admin, newAdmin);
     }
 
-    // TODO: switch to 2 step process?
-    function updateExecutive(address newExecutive) external onlyGovernance {
-        if (newExecutive == address(0)) revert InvalidAccount();
-        if (newExecutive == executive) revert InvalidAccount();
-        executive = newExecutive;
-        emit NewExecutive(newExecutive);
+    function acceptAdministration() external {
+        if (msg.sender != pendingAdmin) revert NotPermitted();
+        delete pendingAdmin;
+        address previousAdmin = admin;
+        admin = msg.sender;
+        emit AdminTransferred(previousAdmin, msg.sender);
+    }
+
+    function transferDelegation(address newDelegate) external onlyAdmin {
+        if (newDelegate == address(0)) revert InvalidAccount();
+        if (newDelegate == delegate) revert InvalidAccount();
+        pendingDelegate = newDelegate;
+        emit DelegationTransferStarted(delegate, newDelegate);
+    }
+
+    function acceptDelegation() external {
+        if (msg.sender != pendingDelegate) revert NotPermitted();
+        delete pendingDelegate;
+        address previousDelegate = delegate;
+        delegate = msg.sender;
+        emit DelegationTransferred(previousDelegate, msg.sender);
     }
 }
