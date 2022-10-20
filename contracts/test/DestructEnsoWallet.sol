@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.16;
 
-import "../BasicWallet.sol";
+import "../wallet/BasicWallet.sol";
 
 contract Destroyer {
     function kill() public returns (bytes[] memory data) {

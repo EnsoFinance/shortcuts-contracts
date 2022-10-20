@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
-import "./libraries/StorageAPI.sol";
+import "../libraries/StorageAPI.sol";
 
 contract BasicWallet is ERC721Holder, ERC1155Holder {
     using StorageAPI for bytes32;
@@ -65,7 +65,7 @@ contract BasicWallet is ERC721Holder, ERC1155Holder {
         erc1155.safeBatchTransferFrom(address(this), msg.sender, ids, amounts, new bytes(0));
     }
 
-    function owner() public view returns (address) {
+    function owner() external view returns (address) {
         return OWNER.getAddress();
     }
 
