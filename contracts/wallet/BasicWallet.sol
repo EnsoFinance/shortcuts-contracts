@@ -6,23 +6,14 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
-import "../libraries/StorageAPI.sol";
+import "../access/Ownable.sol";
 
-contract BasicWallet is ERC721Holder, ERC1155Holder {
+contract BasicWallet is Ownable, ERC721Holder, ERC1155Holder {
     using StorageAPI for bytes32;
     using SafeERC20 for IERC20;
 
-    // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967
-    bytes32 internal constant OWNER = bytes32(uint256(keccak256("enso.wallet.owner")) - 1);
-
-    error NotOwner();
     error WithdrawFailed();
     error InvalidArrayLength();
-
-    modifier onlyOwner {
-        if (msg.sender != OWNER.getAddress()) revert NotOwner();
-        _;
-    }
 
     function withdrawETH(uint256 amount) external onlyOwner {
         (bool success, ) = msg.sender.call{ value : amount }("");
@@ -63,10 +54,6 @@ contract BasicWallet is ERC721Holder, ERC1155Holder {
     ) external onlyOwner {
         // safeBatchTransferFrom will validate the array lengths
         erc1155.safeBatchTransferFrom(address(this), msg.sender, ids, amounts, new bytes(0));
-    }
-
-    function owner() external view returns (address) {
-        return OWNER.getAddress();
     }
 
     receive() external payable {}

@@ -4,11 +4,14 @@ pragma solidity ^0.8.16;
 import "forge-std/Test.sol";
 import {EnsoWalletFactory} from "../../contracts/EnsoWalletFactory.sol";
 import {EnsoBeacon} from "../../contracts/EnsoBeacon.sol";
-import {BasicWallet} from "../../contracts/BasicWallet.sol";
-import {DumbEnsoWallet} from "../../contracts/test/DumbEnsoWallet.sol";
 import {EnsoWallet} from "../../contracts/EnsoWallet.sol";
+import {BasicWallet} from "../../contracts/wallet/BasicWallet.sol";
+import {DumbEnsoWallet} from "../../contracts/test/DumbEnsoWallet.sol";
 import {DestructEnsoWallet} from "../../contracts/test/DestructEnsoWallet.sol";
+import {UpgradeableProxy} from "../../contracts/proxy/UpgradeableProxy.sol";
 import {EnsoWalletUser} from "./EnsoWalletUser.t.sol";
+import {OwnershipTester} from "../../contracts/test/OwnershipTester.sol";
+import {MockFactoryUpgrade} from "../../contracts/test/MockFactoryUpgrade.sol";
 import {MockERC20, IERC20} from "../../contracts/test/MockERC20.sol";
 import {MockERC721, IERC721} from "../../contracts/test/MockERC721.sol";
 import {MockERC1155, IERC1155} from "../../contracts/test/MockERC1155.sol";
@@ -19,6 +22,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     BasicWallet internal basicWalletReference;
     DumbEnsoWallet internal ensoWalletReference;
     DumbEnsoWallet internal ensoWallet;
+    EnsoWalletFactory internal factoryReference;
     EnsoWalletFactory internal factory;
     EnsoWalletFactory internal destructFactory;
     EnsoWalletFactory internal destructFactory2;
@@ -29,6 +33,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     DestructEnsoWallet internal destructEnsoWalletReference;
     DestructEnsoWallet internal destroyedEnsoWallet;
     DestructEnsoWallet internal destructEnsoWallet;
+    MockFactoryUpgrade internal mockFactoryReference;
     MockERC20 internal mockERC20;
     MockERC721 internal mockERC721;
     MockERC1155 internal mockERC1155;
@@ -50,7 +55,10 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         destructEnsoWalletReference = new DestructEnsoWallet();
         beacon = new EnsoBeacon(address(ensoWalletReference), address(basicWalletReference));
         destructBeacon = new EnsoBeacon(address(destructEnsoWalletReference), address(basicWalletReference));
-        factory = new EnsoWalletFactory(address(beacon));
+        factoryReference = new EnsoWalletFactory(address(beacon));
+        mockFactoryReference = new MockFactoryUpgrade(address(beacon));
+        factory = EnsoWalletFactory(address(new UpgradeableProxy(address(factoryReference))));
+        factory.initialize();
         destructFactory = new EnsoWalletFactory(address(destructBeacon));
         destructFactory2 = new EnsoWalletFactory(address(destructBeacon));
         for (uint256 i = 0; i < 50; i++) {
@@ -134,6 +142,22 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         ids[0] = 0;
         amounts[0] = 1;
         ensoWallet.withdrawERC1155s(mockERC1155, ids, amounts);
+    }
+
+    function testUpgradeFactory() public {
+        factory.upgradeTo(address(mockFactoryReference));
+        assertTrue(MockFactoryUpgrade(address(factory)).newFunctionTest());
+    }
+
+    function testFailUpgradeFactoryNotOwner() public {
+        OwnershipTester ownershipTester = new OwnershipTester();
+        factory.transferOwnership(address(ownershipTester));
+        ownershipTester.acceptOwnership(address(factory));
+        factory.upgradeTo(address(mockFactoryReference));
+    }
+
+    function testFailUpgradeFactoryNotUUPS() public {
+        factory.upgradeTo(address(ensoWallet));
     }
 
     function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {

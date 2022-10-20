@@ -55,6 +55,7 @@ export async function setupUsersWithEnsoWallets<
 
 export const setup = deployments.createFixture(async () => {
   const {deployer} = await getNamedAccounts();
+  const {deterministic} = deployments;
 
   await deployments.deploy('Events', {
     from: deployer,
@@ -74,9 +75,21 @@ export const setup = deployments.createFixture(async () => {
     autoMine: true,
   });
 
+  const factoryImplementation = await ethers.getContract('EnsoWalletFactory')
+
+  const {deploy: deployUpgradeableProxy, address: UpgradeableProxyAddress} = await deterministic('UpgradeableProxy', {
+    from: deployer,
+    args: [factoryImplementation.address],
+    log: true,
+    autoMine: true,
+    skipIfAlreadyDeployed: true,
+  });
+
+  await deployUpgradeableProxy();
+
   const contracts = {
     core: {
-      EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContract('EnsoWalletFactory'),
+      EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContractAt('EnsoWalletFactory', UpgradeableProxyAddress),
       EnsoWallet: <EnsoWallet>await ethers.getContract('EnsoWallet'),
     },
     utils: {
@@ -89,6 +102,8 @@ export const setup = deployments.createFixture(async () => {
       TupleFactory: <TupleFactory>await ethers.getContract('TupleFactory'),
     },
   };
+
+  await contracts.core.EnsoWalletFactory.initialize();
 
   const [user, secondUserWithEnsoWallet, ...users] = await setupUsersWithEnsoWallets(
     await getUnnamedAccounts(),

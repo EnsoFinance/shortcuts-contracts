@@ -2,18 +2,29 @@
 
 pragma solidity ^0.8.16;
 
+import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "./libraries/BeaconClones.sol";
+import "./access/Ownable.sol";
 import "./interfaces/IEnsoWallet.sol";
 
-contract EnsoWalletFactory {
+contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
+    using StorageAPI for bytes32;
     using BeaconClones for address;
 
     address public immutable ensoBeacon;
 
     event Deployed(IEnsoWallet instance);
 
+    // Already initialized
+    error AlreadyInit();
+
     constructor(address ensoBeacon_) {
         ensoBeacon = ensoBeacon_;
+    }
+
+    function initialize() external {
+        if (OWNER.getAddress() != address(0)) revert AlreadyInit();
+        OWNER.setAddress(msg.sender);
     }
 
     function deploy(
@@ -34,5 +45,10 @@ contract EnsoWalletFactory {
             user,
             address(this)
         ));
+    }
+
+    function _authorizeUpgrade(address newImplementation) internal view override {
+        (newImplementation);
+        if (msg.sender != OWNER.getAddress()) revert NotOwner();
     }
 }
