@@ -83,95 +83,65 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         (bool success,) = address(ensoWallet).call{ value : 10**18 }("");
         require(success);
         assertEq(address(ensoWallet).balance, 10**18);
-
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](1);
-        notes[0].protocol = BasicWallet.Protocol.ETH; // Unecessary step since Protocol.ETH = 0, which is default
-        notes[0].amounts = new uint256[](1);
-        notes[0].amounts[0] = 10**18;
-        ensoWallet.withdraw(notes);
-
+        ensoWallet.withdrawETH(10**18);
         assertEq(address(ensoWallet).balance, 0);
     }
 
     function testFailWithdrawETH() public {
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](1);
-        notes[0].protocol = BasicWallet.Protocol.ETH;
-        notes[0].amounts = new uint256[](1);
-        notes[0].amounts[0] = 10**18;
-        ensoWallet.withdraw(notes);
+        ensoWallet.withdrawETH(10**18);
     }
 
     function testWithdrawERC20() public {
         mockERC20.transfer(address(ensoWallet), 10**18);
         assertEq(mockERC20.balanceOf(address(ensoWallet)), 10**18);
-
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](1);
-        notes[0].protocol = BasicWallet.Protocol.ERC20;
-        notes[0].token = address(mockERC20);
-        notes[0].amounts = new uint256[](1);
-        notes[0].amounts[0] = 10**18;
-        ensoWallet.withdraw(notes);
-
+        IERC20[] memory erc20s = new IERC20[](1);
+        uint256[] memory amounts = new uint256[](1);
+        erc20s[0] = mockERC20;
+        amounts[0] = 10**18;
+        ensoWallet.withdrawERC20s(erc20s, amounts);
         assertEq(mockERC20.balanceOf(address(ensoWallet)), 0);
     }
 
     function testFailWithdrawERC20() public {
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](1);
-        notes[0].protocol = BasicWallet.Protocol.ERC20;
-        notes[0].token = address(mockERC20);
-        notes[0].amounts = new uint256[](1);
-        notes[0].amounts[0] = 10**18;
-        ensoWallet.withdraw(notes);
+        IERC20[] memory erc20s = new IERC20[](1);
+        uint256[] memory amounts = new uint256[](1);
+        erc20s[0] = mockERC20;
+        amounts[0] = 10**18;
+        ensoWallet.withdrawERC20s(erc20s, amounts);
     }
 
     function testWithdrawERC721() public {
         mockERC721.safeTransferFrom(address(this), address(ensoWallet), 0);
         assertEq(mockERC721.balanceOf(address(ensoWallet)), 1);
-
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](1);
-        notes[0].protocol = BasicWallet.Protocol.ERC721;
-        notes[0].token = address(mockERC721);
-        notes[0].ids = new uint256[](1);
-        notes[0].ids[0] = 0; // Unnecessary step as defaualt is 0
-        ensoWallet.withdraw(notes);
-
+        uint256[] memory ids = new uint256[](1);
+        ids[0] = 0;
+        ensoWallet.withdrawERC721s(mockERC721, ids);
         assertEq(mockERC721.balanceOf(address(ensoWallet)), 0);
     }
 
     function testFailWithdrawERC721() public {
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](1);
-        notes[0].protocol = BasicWallet.Protocol.ERC721;
-        notes[0].token = address(mockERC721);
-        notes[0].ids = new uint256[](1);
-        notes[0].ids[0] = 0;
-        ensoWallet.withdraw(notes);
+        uint256[] memory ids = new uint256[](1);
+        ids[0] = 0;
+        ensoWallet.withdrawERC721s(mockERC721, ids);
     }
 
     function testWithdrawERC1155() public {
         mockERC1155.safeTransferFrom(address(this), address(ensoWallet), 0, 1, "");
         assertEq(mockERC1155.balanceOf(address(ensoWallet), 0), 1);
-
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](1);
-        notes[0].protocol = BasicWallet.Protocol.ERC1155;
-        notes[0].token = address(mockERC1155);
-        notes[0].ids = new uint256[](1);
-        notes[0].ids[0] = 0;
-        notes[0].amounts = new uint256[](1);
-        notes[0].amounts[0] = 1;
-        ensoWallet.withdraw(notes);
-
+        uint256[] memory ids = new uint256[](1);
+        uint256[] memory amounts = new uint256[](1);
+        ids[0] = 0;
+        amounts[0] = 1;
+        ensoWallet.withdrawERC1155s(mockERC1155, ids, amounts);
         assertEq(mockERC1155.balanceOf(address(ensoWallet), 0), 0);
     }
 
     function testFailWithdrawERC1155() public {
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](1);
-        notes[0].protocol = BasicWallet.Protocol.ERC1155;
-        notes[0].token = address(mockERC1155);
-        notes[0].ids = new uint256[](1);
-        notes[0].ids[0] = 0;
-        notes[0].amounts = new uint256[](1);
-        notes[0].amounts[0] = 1;
-        ensoWallet.withdraw(notes);
+        uint256[] memory ids = new uint256[](1);
+        uint256[] memory amounts = new uint256[](1);
+        ids[0] = 0;
+        amounts[0] = 1;
+        ensoWallet.withdrawERC1155s(mockERC1155, ids, amounts);
     }
 
     function testWithdrawAll() public {
