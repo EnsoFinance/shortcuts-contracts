@@ -15,45 +15,56 @@ contract BasicWallet is Ownable, ERC721Holder, ERC1155Holder {
     error WithdrawFailed();
     error InvalidArrayLength();
 
-    function withdrawETH(uint256 amount) external onlyOwner {
-        (bool success, ) = msg.sender.call{ value : amount }("");
-        if (!success) revert WithdrawFailed();
+    enum Protocol {
+        ETH,
+        ERC20,
+        ERC721,
+        ERC1155
     }
 
-    function withdrawERC20s(
-        IERC20[] memory erc20s,
-        uint256[] memory amounts
-    ) external onlyOwner {
-        uint256 num = erc20s.length;
-        if (amounts.length != num) revert InvalidArrayLength();
-        for (uint256 i; i < num; ) {
-            erc20s[i].safeTransfer(msg.sender, amounts[i]);
-            unchecked {
-                ++i;
+    struct Note {
+        Protocol protocol;
+        address token;
+        uint256[] ids;
+        uint256[] amounts;
+    }
+
+    function withdraw(Note[] memory notes) external onlyOwner {
+        uint256 notesLength = notes.length;
+        uint256 idsLength;
+
+        Note memory note;
+        Protocol protocol;
+        uint256[] memory ids;
+        uint256[] memory amounts;
+        for (uint256 i; i < notesLength; ) {
+            note = notes[i];
+            protocol = note.protocol;
+            amounts = note.amounts;
+            ids = note.ids;
+            if (protocol == Protocol.ETH) {
+                if (amounts.length != 1) revert InvalidArrayLength();
+                (bool success, ) = msg.sender.call{ value : amounts[0] }("");
+                if (!success) revert WithdrawFailed();
+            } else if (protocol == Protocol.ERC20) {
+                if (amounts.length != 1) revert InvalidArrayLength();
+                IERC20(note.token).safeTransfer(msg.sender, amounts[0]);
+            } else if (protocol == Protocol.ERC721) {
+                idsLength = ids.length;
+                for (uint j; j < idsLength; ) {
+                    IERC721(note.token).safeTransferFrom(address(this), msg.sender, ids[j]);
+                    unchecked { ++j; }
+                }
+            } else if (protocol == Protocol.ERC1155) {
+                idsLength = ids.length;
+                if (amounts.length != idsLength) revert InvalidArrayLength();
+                for (uint j; j < idsLength; ) {
+                    IERC1155(note.token).safeTransferFrom(address(this), msg.sender, ids[j], amounts[j], "");
+                    unchecked { ++j; }
+                }
             }
+            unchecked { ++i; }
         }
-    }
-
-    function withdrawERC721s(
-        IERC721 erc721,
-        uint256[] memory ids
-    ) external onlyOwner {
-        uint256 num = ids.length;
-        for (uint256 i; i < num; ) {
-            erc721.safeTransferFrom(address(this), msg.sender, ids[i]);
-            unchecked {
-                ++i;
-            }
-        }
-    }
-
-    function withdrawERC1155s(
-        IERC1155 erc1155,
-        uint256[] memory ids,
-        uint256[] memory amounts
-    ) external onlyOwner {
-        // safeBatchTransferFrom will validate the array lengths
-        erc1155.safeBatchTransferFrom(address(this), msg.sender, ids, amounts, new bytes(0));
     }
 
     receive() external payable {}
