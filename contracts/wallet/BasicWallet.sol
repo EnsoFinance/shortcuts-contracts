@@ -33,13 +33,13 @@ contract BasicWallet is Ownable, ERC721Holder, ERC1155Holder {
     ////////////////////////////////////////////////////
 
     function withdraw(Note[] memory notes) external onlyOwner {
-        uint256 notesLength = notes.length;
-
         Note memory note;
         Protocol protocol;
         uint256[] memory ids;
         uint256[] memory amounts;
-        for (uint256 i; i < notesLength; ) {
+
+        uint256 length = notes.length;
+        for (uint256 i; i < length; ) {
             note = notes[i];
             protocol = note.protocol;
             if (protocol == Protocol.ETH) {
