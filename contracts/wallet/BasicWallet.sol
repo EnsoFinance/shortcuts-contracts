@@ -9,7 +9,6 @@ import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "../access/Ownable.sol";
 
 contract BasicWallet is Ownable, ERC721Holder, ERC1155Holder {
-    using StorageAPI for bytes32;
     using SafeERC20 for IERC20;
 
     error WithdrawFailed();
