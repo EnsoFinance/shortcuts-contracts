@@ -11,9 +11,6 @@ import "../access/Ownable.sol";
 contract BasicWallet is Ownable, ERC721Holder, ERC1155Holder {
     using SafeERC20 for IERC20;
 
-    error WithdrawFailed();
-    error InvalidArrayLength();
-
     enum Protocol {
         ETH,
         ERC20,
@@ -27,6 +24,9 @@ contract BasicWallet is Ownable, ERC721Holder, ERC1155Holder {
         uint256[] ids;
         uint256[] amounts;
     }
+
+    error WithdrawFailed();
+    error InvalidArrayLength();
 
     ////////////////////////////////////////////////////
     // External functions //////////////////////////////
