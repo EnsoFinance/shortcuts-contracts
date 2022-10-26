@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.16;
 
-import "../wallet/BasicWallet.sol";
+import "../wallet/MinimalWallet.sol";
 
-contract DumbEnsoWallet is BasicWallet {
+contract DumbEnsoWallet is MinimalWallet {
     using StorageAPI for bytes32;
 
     event VMData(bytes32[] commands, bytes[] state);

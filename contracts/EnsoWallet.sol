@@ -3,10 +3,10 @@ pragma solidity ^0.8.16;
 
 import "@ensofinance/weiroll/contracts/VM.sol";
 import "./wallet/ERC1271.sol";
-import "./wallet/BasicWallet.sol";
+import "./wallet/MinimalWallet.sol";
 import "./interfaces/IEnsoWallet.sol";
 
-contract EnsoWallet is IEnsoWallet, VM, ERC1271, BasicWallet {
+contract EnsoWallet is IEnsoWallet, VM, ERC1271, MinimalWallet {
     using StorageAPI for bytes32;
 
     // Already initialized
