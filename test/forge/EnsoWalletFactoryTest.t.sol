@@ -160,7 +160,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         assertEq(mockERC1155.balanceOf(address(ensoWallet), 0), 1);
 
         // Setup withdrawal notes
-        MinimalWallet.Note[] memory notes = new MinimalWallet.Note[](4);
+        MinimalWallet.TransferNote[] memory notes = new MinimalWallet.TransferNote[](4);
 
         notes[0].protocol = MinimalWallet.Protocol.ETH;
         notes[0].amounts = new uint256[](1);
