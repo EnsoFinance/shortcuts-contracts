@@ -3,27 +3,40 @@
 pragma solidity ^0.8.16;
 
 import "./interfaces/IBeacon.sol";
+import "./interfaces/IOwnable.sol";
+import "./interfaces/IUUPS.sol";
 
 contract EnsoBeacon is IBeacon {
     address public admin;
     address public delegate;
+    address public factory;
     address public coreImplementation;
     address public fallbackImplementation;
 
     address public pendingAdmin;
     address public pendingDelegate;
+    address public pendingCoreImplementation;
+    address public pendingFactoryImplementation;
+    bytes public pendingFactoryUpgradeData;
+
+    uint256 public delay;
+    uint256 public upgradeTimestamp;
 
     event CoreUpgraded(address previousImplementation, address newImplementation);
     event FallbackUpgraded(address previousImplementation, address newImplementation);
-    event EmergencyUpgrade(address previousImplementation, address newImplementation);
-    event AdminTransferred(address previousAdmin, address newAdmin);
-    event AdminTransferStarted(address previousAdmin, address newAdmin);
+    event EmergencyUpgrade();
+    event AdministrationTransferred(address previousAdmin, address newAdmin);
+    event AdministrationTransferStarted(address previousAdmin, address newAdmin);
     event DelegationTransferred(address previousDelegate, address newDelegate);
     event DelegationTransferStarted(address previousDelegate, address newDelegate);
+    event Factory(address newFactory);
+    event Delay(uint256 newDelay);
 
     error InvalidImplementation();
     error InvalidAccount();
     error NotPermitted();
+    error NoPendingUpgrade();
+    error Wait();
 
     modifier onlyAdmin {
         if (msg.sender != admin) revert NotPermitted();
@@ -50,20 +63,46 @@ contract EnsoBeacon is IBeacon {
     }
 
     function emergencyUpgrade() external onlyDelegate {
-        address previousImplementation = coreImplementation;
-        address newImplementation = fallbackImplementation;
-        coreImplementation = newImplementation;
-        emit CoreUpgraded(previousImplementation, newImplementation);
-        emit EmergencyUpgrade(previousImplementation, newImplementation);
+        _upgradeCore(fallbackImplementation);
+        emit EmergencyUpgrade();
     }
 
-    // TODO: update should probably be on a timelock for added security
-    function upgradeCore(address newImplementation) external onlyAdmin {
+    function finalizeUpgrade() external {
+        // Load timestamp and check
+        uint256 timestamp = upgradeTimestamp;
+        if (timestamp == 0) revert NoPendingUpgrade();
+        if (timestamp + delay > block.timestamp) revert Wait();
+        delete upgradeTimestamp;
+        // Load implementation data and check
+        address newImplementation = pendingCoreImplementation;
+        address factoryImplementation = pendingFactoryImplementation;
+        bytes memory data = pendingFactoryUpgradeData;
+        if (newImplementation == address(0)) revert InvalidImplementation(); // sanity check
+        delete pendingCoreImplementation;
+        delete pendingFactoryImplementation;
+        delete pendingFactoryUpgradeData;
+        // Upgrade
+        _upgradeCore(newImplementation);
+        if (factoryImplementation != address(0)) {
+            if (data.length > 0) {
+                IUUPS(factory).upgradeToAndCall(newImplementation, data);
+            } else {
+                IUUPS(factory).upgradeTo(factoryImplementation);
+            }
+        }
+    }
+
+    function upgradeCore(
+        address newImplementation,
+        address factoryImplementation,
+        bytes memory data
+    ) external onlyAdmin {
         if (newImplementation == address(0)) revert InvalidImplementation();
-        if (newImplementation == coreImplementation) revert InvalidImplementation();
-        address previousImplementation = coreImplementation;
-        coreImplementation = newImplementation;
-        emit CoreUpgraded(previousImplementation, newImplementation);
+        upgradeTimestamp = block.timestamp;
+        pendingCoreImplementation = newImplementation;
+        // If the following is null data, at least we ensure that any old pending values are overwritten
+        pendingFactoryImplementation = factoryImplementation;
+        pendingFactoryUpgradeData = data;
     }
 
     function upgradeFallback(address newImplementation) external onlyAdmin {
@@ -78,7 +117,7 @@ contract EnsoBeacon is IBeacon {
         if (newAdmin == address(0)) revert InvalidAccount();
         if (newAdmin == admin) revert InvalidAccount();
         pendingAdmin = newAdmin;
-        emit AdminTransferStarted(admin, newAdmin);
+        emit AdministrationTransferStarted(admin, newAdmin);
     }
 
     function acceptAdministration() external {
@@ -86,7 +125,18 @@ contract EnsoBeacon is IBeacon {
         delete pendingAdmin;
         address previousAdmin = admin;
         admin = msg.sender;
-        emit AdminTransferred(previousAdmin, msg.sender);
+        emit AdministrationTransferred(previousAdmin, msg.sender);
+    }
+
+    function renounceAdministration() external onlyAdmin {
+        address previousAdmin = admin;
+        address previousDelegate = delegate;
+        delete admin;
+        delete delegate;
+        delete pendingAdmin;
+        delete pendingDelegate;
+        emit AdministrationTransferred(previousAdmin, address(0));
+        emit DelegationTransferred(previousDelegate, address(0));
     }
 
     function transferDelegation(address newDelegate) external onlyAdmin {
@@ -102,5 +152,31 @@ contract EnsoBeacon is IBeacon {
         address previousDelegate = delegate;
         delegate = msg.sender;
         emit DelegationTransferred(previousDelegate, msg.sender);
+    }
+
+    function transferOwnership(address ownable, address newOwner) external onlyAdmin {
+        IOwnable(ownable).transferOwnership(newOwner);
+    }
+
+    function acceptOwnership(address ownable) external onlyAdmin {
+        IOwnable(ownable).acceptOwnership();
+    }
+
+    function setFactory(address newFactory) external onlyAdmin {
+        factory = newFactory;
+        emit Factory(newFactory);
+    }
+
+    function setDelay(uint256 newDelay) external onlyAdmin {
+        delay = newDelay;
+        emit Delay(newDelay);
+    }
+
+    function _upgradeCore(address newImplementation) internal {
+        if (newImplementation == address(0)) revert InvalidImplementation();
+        //if (newImplementation == coreImplementation) revert InvalidImplementation();
+        address previousImplementation = coreImplementation;
+        coreImplementation = newImplementation;
+        emit CoreUpgraded(previousImplementation, newImplementation);
     }
 }
