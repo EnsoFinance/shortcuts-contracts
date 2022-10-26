@@ -18,11 +18,17 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
         ERC1155
     }
 
-    struct Note {
+    struct TransferNote {
         Protocol protocol;
         address token;
         uint256[] ids;
         uint256[] amounts;
+    }
+
+    struct ApprovalNote {
+        Protocol protocol;
+        address token;
+        address[] operators;
     }
 
     error WithdrawFailed();
@@ -32,8 +38,8 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
     // External functions //////////////////////////////
     ////////////////////////////////////////////////////
 
-    function withdraw(Note[] memory notes) external onlyOwner {
-        Note memory note;
+    function withdraw(TransferNote[] memory notes) external onlyOwner {
+        TransferNote memory note;
         Protocol protocol;
         uint256[] memory ids;
         uint256[] memory amounts;
@@ -93,6 +99,46 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
         _withdrawERC1155s(erc1155, ids, amounts);
     }
 
+    function revokeApprovals(ApprovalNote[] memory notes) external onlyOwner {
+        ApprovalNote memory note;
+        Protocol protocol;
+
+        uint256 length = notes.length;
+        for (uint256 i; i < length; ) {
+            note = notes[i];
+            protocol = note.protocol;
+            if (protocol == Protocol.ERC20) {
+                _revokeERC20Approvals(IERC20(note.token), note.operators);
+            } else if (protocol == Protocol.ERC721) {
+                _revokeERC721Approvals(IERC721(note.token), note.operators);
+            } else if (protocol == Protocol.ERC1155) {
+                _revokeERC1155Approvals(IERC1155(note.token), note.operators);
+            }
+            unchecked { ++i; }
+        }
+    }
+
+    function revokeERC20Approvals(
+        IERC20 erc20,
+        address[] memory operators
+    ) external onlyOwner {
+        _revokeERC20Approvals(erc20, operators);
+    }
+
+    function revokeERC721Approvals(
+        IERC721 erc721,
+        address[] memory operators
+    ) external onlyOwner {
+        _revokeERC721Approvals(erc721, operators);
+    }
+
+    function revokeERC1155Approvals(
+        IERC1155 erc1155,
+        address[] memory operators
+    ) external onlyOwner {
+        _revokeERC1155Approvals(erc1155, operators);
+    }
+
     ////////////////////////////////////////////////////
     // Internal functions //////////////////////////////
     ////////////////////////////////////////////////////
@@ -127,6 +173,39 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
     ) internal {
         // safeBatchTransferFrom will validate the array lengths
         erc1155.safeBatchTransferFrom(address(this), msg.sender, ids, amounts, "");
+    }
+
+    function _revokeERC20Approvals(
+        IERC20 erc20,
+        address[] memory operators
+    ) internal {
+        uint256 length = operators.length;
+        for (uint256 i; i < length; ) {
+            erc20.safeApprove(operators[i], 0);
+            unchecked { ++i; }
+        }
+    }
+
+    function _revokeERC721Approvals(
+        IERC721 erc721,
+        address[] memory operators
+    ) internal {
+        uint256 length = operators.length;
+        for (uint256 i; i < length; ) {
+            erc721.setApprovalForAll(operators[i], false);
+            unchecked { ++i; }
+        }
+    }
+
+    function _revokeERC1155Approvals(
+        IERC1155 erc1155,
+        address[] memory operators
+    ) internal {
+        uint256 length = operators.length;
+        for (uint256 i; i < length; ) {
+            erc1155.setApprovalForAll(operators[i], false);
+            unchecked { ++i; }
+        }
     }
 
     ////////////////////////////////////////////////////
