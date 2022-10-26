@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.16;
 
-import "../wallet/BasicWallet.sol";
+import "../wallet/MinimalWallet.sol";
 
 contract Destroyer {
     function kill() public returns (bytes[] memory data) {
@@ -11,7 +11,7 @@ contract Destroyer {
     }
 }
 
-contract DestructEnsoWallet is BasicWallet {
+contract DestructEnsoWallet is MinimalWallet {
     using StorageAPI for bytes32;
 
     event DelegateCallReturn(bool success, bytes ret);

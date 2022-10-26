@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import {EnsoWalletFactory} from "../../contracts/EnsoWalletFactory.sol";
 import {EnsoBeacon} from "../../contracts/EnsoBeacon.sol";
 import {EnsoWallet} from "../../contracts/EnsoWallet.sol";
-import {BasicWallet} from "../../contracts/wallet/BasicWallet.sol";
+import {MinimalWallet} from "../../contracts/wallet/MinimalWallet.sol";
 import {DumbEnsoWallet} from "../../contracts/test/DumbEnsoWallet.sol";
 import {DestructEnsoWallet} from "../../contracts/test/DestructEnsoWallet.sol";
 import {UpgradeableProxy} from "../../contracts/proxy/UpgradeableProxy.sol";
@@ -19,7 +19,7 @@ import {ERC721Holder} from "@openzeppelin/contracts/token/ERC721/utils/ERC721Hol
 import {ERC1155Holder} from "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 
 contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
-    BasicWallet internal basicWalletReference;
+    MinimalWallet internal basicWalletReference;
     DumbEnsoWallet internal ensoWalletReference;
     DumbEnsoWallet internal ensoWallet;
     EnsoWalletFactory internal factoryReference;
@@ -50,7 +50,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     event SenderData(address sender, uint256 value);
 
     function setUp() public {
-        basicWalletReference = new BasicWallet();
+        basicWalletReference = new MinimalWallet();
         ensoWalletReference = new DumbEnsoWallet();
         destructEnsoWalletReference = new DestructEnsoWallet();
         beacon = new EnsoBeacon(address(ensoWalletReference), address(basicWalletReference));
@@ -160,24 +160,24 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         assertEq(mockERC1155.balanceOf(address(ensoWallet), 0), 1);
 
         // Setup withdrawal notes
-        BasicWallet.Note[] memory notes = new BasicWallet.Note[](4);
+        MinimalWallet.Note[] memory notes = new MinimalWallet.Note[](4);
 
-        notes[0].protocol = BasicWallet.Protocol.ETH;
+        notes[0].protocol = MinimalWallet.Protocol.ETH;
         notes[0].amounts = new uint256[](1);
         notes[0].amounts[0] = 10**18;
 
-        notes[1].protocol = BasicWallet.Protocol.ERC20;
+        notes[1].protocol = MinimalWallet.Protocol.ERC20;
         notes[1].token = address(mockERC20);
         notes[1].amounts = new uint256[](1);
         notes[1].amounts[0] = 10**18;
 
-        notes[2].protocol = BasicWallet.Protocol.ERC721;
+        notes[2].protocol = MinimalWallet.Protocol.ERC721;
         notes[2].token = address(mockERC721);
         notes[2].ids = new uint256[](2); // Withdrawing two NFTs from same ERC721
         notes[2].ids[0] = 0;
         notes[2].ids[1] = 1;
 
-        notes[3].protocol = BasicWallet.Protocol.ERC1155;
+        notes[3].protocol = MinimalWallet.Protocol.ERC1155;
         notes[3].token = address(mockERC1155);
         notes[3].ids = new uint256[](1);
         notes[3].ids[0] = 0;

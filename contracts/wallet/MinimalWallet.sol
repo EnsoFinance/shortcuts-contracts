@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "../access/Ownable.sol";
 
-contract BasicWallet is Ownable, ERC721Holder, ERC1155Holder {
+contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
     using SafeERC20 for IERC20;
 
     enum Protocol {
