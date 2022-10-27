@@ -6,9 +6,10 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
-import "../access/Ownable.sol";
+import "../access/ACL.sol";
+import "../access/Roles.sol";
 
-contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
+contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     using SafeERC20 for IERC20;
 
     enum Protocol {
@@ -38,7 +39,7 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
     // External functions //////////////////////////////
     ////////////////////////////////////////////////////
 
-    function withdraw(TransferNote[] memory notes) external onlyOwner {
+    function withdraw(TransferNote[] memory notes) external isPermitted(OWNER_ROLE) {
         TransferNote memory note;
         Protocol protocol;
         uint256[] memory ids;
@@ -68,14 +69,14 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
         }
     }
 
-    function withdrawETH(uint256 amount) external onlyOwner {
+    function withdrawETH(uint256 amount) external isPermitted(OWNER_ROLE) {
         _withdrawETH(amount);
     }
 
     function withdrawERC20s(
         IERC20[] memory erc20s,
         uint256[] memory amounts
-    ) external onlyOwner {
+    ) external isPermitted(OWNER_ROLE) {
         uint256 length = erc20s.length;
         if (amounts.length != length) revert InvalidArrayLength();
         for (uint256 i; i < length; ) {
@@ -87,7 +88,7 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
     function withdrawERC721s(
         IERC721 erc721,
         uint256[] memory ids
-    ) external onlyOwner {
+    ) external isPermitted(OWNER_ROLE) {
         _withdrawERC721s(erc721, ids);
     }
 
@@ -95,11 +96,11 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
         IERC1155 erc1155,
         uint256[] memory ids,
         uint256[] memory amounts
-    ) external onlyOwner {
+    ) external isPermitted(OWNER_ROLE) {
         _withdrawERC1155s(erc1155, ids, amounts);
     }
 
-    function revokeApprovals(ApprovalNote[] memory notes) external onlyOwner {
+    function revokeApprovals(ApprovalNote[] memory notes) external isPermitted(OWNER_ROLE) {
         ApprovalNote memory note;
         Protocol protocol;
 
@@ -121,21 +122,21 @@ contract MinimalWallet is Ownable, ERC721Holder, ERC1155Holder {
     function revokeERC20Approvals(
         IERC20 erc20,
         address[] memory operators
-    ) external onlyOwner {
+    ) external isPermitted(OWNER_ROLE) {
         _revokeERC20Approvals(erc20, operators);
     }
 
     function revokeERC721Approvals(
         IERC721 erc721,
         address[] memory operators
-    ) external onlyOwner {
+    ) external isPermitted(OWNER_ROLE) {
         _revokeERC721Approvals(erc721, operators);
     }
 
     function revokeERC1155Approvals(
         IERC1155 erc1155,
         address[] memory operators
-    ) external onlyOwner {
+    ) external isPermitted(OWNER_ROLE) {
         _revokeERC1155Approvals(erc1155, operators);
     }
 

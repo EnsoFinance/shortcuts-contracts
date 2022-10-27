@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.16;
 
+import "../access/AccessController.sol";
 import "../wallet/MinimalWallet.sol";
 
 contract Destroyer {
@@ -11,8 +12,11 @@ contract Destroyer {
     }
 }
 
-contract DestructEnsoWallet is MinimalWallet {
-    using StorageAPI for bytes32;
+contract DestructEnsoWallet is AccessController, MinimalWallet {
+
+    address public owner;
+
+    error NotOwner();
 
     event DelegateCallReturn(bool success, bytes ret);
 
@@ -24,14 +28,16 @@ contract DestructEnsoWallet is MinimalWallet {
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
-        if (OWNER.getAddress() != address(0)) revert AlreadyInit();
-        OWNER.setAddress(caller);
+        if (owner != address(0)) revert AlreadyInit();
+        owner = caller;
+        _setPermission(OWNER_ROLE, caller, true);
         if (commands.length != 0) {
             execute(commands, state);
         }
     }
 
-    function execute(bytes32[] calldata commands, bytes[] calldata state) public onlyOwner returns (bytes[] memory data) {
+    function execute(bytes32[] calldata commands, bytes[] calldata state) public returns (bytes[] memory data) {
+        if (msg.sender != owner) revert NotOwner();
         Destroyer destroyer = new Destroyer();
         (bool success, bytes memory ret) = address(destroyer).delegatecall(
             abi.encodeWithSelector(destroyer.kill.selector, commands, state)
