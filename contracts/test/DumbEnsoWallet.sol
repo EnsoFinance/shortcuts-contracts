@@ -2,28 +2,27 @@
 
 pragma solidity ^0.8.16;
 
+import "../access/AccessController.sol";
 import "../wallet/MinimalWallet.sol";
 
-contract DumbEnsoWallet is MinimalWallet {
+contract DumbEnsoWallet is AccessController, MinimalWallet {
     using StorageAPI for bytes32;
+
+    address public owner;
 
     event VMData(bytes32[] commands, bytes[] state);
     event SenderData(address sender, uint256 value);
 
-    // Already initialized
     error AlreadyInit();
-    // Not caller
-    error NotCaller();
-    // Invalid address
-    error InvalidAddress();
 
     function initialize(
         address caller,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
-        if (OWNER.getAddress() != address(0)) revert AlreadyInit();
-        OWNER.setAddress(caller);
+        if (owner != address(0)) revert AlreadyInit();
+        owner = caller;
+        _setPermission(OWNER_ROLE, caller, true);
         if (commands.length != 0) {
             execute(commands, state);
         }
