@@ -13,31 +13,30 @@ contract Destroyer {
 }
 
 contract DestructEnsoWallet is AccessController, MinimalWallet {
+    using StorageAPI for bytes32;
 
-    address public owner;
-
-    error NotOwner();
+    // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967
+    bytes32 internal constant SALT = bytes32(uint256(keccak256("enso.wallet.salt")) - 1);
 
     event DelegateCallReturn(bool success, bytes ret);
 
     error AlreadyInit();
-    error NotCaller();
 
     function initialize(
         address caller,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
-        if (owner != address(0)) revert AlreadyInit();
-        owner = caller;
+        if (SALT.getAddress() != address(0)) revert AlreadyInit();
+        SALT.setAddress(caller);
         _setPermission(OWNER_ROLE, caller, true);
+        _setPermission(EXECUTOR_ROLE, caller, true);
         if (commands.length != 0) {
             execute(commands, state);
         }
     }
 
-    function execute(bytes32[] calldata commands, bytes[] calldata state) public returns (bytes[] memory data) {
-        if (msg.sender != owner) revert NotOwner();
+    function execute(bytes32[] calldata commands, bytes[] calldata state) public isPermitted(EXECUTOR_ROLE) returns (bytes[] memory data) {
         Destroyer destroyer = new Destroyer();
         (bool success, bytes memory ret) = address(destroyer).delegatecall(
             abi.encodeWithSelector(destroyer.kill.selector, commands, state)

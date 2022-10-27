@@ -6,7 +6,6 @@ interface IOwnable{
 }
 
 contract OwnershipTester {
-
     function acceptOwnership(address ownable) external {
         IOwnable(ownable).acceptOwnership();
     }
