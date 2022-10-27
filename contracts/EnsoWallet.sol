@@ -25,7 +25,6 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         SALT.setAddress(caller);
         _setPermission(OWNER_ROLE, caller, true);
         _setPermission(EXECUTOR_ROLE, caller, true);
-        _setPermission(SIGNER_ROLE, caller, true);
         if (commands.length != 0) {
             _execute(commands, state);
         }
@@ -41,6 +40,6 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
     }
 
     function _checkSigner(address signer) internal view override returns (bool) {
-        return _getPermission(SIGNER_ROLE, signer);
+        return _getPermission(OWNER_ROLE, signer);
     }
 }
