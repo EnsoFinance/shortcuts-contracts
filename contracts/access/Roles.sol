@@ -4,5 +4,4 @@ pragma solidity ^0.8.16;
 abstract contract Roles {
     bytes32 public constant OWNER_ROLE = keccak256("enso.access.roles.owner");
     bytes32 public constant EXECUTOR_ROLE = keccak256("enso.access.roles.executor");
-    bytes32 public constant SIGNER_ROLE = keccak256("enso.access.roles.signer");
 }

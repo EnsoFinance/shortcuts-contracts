@@ -33,6 +33,6 @@ abstract contract ACL {
         bytes32 role,
         address user
     ) internal pure returns (bytes32) {
-        return keccak256(abi.encode("ACL", role, user));
+        return keccak256(abi.encode(role, user));
     }
 }
