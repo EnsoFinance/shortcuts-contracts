@@ -3,7 +3,8 @@ pragma solidity ^0.8.16;
 
 import "../libraries/StorageAPI.sol";
 
-contract Ownable {
+// @notice The OWNER slot must be set in the importing contract's constructor or initialize function
+abstract contract Ownable {
     using StorageAPI for bytes32;
 
     // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967

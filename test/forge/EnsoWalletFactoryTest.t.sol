@@ -224,7 +224,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         // code is wiped
         assertTrue(address(destroyedEnsoWallet).code.length == 0);
         destructFactory.deploy(emptyCommands, emptyState);
-        assertEq(destroyedEnsoWallet.owner(), address(this));
+        assertEq(destroyedEnsoWallet.getPermission(destroyedEnsoWallet.OWNER_ROLE(), address(this)), true);
         assertFalse(address(destroyedEnsoWallet).code.length == 0);
     }
 
@@ -233,12 +233,12 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         destructFactory2.deploy(emptyCommands, emptyState);
         destructEnsoWallet = DestructEnsoWallet(destructFactory2.getAddress());
 
-        assertEq(destructEnsoWallet.owner(), address(this));
+        assertEq(destructEnsoWallet.getPermission(destructEnsoWallet.OWNER_ROLE(), address(this)), true);
         // destruct EnsoWallet
         destructEnsoWallet.execute(emptyCommands, emptyState);
 
         // state is not wiped
-        assertEq(destructEnsoWallet.owner(), address(this));
+        assertEq(destructEnsoWallet.getPermission(destructEnsoWallet.OWNER_ROLE(), address(this)), true);
 
         destructEnsoWallet.execute(emptyCommands, emptyState);
         address destructEnsoWalletAddr = address(destructEnsoWallet);
@@ -281,6 +281,22 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testDeployLargeState() public {
         user2.deployEnsoWallet(commands, state);
+    }
+
+    function testFailToRemoveOwnership() public {
+        user.deployEnsoWallet(emptyCommands, emptyState);
+        user.setPermission(user.wallet().OWNER_ROLE(), address(user), false);
+    }
+
+    function testFailExecuteNoPermission() public {
+        user.deployEnsoWallet(emptyCommands, emptyState);
+        user.wallet().execute(commands, state);
+    }
+
+    function testExecuteMultiOwner() public {
+        user.deployEnsoWallet(emptyCommands, emptyState);
+        user.setPermission(user.wallet().EXECUTOR_ROLE(), address(this), true);
+        user.wallet().execute(commands, state);
     }
 
     receive() external payable {}
