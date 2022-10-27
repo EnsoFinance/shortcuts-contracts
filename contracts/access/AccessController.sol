@@ -8,24 +8,27 @@ import "./Roles.sol";
 abstract contract AccessController is ACL, Roles {
     using StorageAPI for bytes32;
 
+    event PermissionSet(bytes32 role, address account, bool permission);
+
     error UnsafeSetting();
 
     function setPermission(
         bytes32 role,
-        address user,
+        address account,
         bool permission
     ) external isPermitted(OWNER_ROLE) {
-        if (role == OWNER_ROLE && user == msg.sender && permission == false)
+        if (role == OWNER_ROLE && account == msg.sender && permission == false)
             revert UnsafeSetting();
-        _setPermission(role, user, permission);
+        _setPermission(role, account, permission);
     }
 
     function _setPermission(
         bytes32 role,
-        address user,
+        address account,
         bool permission
     ) internal {
-        bytes32 key = _getKey(role, user);
-        return key.setBool(permission);
+        bytes32 key = _getKey(role, account);
+        key.setBool(permission);
+        emit PermissionSet(role, account, permission);
     }
 }

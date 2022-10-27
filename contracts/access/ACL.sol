@@ -16,23 +16,23 @@ abstract contract ACL {
 
     function getPermission(
         bytes32 role,
-        address user
+        address account
     ) external view returns (bool) {
-        return _getPermission(role, user);
+        return _getPermission(role, account);
     }
 
     function _getPermission(
         bytes32 role,
-        address user
+        address account
     ) internal view returns (bool) {
-        bytes32 key = _getKey(role, user);
+        bytes32 key = _getKey(role, account);
         return key.getBool();
     }
 
     function _getKey(
         bytes32 role,
-        address user
+        address account
     ) internal pure returns (bytes32) {
-        return keccak256(abi.encode(role, user));
+        return keccak256(abi.encode(role, account));
     }
 }
