@@ -12,6 +12,7 @@ import {UpgradeableProxy} from "../../contracts/proxy/UpgradeableProxy.sol";
 import {EnsoWalletUser} from "./EnsoWalletUser.t.sol";
 import {OwnershipTester} from "../../contracts/test/OwnershipTester.sol";
 import {MockFactoryUpgrade} from "../../contracts/test/MockFactoryUpgrade.sol";
+import {MockWalletUpgrade} from "../../contracts/test/MockWalletUpgrade.sol";
 import {MockERC20, IERC20} from "../../contracts/test/MockERC20.sol";
 import {MockERC721, IERC721} from "../../contracts/test/MockERC721.sol";
 import {MockERC1155, IERC1155} from "../../contracts/test/MockERC1155.sol";
@@ -34,6 +35,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     DestructEnsoWallet internal destroyedEnsoWallet;
     DestructEnsoWallet internal destructEnsoWallet;
     MockFactoryUpgrade internal mockFactoryReference;
+    MockWalletUpgrade internal mockWalletReference;
     MockERC20 internal mockERC20;
     MockERC721 internal mockERC721;
     MockERC1155 internal mockERC1155;
@@ -57,6 +59,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         destructBeacon = new EnsoBeacon(address(destructEnsoWalletReference), address(basicWalletReference));
         factoryReference = new EnsoWalletFactory(address(beacon));
         mockFactoryReference = new MockFactoryUpgrade(address(beacon));
+        mockWalletReference = new MockWalletUpgrade();
         factory = EnsoWalletFactory(address(new UpgradeableProxy(address(factoryReference))));
         factory.initialize();
         destructFactory = new EnsoWalletFactory(address(destructBeacon));
@@ -194,6 +197,29 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         assertEq(mockERC1155.balanceOf(address(ensoWallet), 0), 0);
     }
 
+    function testUpgradeWallet() public {
+        beacon.upgradeCore(address(mockWalletReference), address(0), "");
+        beacon.finalizeUpgrade();
+        assertTrue(MockWalletUpgrade(payable(ensoWallet)).newFunctionTest());
+    }
+
+    function testFailToExecuteAfterEmergencyUpgrade() public {
+        beacon.emergencyUpgrade();
+        ensoWallet.execute(commands, state);
+    }
+
+    function testWithdrawAfterEmergencyUpgrade() public {
+        // Deposit ETH
+        (bool success,) = address(ensoWallet).call{ value : 10**18 }("");
+        require(success);
+        assertEq(address(ensoWallet).balance, 10**18);
+        // Emergency
+        beacon.emergencyUpgrade();
+        // Withdraw ETH
+        ensoWallet.withdrawETH(10**18);
+        assertEq(address(ensoWallet).balance, 0);
+    }
+
     function testUpgradeFactory() public {
         factory.upgradeTo(address(mockFactoryReference));
         assertTrue(MockFactoryUpgrade(address(factory)).newFunctionTest());
@@ -208,6 +234,27 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testFailUpgradeFactoryNotUUPS() public {
         factory.upgradeTo(address(ensoWallet));
+    }
+
+    function testUpgradeWalletAndFactory() public {
+        factory.transferOwnership(address(beacon));
+        beacon.acceptOwnership(address(factory));
+        beacon.setFactory(address(factory));
+        beacon.upgradeCore(address(mockWalletReference), address(mockFactoryReference), "");
+        beacon.finalizeUpgrade();
+        assertTrue(MockWalletUpgrade(payable(ensoWallet)).newFunctionTest());
+        assertTrue(MockFactoryUpgrade(address(factory)).newFunctionTest());
+    }
+
+    function testTransferFactoryOwnership() public {
+        factory.transferOwnership(address(beacon));
+        assertEq(factory.owner(), address(this));
+        beacon.acceptOwnership(address(factory));
+        assertEq(factory.owner(), address(beacon));
+        beacon.transferOwnership(address(factory), address(this));
+        assertEq(factory.owner(), address(beacon));
+        factory.acceptOwnership();
+        assertEq(factory.owner(), address(this));
     }
 
     function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {
