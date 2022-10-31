@@ -23,14 +23,15 @@ contract DestructEnsoWallet is AccessController, MinimalWallet {
     error AlreadyInit();
 
     function initialize(
-        address caller,
+        address owner,
+        bytes32 salt,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
-        if (SALT.getAddress() != address(0)) revert AlreadyInit();
-        SALT.setAddress(caller);
-        _setPermission(OWNER_ROLE, caller, true);
-        _setPermission(EXECUTOR_ROLE, caller, true);
+        if (SALT.getBytes32() != bytes32(0)) revert AlreadyInit();
+        SALT.setBytes32(salt);
+        _setPermission(OWNER_ROLE, owner, true);
+        _setPermission(EXECUTOR_ROLE, owner, true);
         if (commands.length != 0) {
             execute(commands, state);
         }

@@ -13,10 +13,10 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
 
     address public immutable ensoBeacon;
 
-    event Deployed(IEnsoWallet instance);
+    event Deployed(IEnsoWallet instance, string label);
 
-    // Already initialized
     error AlreadyInit();
+    error NoLabel();
 
     constructor(address ensoBeacon_) {
         ensoBeacon = ensoBeacon_;
@@ -31,9 +31,20 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
         bytes32[] calldata commands,
         bytes[] calldata state
     ) public payable returns (IEnsoWallet instance) {
-        instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(msg.sender)));
-        instance.initialize{ value: msg.value }(msg.sender, commands, state);
-        emit Deployed(instance);
+        bytes32 salt = bytes32(uint256(uint160(msg.sender)));
+        instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(salt)));
+        instance.initialize{ value: msg.value }(msg.sender, salt, commands, state);
+        emit Deployed(instance, "");
+    }
+
+    function deployCustom(
+        string memory label,
+        bytes32[] calldata commands,
+        bytes[] calldata state
+    ) public payable returns (IEnsoWallet) {
+        if (bytes(label).length == 0) revert NoLabel();
+        bytes32 salt = keccak256(abi.encode(msg.sender, label));
+        return _deploy(salt, label, commands, state);
     }
 
     function getAddress() public view returns (address payable) {
@@ -41,8 +52,30 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     }
 
     function getUserAddress(address user) public view returns (address payable) {
+        bytes32 salt = bytes32(uint256(uint160(user)));
+        return _predictDeterministicAddress(salt);
+    }
+
+    function getCustomAddress(address user, string memory label) external view returns (address payable) {
+        if (bytes(label).length == 0) revert NoLabel();
+        bytes32 salt = keccak256(abi.encode(user, label));
+        return _predictDeterministicAddress(salt);
+    }
+
+    function _deploy(
+        bytes32 salt,
+        string memory label,
+        bytes32[] calldata commands,
+        bytes[] calldata state
+    ) internal returns (IEnsoWallet instance) {
+        instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(salt)));
+        instance.initialize{ value: msg.value }(msg.sender, salt, commands, state);
+        emit Deployed(instance, label);
+    }
+
+    function _predictDeterministicAddress(bytes32 salt) internal view returns (address payable) {
         return payable(ensoBeacon.predictDeterministicAddress(
-            user,
+            salt,
             address(this)
         ));
     }
