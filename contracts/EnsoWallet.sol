@@ -13,18 +13,18 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
     // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967
     bytes32 internal constant SALT = bytes32(uint256(keccak256("enso.wallet.salt")) - 1);
 
-    // Already initialized
     error AlreadyInit();
 
     function initialize(
-        address caller,
+        address owner,
+        bytes32 salt,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external override payable {
-        if (SALT.getAddress() != address(0)) revert AlreadyInit();
-        SALT.setAddress(caller);
-        _setPermission(OWNER_ROLE, caller, true);
-        _setPermission(EXECUTOR_ROLE, caller, true);
+        if (SALT.getBytes32() != bytes32(0)) revert AlreadyInit();
+        SALT.setBytes32(salt);
+        _setPermission(OWNER_ROLE, owner, true);
+        _setPermission(EXECUTOR_ROLE, owner, true);
         if (commands.length != 0) {
             _execute(commands, state);
         }

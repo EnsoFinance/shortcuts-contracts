@@ -13,7 +13,7 @@ library BeaconClones {
      * the clone. Using the same `beacon` and `salt` multiple time will revert, since
      * the clones cannot be deployed twice at the same address.
      */
-    function cloneDeterministic(address beacon, address salt) internal returns (address instance) {
+    function cloneDeterministic(address beacon, bytes32 salt) internal returns (address instance) {
         assembly {
             let ptr := mload(0x40)
             mstore(ptr, 0x6080604052348015600f57600080fd5b5060a88061001e6000396000f3fe6080)
@@ -33,7 +33,7 @@ library BeaconClones {
      */
     function predictDeterministicAddress(
         address beacon,
-        address salt,
+        bytes32 salt,
         address deployer
     ) internal pure returns (address predicted) {
         assembly {
