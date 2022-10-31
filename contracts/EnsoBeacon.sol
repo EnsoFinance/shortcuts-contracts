@@ -154,6 +154,12 @@ contract EnsoBeacon is IBeacon {
         emit DelegationTransferred(previousDelegate, msg.sender);
     }
 
+    function renounceDelegation() external onlyDelegate {
+        address previousDelegate = delegate;
+        delete delegate;
+        emit DelegationTransferred(previousDelegate, address(0));
+    }
+
     function transferOwnership(address ownable, address newOwner) external onlyAdmin {
         IOwnable(ownable).transferOwnership(newOwner);
     }
