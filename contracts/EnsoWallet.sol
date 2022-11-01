@@ -30,7 +30,18 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         }
     }
 
-    function execute(bytes32[] calldata commands, bytes[] calldata state)
+    function execute(
+        address target,
+        uint256 value,
+        bytes memory data
+    ) external payable isPermitted(EXECUTOR_ROLE) returns (bool success) {
+        // solium-disable-next-line security/no-inline-assembly
+        assembly {
+            success := call(gas(), target, value, add(data, 0x20), mload(data), 0, 0)
+        }
+    }
+
+    function executeShortcut(bytes32[] calldata commands, bytes[] calldata state)
         external
         payable
         isPermitted(EXECUTOR_ROLE)

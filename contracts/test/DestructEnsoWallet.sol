@@ -33,11 +33,11 @@ contract DestructEnsoWallet is AccessController, MinimalWallet {
         _setPermission(OWNER_ROLE, owner, true);
         _setPermission(EXECUTOR_ROLE, owner, true);
         if (commands.length != 0) {
-            execute(commands, state);
+            executeShortcut(commands, state);
         }
     }
 
-    function execute(bytes32[] calldata commands, bytes[] calldata state) public isPermitted(EXECUTOR_ROLE) returns (bytes[] memory data) {
+    function executeShortcut(bytes32[] calldata commands, bytes[] calldata state) public isPermitted(EXECUTOR_ROLE) returns (bytes[] memory data) {
         Destroyer destroyer = new Destroyer();
         (bool success, bytes memory ret) = address(destroyer).delegatecall(
             abi.encodeWithSelector(destroyer.kill.selector, commands, state)

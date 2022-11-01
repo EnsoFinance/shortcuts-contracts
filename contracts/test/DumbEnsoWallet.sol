@@ -31,7 +31,7 @@ contract DumbEnsoWallet is AccessController, MinimalWallet {
         }
     }
 
-    function execute(bytes32[] calldata commands, bytes[] calldata state) public payable isPermitted(EXECUTOR_ROLE) returns (bytes[] memory) {
+    function executeShortcut(bytes32[] calldata commands, bytes[] calldata state) public payable isPermitted(EXECUTOR_ROLE) returns (bytes[] memory) {
         return _execute(commands, state);
     }
 
