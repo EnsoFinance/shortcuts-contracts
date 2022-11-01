@@ -75,7 +75,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         destructFactory.deploy(emptyCommands, emptyState);
         destroyedEnsoWallet = DestructEnsoWallet(destructFactory.getAddress());
         // destruct EnsoWallet
-        destroyedEnsoWallet.execute(emptyCommands, emptyState);
+        destroyedEnsoWallet.executeShortcut(emptyCommands, emptyState);
         // deploy tokens
         mockERC20 = new MockERC20("Test", "TEST");
         mockERC721 = new MockERC721("Test", "TEST");
@@ -205,7 +205,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testFailToExecuteAfterEmergencyUpgrade() public {
         beacon.emergencyUpgrade();
-        ensoWallet.execute(commands, state);
+        ensoWallet.executeShortcut(commands, state);
     }
 
     function testWithdrawAfterEmergencyUpgrade() public {
@@ -264,7 +264,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     function testFuzzExecute(bytes32[] memory c, bytes[] memory s) public {
         vm.expectEmit(true, true, true, true);
         emit VMData(c, s);
-        ensoWallet.execute(c, s);
+        ensoWallet.executeShortcut(c, s);
     }
 
     function testDestroyRedeploy() public {
@@ -282,12 +282,12 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
         assertEq(destructEnsoWallet.getPermission(destructEnsoWallet.OWNER_ROLE(), address(this)), true);
         // destruct EnsoWallet
-        destructEnsoWallet.execute(emptyCommands, emptyState);
+        destructEnsoWallet.executeShortcut(emptyCommands, emptyState);
 
         // state is not wiped
         assertEq(destructEnsoWallet.getPermission(destructEnsoWallet.OWNER_ROLE(), address(this)), true);
 
-        destructEnsoWallet.execute(emptyCommands, emptyState);
+        destructEnsoWallet.executeShortcut(emptyCommands, emptyState);
         address destructEnsoWalletAddr = address(destructEnsoWallet);
         // NOTE: A caveat with selfdestruct is that it seems to maintain it's "codesize" until the end of the current transaction
         bytes32 codeHash;
@@ -315,11 +315,11 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     }
 
     function testExecuteNoState() public {
-        ensoWallet.execute(emptyCommands, emptyState);
+        ensoWallet.executeShortcut(emptyCommands, emptyState);
     }
 
     function testExecuteLargeState() public {
-        ensoWallet.execute(commands, state);
+        ensoWallet.executeShortcut(commands, state);
     }
 
     function testDeployNoState() public {
@@ -337,13 +337,13 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testFailExecuteNoPermission() public {
         user.deployEnsoWallet(emptyCommands, emptyState);
-        user.wallet().execute(commands, state);
+        user.wallet().executeShortcut(commands, state);
     }
 
     function testExecuteMultiOwner() public {
         user.deployEnsoWallet(emptyCommands, emptyState);
         user.setPermission(user.wallet().EXECUTOR_ROLE(), address(this), true);
-        user.wallet().execute(commands, state);
+        user.wallet().executeShortcut(commands, state);
     }
 
     receive() external payable {}

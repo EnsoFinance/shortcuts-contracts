@@ -31,7 +31,7 @@ describe('EnsoWallet', async () => {
     const weirolledEvents = weiroll.createContract(Events as any);
     planner.add(weirolledEvents.logString(message));
     const {commands, state} = planner.plan();
-    const tx = await userWithEnsoWallet.EnsoWallet.execute(commands, state);
+    const tx = await userWithEnsoWallet.EnsoWallet.executeShortcut(commands, state);
 
     await expectEventFromEnsoWallet(tx, Events, 'LogString', message);
   });
@@ -48,6 +48,6 @@ describe('EnsoWallet', async () => {
     impostor.EnsoWallet = EnsoWallet.attach(userWithEnsoWallet.EnsoWallet.address).connect(
       await ethers.getSigner(impostor.address)
     );
-    await expect(impostor.EnsoWallet.execute([], [])).to.be.revertedWith('NotPermitted');
+    await expect(impostor.EnsoWallet.executeShortcut([], [])).to.be.revertedWith('NotPermitted');
   });
 });
