@@ -55,8 +55,8 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         basicWalletReference = new MinimalWallet();
         ensoWalletReference = new DumbEnsoWallet();
         destructEnsoWalletReference = new DestructEnsoWallet();
-        beacon = new EnsoBeacon(address(ensoWalletReference), address(basicWalletReference));
-        destructBeacon = new EnsoBeacon(address(destructEnsoWalletReference), address(basicWalletReference));
+        beacon = new EnsoBeacon(address(ensoWalletReference), address(0));
+        destructBeacon = new EnsoBeacon(address(destructEnsoWalletReference), address(0));
         factoryReference = new EnsoWalletFactory(address(beacon));
         mockFactoryReference = new MockFactoryUpgrade(address(beacon));
         mockWalletReference = new MockWalletUpgrade();
@@ -197,6 +197,79 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         assertEq(mockERC1155.balanceOf(address(ensoWallet), 0), 0);
     }
 
+    function testRevokeERC20() public {
+        address operator = address(factory); // random address
+        ensoWallet.approveERC20(mockERC20, operator);
+        assertGt(mockERC20.allowance(address(ensoWallet), operator), 0);
+
+        address[] memory operators = new address[](1);
+        operators[0] = operator;
+        ensoWallet.revokeERC20Approvals(mockERC20, operators);
+        assertEq(mockERC20.allowance(address(ensoWallet), operator), 0);
+    }
+
+    function testRevokeERC721() public {
+        address operator = address(factory); // random address
+        ensoWallet.approveERC721(mockERC721, operator);
+        assertTrue(mockERC721.isApprovedForAll(address(ensoWallet), operator));
+
+        address[] memory operators = new address[](1);
+        operators[0] = operator;
+        ensoWallet.revokeERC721Approvals(mockERC721, operators);
+        assertFalse(mockERC721.isApprovedForAll(address(ensoWallet), operator));
+    }
+
+    function testRevokeERC1155() public {
+        address operator = address(factory); // random address
+        ensoWallet.approveERC1155(mockERC1155, operator);
+        assertTrue(mockERC1155.isApprovedForAll(address(ensoWallet), operator));
+
+        address[] memory operators = new address[](1);
+        operators[0] = operator;
+        ensoWallet.revokeERC1155Approvals(mockERC1155, operators);
+        assertFalse(mockERC1155.isApprovedForAll(address(ensoWallet), operator));
+    }
+
+    function testRevokeAll() public {
+        address operator = address(factory); // random address
+
+        // Approve all
+        ensoWallet.approveERC20(mockERC20, operator);
+        ensoWallet.approveERC721(mockERC721, operator);
+        ensoWallet.approveERC1155(mockERC1155, operator);
+
+        // Confirm approval
+        assertGt(mockERC20.allowance(address(ensoWallet), operator), 0);
+        assertTrue(mockERC721.isApprovedForAll(address(ensoWallet), operator));
+        assertTrue(mockERC1155.isApprovedForAll(address(ensoWallet), operator));
+
+        // Setup approval notes
+        MinimalWallet.ApprovalNote[] memory notes = new MinimalWallet.ApprovalNote[](4);
+
+        address[] memory operators = new address[](1);
+        operators[0] = operator;
+
+        notes[1].protocol = MinimalWallet.Protocol.ERC20;
+        notes[1].token = address(mockERC20);
+        notes[1].operators = operators;
+
+        notes[2].protocol = MinimalWallet.Protocol.ERC721;
+        notes[2].token = address(mockERC721);
+        notes[2].operators = operators;
+
+        notes[3].protocol = MinimalWallet.Protocol.ERC1155;
+        notes[3].token = address(mockERC1155);
+        notes[3].operators = operators;
+
+        // Revoke all
+        ensoWallet.revokeApprovals(notes);
+
+        // Confirm revocation
+        assertEq(mockERC20.allowance(address(ensoWallet), operator), 0);
+        assertFalse(mockERC721.isApprovedForAll(address(ensoWallet), operator));
+        assertFalse(mockERC1155.isApprovedForAll(address(ensoWallet), operator));
+    }
+
     function testUpgradeWallet() public {
         beacon.upgradeCore(address(mockWalletReference), address(0), "");
         beacon.finalizeUpgrade();
@@ -204,6 +277,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     }
 
     function testFailToExecuteAfterEmergencyUpgrade() public {
+        beacon.upgradeFallback(address(basicWalletReference));
         beacon.emergencyUpgrade();
         ensoWallet.executeShortcut(commands, state);
     }
@@ -214,6 +288,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         require(success);
         assertEq(address(ensoWallet).balance, 10**18);
         // Emergency
+        beacon.upgradeFallback(address(basicWalletReference));
         beacon.emergencyUpgrade();
         // Withdraw ETH
         ensoWallet.withdrawETH(10**18);
@@ -255,6 +330,37 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         assertEq(factory.owner(), address(beacon));
         factory.acceptOwnership();
         assertEq(factory.owner(), address(this));
+    }
+
+    function testTransferAdministration() public {
+        OwnershipTester ownershipTester = new OwnershipTester();
+        beacon.transferAdministration(address(ownershipTester));
+        ownershipTester.acceptAdministration(address(beacon));
+        assertEq(beacon.admin(), address(ownershipTester));
+    }
+
+    function testTransferDelegation() public {
+        OwnershipTester ownershipTester = new OwnershipTester();
+        beacon.transferDelegation(address(ownershipTester));
+        ownershipTester.acceptDelegation(address(beacon));
+        assertEq(beacon.delegate(), address(ownershipTester));
+    }
+
+    function testRenounceAdministration() public {
+        beacon.renounceAdministration();
+        assertEq(beacon.admin(), address(0));
+        assertEq(beacon.delegate(), address(0));
+    }
+
+    function testRenounceDelegation() public {
+        beacon.renounceDelegation();
+        assertEq(beacon.delegate(), address(0));
+    }
+
+    function testChangeDelay() public {
+        uint256 newDelay = 100;
+        beacon.setDelay(newDelay);
+        assertEq(beacon.delay(), newDelay);
     }
 
     function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {

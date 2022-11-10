@@ -3,9 +3,9 @@
 pragma solidity ^0.8.16;
 
 import "../access/AccessController.sol";
-import "../wallet/MinimalWallet.sol";
+import "./ApprovableMinimalWallet.sol";
 
-contract DumbEnsoWallet is AccessController, MinimalWallet {
+contract DumbEnsoWallet is AccessController, ApprovableMinimalWallet {
     using StorageAPI for bytes32;
 
     // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967
