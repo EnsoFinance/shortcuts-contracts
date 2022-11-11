@@ -30,11 +30,9 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     function deploy(
         bytes32[] calldata commands,
         bytes[] calldata state
-    ) public payable returns (IEnsoWallet instance) {
+    ) public payable returns (IEnsoWallet) {
         bytes32 salt = bytes32(uint256(uint160(msg.sender)));
-        instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(salt)));
-        instance.initialize{ value: msg.value }(msg.sender, salt, commands, state);
-        emit Deployed(instance, "");
+        return _deploy(salt, "", commands, state);
     }
 
     function deployCustom(
@@ -43,7 +41,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
         bytes[] calldata state
     ) public payable returns (IEnsoWallet) {
         if (bytes(label).length == 0) revert NoLabel();
-        bytes32 salt = keccak256(abi.encode(msg.sender, label));
+        bytes32 salt = _customSalt(msg.sender, label);
         return _deploy(salt, label, commands, state);
     }
 
@@ -58,7 +56,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
 
     function getCustomAddress(address user, string memory label) external view returns (address payable) {
         if (bytes(label).length == 0) revert NoLabel();
-        bytes32 salt = keccak256(abi.encode(user, label));
+        bytes32 salt = _customSalt(user, label);
         return _predictDeterministicAddress(salt);
     }
 
@@ -71,6 +69,10 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
         instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(salt)));
         instance.initialize{ value: msg.value }(msg.sender, salt, commands, state);
         emit Deployed(instance, label);
+    }
+
+    function _customSalt(address user, string memory label) internal pure returns (bytes32) {
+        return keccak256(abi.encode(user, label));
     }
 
     function _predictDeterministicAddress(bytes32 salt) internal view returns (address payable) {

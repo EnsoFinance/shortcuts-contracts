@@ -367,6 +367,11 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         user.deployEnsoWallet(c, s);
     }
 
+    function testFuzzDeployCustom(string memory l, bytes32[] memory c, bytes[] memory s) public {
+        vm.assume(bytes(l).length > 0);
+        user.deployCustomEnsoWallet(l, c, s);
+    }
+
     function testFuzzExecute(bytes32[] memory c, bytes[] memory s) public {
         vm.expectEmit(true, true, true, true);
         emit VMData(c, s);
