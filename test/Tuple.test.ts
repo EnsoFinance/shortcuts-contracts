@@ -43,7 +43,7 @@ describe('TupleHelpers', async () => {
     planner.add(contracts.wEvents.logBytes32(extractedItem));
 
     const {commands, state} = planner.plan();
-    const tx = await user.EnsoWallet.execute(commands, state);
+    const tx = await user.EnsoWallet.executeShortcut(commands, state);
     await expect(tx).to.emit(contracts.Events.attach(user.EnsoWallet.address), 'LogBytes32').withArgs(testInt);
   });
 
@@ -54,7 +54,7 @@ describe('TupleHelpers', async () => {
     planner.add(contracts.wEvents.logBytes(extractedItem));
 
     const {commands, state} = planner.plan();
-    const tx = await user.EnsoWallet.execute(commands, state);
+    const tx = await user.EnsoWallet.executeShortcut(commands, state);
     await expect(tx).to.emit(contracts.Events.attach(user.EnsoWallet.address), 'LogBytes').withArgs(testString);
   });
 
@@ -65,7 +65,7 @@ describe('TupleHelpers', async () => {
     planner.add(contracts.wEvents.logBytes(extractedItem));
 
     const {commands, state} = planner.plan();
-    const tx = await user.EnsoWallet.execute(commands, state);
+    const tx = await user.EnsoWallet.executeShortcut(commands, state);
     await expect(tx).to.emit(contracts.Events.attach(user.EnsoWallet.address), 'LogBytes').withArgs(testIntArray);
   });
 
@@ -77,7 +77,7 @@ describe('TupleHelpers', async () => {
     planner.add(contracts.wEvents.logBytes(extractedItem));
 
     const {commands, state} = planner.plan();
-    const tx = await user.EnsoWallet.execute(commands, state);
+    const tx = await user.EnsoWallet.executeShortcut(commands, state);
     await expect(tx).to.emit(contracts.Events.attach(user.EnsoWallet.address), 'LogBytes').withArgs(testString);
   });
 
@@ -89,7 +89,7 @@ describe('TupleHelpers', async () => {
     planner.add(contracts.wEvents.logBytes32(extractedItem));
 
     const {commands, state} = planner.plan();
-    const tx = await user.EnsoWallet.execute(commands, state);
+    const tx = await user.EnsoWallet.executeShortcut(commands, state);
     await expect(tx).to.emit(contracts.Events.attach(user.EnsoWallet.address), 'LogBytes32').withArgs(testInt);
   });
 
@@ -106,7 +106,7 @@ describe('TupleHelpers', async () => {
     planner.add(contracts.wEvents.logBytes(extractedItem));
 
     const {commands, state} = planner.plan();
-    const tx = await user.EnsoWallet.execute(commands, state);
+    const tx = await user.EnsoWallet.executeShortcut(commands, state);
     await expect(tx).to.emit(contracts.Events.attach(user.EnsoWallet.address), 'LogBytes').withArgs(testString);
   });
 });
