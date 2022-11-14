@@ -83,13 +83,7 @@ contract EnsoBeacon is IBeacon {
         delete pendingFactoryUpgradeData;
         // Upgrade
         _upgradeCore(newImplementation);
-        if (factoryImplementation != address(0)) {
-            if (data.length > 0) {
-                IUUPS(factory).upgradeToAndCall(newImplementation, data);
-            } else {
-                IUUPS(factory).upgradeTo(factoryImplementation);
-            }
-        }
+        if (factoryImplementation != address(0)) _upgradeFactory(factoryImplementation, data);
     }
 
     function upgradeCore(
@@ -111,6 +105,10 @@ contract EnsoBeacon is IBeacon {
         address previousImplementation = fallbackImplementation;
         fallbackImplementation = newImplementation;
         emit FallbackUpgraded(previousImplementation, newImplementation);
+    }
+
+    function upgradeFactory(address newImplementation, bytes memory data) external onlyAdmin {
+        _upgradeFactory(newImplementation, data);
     }
 
     function transferAdministration(address newAdmin) external onlyAdmin {
@@ -184,5 +182,13 @@ contract EnsoBeacon is IBeacon {
         address previousImplementation = coreImplementation;
         coreImplementation = newImplementation;
         emit CoreUpgraded(previousImplementation, newImplementation);
+    }
+
+    function _upgradeFactory(address newImplementation, bytes memory data) internal {
+        if (data.length > 0) {
+            IUUPS(factory).upgradeToAndCall(newImplementation, data);
+        } else {
+            IUUPS(factory).upgradeTo(newImplementation);
+        }
     }
 }
