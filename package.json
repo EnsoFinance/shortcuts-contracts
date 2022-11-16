@@ -1,6 +1,6 @@
 {
   "name": "@ensofinance/shortcuts-contracts",
-  "version": "0.6.2",
+  "version": "0.6.3-alpha.1",
   "scripts": {
     "forge:dependencies": "git submodule update --init --recursive",
     "prepare": "yarn forge:dependencies && yarn hardhat typechain && yarn eth-sdk",
@@ -39,8 +39,8 @@
   "devDependencies": {
     "@dethcrypto/eth-sdk": "^0.3.2",
     "@dethcrypto/eth-sdk-client": "^0.1.6",
-    "@ensofinance/weiroll": "^1.4.0",
-    "@ensofinance/weiroll.js": "^0.4.0",
+    "@ensofinance/weiroll": "^1.4.1-alpha.1",
+    "@ensofinance/weiroll.js": "^0.4.1-alpha.1",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.12",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
