@@ -1873,7 +1873,7 @@
           ]
         },
         "EnsoShortcutsHelpers": {
-          "address": "0x5b022fC123825299Ac0b48b29477b5af4314014D",
+          "address": "0x6380F9882123a912BbD165124CA2186075f6B802",
           "abi": [
             {
               "inputs": [],
@@ -2210,7 +2210,7 @@
           ]
         },
         "EnsoWallet": {
-          "address": "0xD422acd2C55A971DA69F5788B66454f2a157F3c7",
+          "address": "0x3A859e16b0752a53c9C694B8928FE5F77b6fA6E3",
           "abi": [
             {
               "inputs": [],
@@ -2328,7 +2328,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x8C358f8B7b36Ab76b9Dd3711FBe253598fe6aa87",
+          "address": "0x39689981327f549e693dd1CcE71F06898ABa0F0D",
           "abi": [
             {
               "inputs": [
@@ -2407,7 +2407,7 @@
           ]
         },
         "MathHelpers": {
-          "address": "0x742F2c5D96c0858d00860039c22D2805bed420E8",
+          "address": "0xC02BcD14bad74Ad54453cD34a1029cbaCc6923FB",
           "abi": [
             {
               "inputs": [],
@@ -2848,7 +2848,7 @@
           ]
         },
         "SignedMathHelpers": {
-          "address": "0x99F0873B4Aa9e906935BFAD7525f5EAB104b60f3",
+          "address": "0x4a8892AA44318B9d59326e9A2FAb3e0FE808A001",
           "abi": [
             {
               "inputs": [],
@@ -3087,7 +3087,7 @@
           ]
         },
         "TupleHelpers": {
-          "address": "0x34Be3e153Bb78f5829FAD734F1F5Ef63D9258b61",
+          "address": "0xF60803F55ae2Ff159EfF39aa21e8EDD1b9a3d1B3",
           "abi": [
             {
               "inputs": [
