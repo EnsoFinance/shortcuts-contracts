@@ -14,5 +14,6 @@ remappings = [
     'hardhat-deploy/=node_modules/hardhat-deploy/',
     'hardhat/=node_modules/hardhat/',
 ]
+via_ir=true
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
