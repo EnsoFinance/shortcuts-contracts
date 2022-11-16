@@ -26,7 +26,6 @@ describe('EnsoHelpers', async () => {
       const percentage = BigNumber.from(300);
 
       const expected = value.mul(percentage).add(HALF_PERCENT).div(PERCENTAGE_FACTOR);
-      console.log('Percentage mul expected', expected.toString());
 
       expect(await percentageMathHelpers.percentMul(value, percentage)).to.eq(expected);
     });
@@ -36,7 +35,6 @@ describe('EnsoHelpers', async () => {
       const percentage = BigNumber.from(300);
 
       const expected = value.mul(PERCENTAGE_FACTOR).add(percentage.div(two)).div(percentage);
-      console.log('Percentage div expected', expected.toString());
 
       expect(await percentageMathHelpers.percentDiv(value, percentage)).to.eq(expected);
     });
@@ -53,9 +51,9 @@ describe('EnsoHelpers', async () => {
 
     it('percentDiv reverts on 0 percentage', async () => {
       const higherValue = ethers.constants.MaxUint256;
-      const zeroPercent = ethers.constants.Zero;
+      const zero = ethers.constants.Zero;
 
-      await expect(percentageMathHelpers.percentDiv(higherValue, zeroPercent)).to.revertedWith('Division by 0');
+      await expect(percentageMathHelpers.percentDiv(higherValue, zero)).to.revertedWith('Division by 0');
     });
 
     it('percentDiv reverts on multiplication overflow', async () => {
