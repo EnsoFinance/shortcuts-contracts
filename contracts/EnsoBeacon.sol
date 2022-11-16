@@ -58,15 +58,19 @@ contract EnsoBeacon is IBeacon {
         fallbackImplementation = fallbackImplementation_;
     }
 
+    // @notice The current core implementation
+    // @dev Called by proxy contracts to get the implementation address
     function implementation() external view override returns (address) {
         return coreImplementation;
     }
 
+    // @notice Switch from the core implementation to the fallback implemenation
     function emergencyUpgrade() external onlyDelegate {
         _upgradeCore(fallbackImplementation);
         emit EmergencyUpgrade();
     }
 
+    // @notice Finalize the new core implementation
     function finalizeUpgrade() external {
         // Load timestamp and check
         uint256 timestamp = upgradeTimestamp;
@@ -86,6 +90,10 @@ contract EnsoBeacon is IBeacon {
         if (factoryImplementation != address(0)) _upgradeFactory(factoryImplementation, data);
     }
 
+    // @notice Initialize an upgrade to a new core implementation
+    // @param newImplementation The address of the new core implementation
+    // @param factoryImplementation Optionally include a new factory implementation to upgrade the factory simultaneously. Pass zero address if no upgrade is needed
+    // @param data Calldata for upgrading the new factory. Pass zero bytes if factory is not being upgraded or no additional call needs to be made
     function upgradeCore(
         address newImplementation,
         address factoryImplementation,
@@ -99,6 +107,8 @@ contract EnsoBeacon is IBeacon {
         pendingFactoryUpgradeData = data;
     }
 
+    // @notice Upgrade the fallback implementation
+    // @param newImplementation The address of the new fallback implementation
     function upgradeFallback(address newImplementation) external onlyAdmin {
         if (newImplementation == address(0)) revert InvalidImplementation();
         if (newImplementation == fallbackImplementation) revert InvalidImplementation();
@@ -107,10 +117,15 @@ contract EnsoBeacon is IBeacon {
         emit FallbackUpgraded(previousImplementation, newImplementation);
     }
 
+    // @notice Upgrade the factory implementation
+    // @param newImplementation The address of the new factory implementation
+    // @param data Calldata for upgrading the new factory. Pass zero bytes if no additional call needs to be made
     function upgradeFactory(address newImplementation, bytes memory data) external onlyAdmin {
         _upgradeFactory(newImplementation, data);
     }
 
+    // @notice Initiate transfer of the admin role
+    // @notice newAdmin The address of the new admin
     function transferAdministration(address newAdmin) external onlyAdmin {
         if (newAdmin == address(0)) revert InvalidAccount();
         if (newAdmin == admin) revert InvalidAccount();
@@ -118,6 +133,8 @@ contract EnsoBeacon is IBeacon {
         emit AdministrationTransferStarted(admin, newAdmin);
     }
 
+    // @notice Accept new admin role
+    // @dev Only the pending admin can call this function
     function acceptAdministration() external {
         if (msg.sender != pendingAdmin) revert NotPermitted();
         delete pendingAdmin;
@@ -126,6 +143,8 @@ contract EnsoBeacon is IBeacon {
         emit AdministrationTransferred(previousAdmin, msg.sender);
     }
 
+    // @notice Renounce admin role. No upgrades can be done if this function is called.
+    // @dev This function renounes both the admin and the delegate roles.
     function renounceAdministration() external onlyAdmin {
         address previousAdmin = admin;
         address previousDelegate = delegate;
@@ -137,6 +156,8 @@ contract EnsoBeacon is IBeacon {
         emit DelegationTransferred(previousDelegate, address(0));
     }
 
+    // @notice Initiate transfer of the delegate role
+    // @notice newDelegate The address of the new delegate
     function transferDelegation(address newDelegate) external onlyAdmin {
         if (newDelegate == address(0)) revert InvalidAccount();
         if (newDelegate == delegate) revert InvalidAccount();
@@ -144,6 +165,8 @@ contract EnsoBeacon is IBeacon {
         emit DelegationTransferStarted(delegate, newDelegate);
     }
 
+    // @notice Accept new delegate role
+    // @dev Only the pending delegate can call this function
     function acceptDelegation() external {
         if (msg.sender != pendingDelegate) revert NotPermitted();
         delete pendingDelegate;
@@ -152,30 +175,43 @@ contract EnsoBeacon is IBeacon {
         emit DelegationTransferred(previousDelegate, msg.sender);
     }
 
+    // @notice Renounce delegate role. Emergency upgrades cannot happen while this role remain unfilled.
+    // @dev The admin can alway give this role to another address with the transferDelegation function
     function renounceDelegation() external onlyDelegate {
         address previousDelegate = delegate;
         delete delegate;
         emit DelegationTransferred(previousDelegate, address(0));
     }
 
+    // @notice Transfer ownership of a contract that is owned by this contract
+    // @param ownable The address of the contract that is getting it's ownership transferred
+    // @param newOwner The address of the new owner
     function transferOwnership(address ownable, address newOwner) external onlyAdmin {
         IOwnable(ownable).transferOwnership(newOwner);
     }
 
+    // @notice Accept ownership of another contract by this contract
+    // @param ownable The address of the contract that is getting it's ownership transferred
     function acceptOwnership(address ownable) external onlyAdmin {
         IOwnable(ownable).acceptOwnership();
     }
 
+    // @notice Set the current factory address in state
+    // @param newFactory The address of the new factory
     function setFactory(address newFactory) external onlyAdmin {
         factory = newFactory;
         emit Factory(newFactory);
     }
 
+    // @notice Update the delay between in initiating an upgrade and finalizing the upgrade
+    // @param newDelay The new delay in seconds
     function setDelay(uint256 newDelay) external onlyAdmin {
         delay = newDelay;
         emit Delay(newDelay);
     }
 
+    // @notice Internal function for setting the new core implementation
+    // @param newImplementation The address of the new implementation
     function _upgradeCore(address newImplementation) internal {
         if (newImplementation == address(0)) revert InvalidImplementation();
         //if (newImplementation == coreImplementation) revert InvalidImplementation();
@@ -184,6 +220,9 @@ contract EnsoBeacon is IBeacon {
         emit CoreUpgraded(previousImplementation, newImplementation);
     }
 
+    // @notice Internal function for upgrading the factory implementation
+    // @param newImplementation The address of the new factory implementation
+    // @param data Calldata for upgrading the new factory. Pass zero bytes if no additional call needs to be made
     function _upgradeFactory(address newImplementation, bytes memory data) internal {
         if (data.length > 0) {
             IUUPS(factory).upgradeToAndCall(newImplementation, data);

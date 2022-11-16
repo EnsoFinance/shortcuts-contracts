@@ -12,6 +12,10 @@ abstract contract AccessController is ACL, Roles {
 
     error UnsafeSetting();
 
+    // @notice Sets user permission over a role
+    // @param role The bytes32 value of the role
+    // @param account The address of the account
+    // @param permission The permission status
     function setPermission(
         bytes32 role,
         address account,
@@ -22,6 +26,10 @@ abstract contract AccessController is ACL, Roles {
         _setPermission(role, account, permission);
     }
 
+    // @notice Internal function to set user permission over a role
+    // @param role The bytes32 value of the role
+    // @param account The address of the account
+    // @param permission The permission status
     function _setPermission(
         bytes32 role,
         address account,

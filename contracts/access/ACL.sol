@@ -14,6 +14,10 @@ abstract contract ACL {
         _;
     }
 
+    // @notice Gets user permission for a role
+    // @param role The bytes32 value of the role
+    // @param account The address of the account
+    // @return The permission status
     function getPermission(
         bytes32 role,
         address account
@@ -21,6 +25,10 @@ abstract contract ACL {
         return _getPermission(role, account);
     }
 
+    // @notice Internal function to get user permission for a role
+    // @param role The bytes32 value of the role
+    // @param account The address of the account
+    // @return The permission status
     function _getPermission(
         bytes32 role,
         address account
@@ -29,6 +37,10 @@ abstract contract ACL {
         return key.getBool();
     }
 
+    // @notice Internal function to get the key for the storage slot
+    // @param role The bytes32 value of the role
+    // @param account The address of the account
+    // @return The bytes32 storage slot
     function _getKey(
         bytes32 role,
         address account

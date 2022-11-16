@@ -15,6 +15,12 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
 
     error AlreadyInit();
 
+    // @notice Initialize wallet by setting state and permissions
+    // @dev A wallet is considered initialized if the SALT is set in state. Subsequent calls to this function will fail.
+    // @param owner The address of the wallet owner
+    // @param salt The salt used to deploy the proxy that uses this contract as it's implementation
+    // @param commands The optional commands for executing a shortcut
+    // @param state The optional state for executing a shortcut
     function initialize(
         address owner,
         bytes32 salt,
@@ -30,6 +36,10 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         }
     }
 
+    // @notice A function to execute an arbitrary call on another contract
+    // @param target The address of the target contract
+    // @param value The ether value that is to be sent with the call
+    // @param data The call data to be sent to the target
     function execute(
         address target,
         uint256 value,
@@ -41,6 +51,9 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         }
     }
 
+    // @notice Execute a shortcut from this contract
+    // @param commands An array of bytes32 values that encode calls
+    // @param state An array of bytes that are used to generate call data for each command
     function executeShortcut(bytes32[] calldata commands, bytes[] calldata state)
         external
         payable
@@ -50,6 +63,8 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         returnData = _execute(commands, state);
     }
 
+    // @notice Internal function for checking the ERC-1271 signer
+    // @param signer The address that signed a message
     function _checkSigner(address signer) internal view override returns (bool) {
         return _getPermission(OWNER_ROLE, signer);
     }

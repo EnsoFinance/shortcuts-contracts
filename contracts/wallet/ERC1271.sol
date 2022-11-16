@@ -12,37 +12,36 @@ abstract contract ERC1271 is IERC1271 {
     bytes4 constant internal MAGICVALUE_BYTES32 = 0x1626ba7e;
     bytes4 constant internal INVALID_SIGNATURE = 0xffffffff;
 
+    // @notice Checks for a valid signature
+    // @param hash A bytes32 hash of a message
+    // @param signature The signed hash of the message
     function isValidSignature(
-        bytes32 _hash,
-        bytes memory _signature
+        bytes32 hash,
+        bytes memory signature
     )
         public
         override
         view
         returns (bytes4 magicValue)
     {
-        address signer = _hash.recover(_signature);
+        address signer = hash.recover(signature);
         magicValue = _checkSigner(signer) ? MAGICVALUE_BYTES32 : INVALID_SIGNATURE;
     }
 
+    // @notice Checks for a valid signature
+    // @param message The message that has been signed
+    // @param signature The signed hash of the message
     function isValidSignature(
-        bytes memory _message,
-        bytes memory _signature
+        bytes memory message,
+        bytes memory signature
     )
         public
         override
         view
         returns (bytes4 magicValue)
     {
-        address signer = _getEthSignedMessageHash(_message).recover(_signature);
+        address signer = ECDSA.toEthSignedMessageHash(message).recover(signature);
         magicValue = _checkSigner(signer) ? MAGICVALUE_BYTES : INVALID_SIGNATURE;
-    }
-
-    // @dev Adds ETH signed message prefix to bytes message and hashes it
-    // @param _data Bytes data before adding the prefix
-    // @return Prefixed and hashed message
-    function _getEthSignedMessageHash(bytes memory _data) internal pure returns (bytes32) {
-        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", Strings.toString(_data.length), _data));
     }
 
     // @notice Confirm signer is permitted to sign on behalf of contract

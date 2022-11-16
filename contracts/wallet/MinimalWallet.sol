@@ -39,6 +39,9 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     // External functions //////////////////////////////
     ////////////////////////////////////////////////////
 
+    // @notice Withdraw an array of assets
+    // @dev Works for ETH, ERC20s, ERC721s, and ERC1155s
+    // @param notes A tuple that contains the protocol id, token address, array of ids and amounts
     function withdraw(TransferNote[] memory notes) external isPermitted(OWNER_ROLE) {
         TransferNote memory note;
         Protocol protocol;
@@ -69,10 +72,15 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
         }
     }
 
+    // @notice Withdraw ETH from this contract to the msg.sender
+    // @param amount The amount of ETH to be withdrawn
     function withdrawETH(uint256 amount) external isPermitted(OWNER_ROLE) {
         _withdrawETH(amount);
     }
 
+    // @notice Withdraw ERC20s
+    // @param erc20s An array of erc20 addresses
+    // @param amounts An array of amounts for each erc20
     function withdrawERC20s(
         IERC20[] memory erc20s,
         uint256[] memory amounts
@@ -85,6 +93,9 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
         }
     }
 
+    // @notice Withdraw multiple ERC721 ids for a single ERC721 contract
+    // @param erc721 The address of the ERC721 contract
+    // @param ids An array of ids that are to be withdrawn
     function withdrawERC721s(
         IERC721 erc721,
         uint256[] memory ids
@@ -92,6 +103,10 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
         _withdrawERC721s(erc721, ids);
     }
 
+    // @notice Withdraw multiple ERC1155 ids for a single ERC1155 contract
+    // @param erc1155 The address of the ERC155 contract
+    // @param ids An array of ids that are to be withdrawn
+    // @param amounts An array of amounts per id
     function withdrawERC1155s(
         IERC1155 erc1155,
         uint256[] memory ids,
@@ -100,6 +115,9 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
         _withdrawERC1155s(erc1155, ids, amounts);
     }
 
+    // @notice Revoke approval on an array of assets and operators
+    // @dev Works for ERC20s, ERC721s, and ERC1155s
+    // @param notes A tuple that contains the protocol id, token address, and array of operators
     function revokeApprovals(ApprovalNote[] memory notes) external isPermitted(OWNER_ROLE) {
         ApprovalNote memory note;
         Protocol protocol;
@@ -119,6 +137,9 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
         }
     }
 
+    // @notice Revoke approval of an ERC20 for an array of operators
+    // @param erc20 The address of the ERC20 token
+    // @param operators The array of operators to have approval revoked
     function revokeERC20Approvals(
         IERC20 erc20,
         address[] memory operators
@@ -126,6 +147,9 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
         _revokeERC20Approvals(erc20, operators);
     }
 
+    // @notice Revoke approval of an ERC721 for an array of operators
+    // @param erc721 The address of the ERC721 token
+    // @param operators The array of operators to have approval revoked
     function revokeERC721Approvals(
         IERC721 erc721,
         address[] memory operators
@@ -133,6 +157,9 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
         _revokeERC721Approvals(erc721, operators);
     }
 
+    // @notice Revoke approval of an ERC1155 for an array of operators
+    // @param erc1155 The address of the ERC1155 token
+    // @param operators The array of operators to have approval revoked
     function revokeERC1155Approvals(
         IERC1155 erc1155,
         address[] memory operators
