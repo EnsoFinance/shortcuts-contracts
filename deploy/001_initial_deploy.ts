@@ -48,6 +48,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   await deployEnsoWalletFactory();
 
+  const {deploy: deployEnsoShortcuts} = await deterministic('EnsoShortcuts', {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+    skipIfAlreadyDeployed: true,
+  });
+
+  await deployEnsoShortcuts();
+
   const {deploy: deployEnsoShortcutsHelpers} = await deterministic('EnsoShortcutsHelpers', {
     from: deployer,
     args: [],

@@ -16,6 +16,10 @@ export default defineConfig({
         exec: '0x59828FdF7ee634AaaD3f58B19fDBa3b03E2D9d80',
         swap: '0x7123C8cBBD76c5C7fCC9f7150f23179bec0bA341',
       },
+      uniswap: {
+        routerV3: '0xE592427A0AEce92De3Edee1F18E0157C05861564',
+        permit2: '0x000000000022D473030F116dDEE9F6B43aC78BA3'
+      }
     },
   },
   etherscanKeys: {

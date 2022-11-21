@@ -91,6 +91,7 @@ export const setup = deployments.createFixture(async () => {
     core: {
       EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContractAt('EnsoWalletFactory', UpgradeableProxyAddress),
       EnsoWallet: <EnsoWallet>await ethers.getContract('EnsoWallet'),
+      EnsoShortcuts: <EnsoShortcuts>await ethers.getContract('EnsoShortcuts'),
     },
     utils: {
       EnsoShortcutsHelpers: <EnsoShortcutsHelpers>await ethers.getContract('EnsoShortcutsHelpers'),
