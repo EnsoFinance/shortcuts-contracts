@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.17;
 
 library StorageAPI {
     function setBytes(bytes32 key, bytes memory data) internal {

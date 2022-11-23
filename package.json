@@ -13,7 +13,7 @@
     "void:deploy": "hardhat deploy --report-gas --export-all deployments/deployments.json",
     "ci": " yarn test:forge && yarn test:hardhat && yarn test:actions && yarn void:deploy",
     "test": "yarn test:hardhat",
-    "test:hardhat": "cross-env REPORT_GAS=true HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true hardhat test",
+    "test:hardhat": "cross-env REPORT_GAS=true HARDHAT_FORK='mainnet' HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true hardhat test",
     "test:forge": "forge test",
     "test:actions": "yarn fork:actions mainnet",
     "coverage:hardhat": "cross-env HARDHAT_DEPLOY_FIXTURE=true hardhat coverage",

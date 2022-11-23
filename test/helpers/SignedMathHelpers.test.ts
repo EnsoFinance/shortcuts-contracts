@@ -12,7 +12,7 @@ describe('EnsoHelpers', async () => {
     });
 
     it('has VERSION', async () => {
-      const currentVersion = 1n;
+      const currentVersion = 1;
       expect(await signedMathHelpers.VERSION()).to.eq(currentVersion);
     });
     it('max', async () => {

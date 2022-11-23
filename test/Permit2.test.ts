@@ -1,7 +1,7 @@
 import {expect} from './chai-setup';
-import {ethers} from 'hardhat';
+import {ethers, getNamedAccounts} from 'hardhat';
 import {Contract, ContractTransaction, BigNumber} from 'ethers';
-import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers'
+//import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers'
 import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
 import {getMainnetSdk} from '@dethcrypto/eth-sdk-client';
 import {AllowanceTransfer} from '@uniswap/permit2-sdk';
@@ -59,17 +59,23 @@ async function preparePermit(
 
 describe('Permit2', async () => {
   it('should use weth via permit2', async () => {
+    const signer = (await ethers.getSigners())[0];
+    console.log("Signer: ", signer.address);
+    console.log("Balance: ", (await ethers.provider.getBalance(signer.address)).toString());
+
     const {
-      userWithoutEnsoWallet: user,
       contracts: {
         core: {EnsoShortcuts},
       },
     } = await setup();
-    const signer = await ethers.getSigner(user.address);
+
+
     const sdk = getMainnetSdk(signer);
 
+    console.log("Code: ", await ethers.provider.getCode(sdk.uniswap.permit2.address))
+
     const amount = ethers.utils.parseUnits('10', '18')
-    const deadline = '0'
+    const deadline = '281474976710655'
 
     const permitData = AllowanceTransfer.getPermitData(
         {
@@ -85,29 +91,24 @@ describe('Permit2', async () => {
         sdk.uniswap.permit2.address,
         1
     )
-
-    console.log("permitdata: ", permitData)
     const { domain, types, values } = permitData
     const signature = await signer._signTypedData(domain, types, values)
-
-    console.log("signature: ", signature)
-
     const { v, r, s } = ethers.utils.splitSignature(signature)
 
     // Wrap ETH
     await sdk.WETH.deposit({ value: amount })
     await sdk.WETH.approve(sdk.uniswap.permit2.address, ethers.constants.MaxUint256)
 
-    const weirolledWETH = weiroll.Contract.createContract(sdk.uniswap.WETH);
-    const weirolledUniswap = weiroll.Contract.createContract(sdk.uniswap.routerV3);
+    const weirolledWETH = weiroll.createContract(sdk.WETH);
+    const weirolledUniswap = weiroll.createContract(sdk.uniswap.routerV3);
 
     const planner = new Planner();
     planner.add(weirolledWETH.approve(sdk.uniswap.routerV3.address, amount));
     planner.add(weirolledUniswap.exactInputSingle({
-        tokenIn: sdk.weth.address,
+        tokenIn: sdk.WETH.address,
         tokenOut: sdk.dai.address,
         fee: 3000,
-        recipient: user.address,
+        recipient: signer.address,
         deadline: ethers.constants.MaxUint256, //unsafe, no deadline
         amountIn: amount,
         amountOutMinimum: 0, //unsafe, no minimum
@@ -115,7 +116,7 @@ describe('Permit2', async () => {
     }));
     const {commands, state} = planner.plan();
 
-    const tx = await EnsoShortcuts.permit2AndExecuteShortcut(
+    const tx = await EnsoShortcuts.connect(signer).permit2AndExecuteShortcut(
       sdk.WETH.address,
       amount,
       deadline,
@@ -127,11 +128,9 @@ describe('Permit2', async () => {
     );
 
     /*
-    await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress, '');
-
     await expectEventFromEnsoWallet(tx, Events, 'LogUint', number.toString());
     await expectEventFromEnsoWallet(tx, Events, 'LogString', message);
     */
-    expect(await sdk.dai.balanceOf(user.address)).to.be.gt(0)
+    //expect(await sdk.dai.balanceOf(signer.address)).to.be.gt(0)
   });
 });

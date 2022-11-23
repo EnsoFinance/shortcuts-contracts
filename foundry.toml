@@ -1,5 +1,5 @@
 [profile.default]
-solc_version = '0.8.16'
+solc_version = '0.8.17'
 src = 'contracts'
 out = 'artifacts'
 libs = ["node_modules", "lib"]

@@ -12,7 +12,7 @@ describe('EnsoHelpers', async () => {
     });
 
     it('has VERSION', async () => {
-      const currentVersion = 2n;
+      const currentVersion = 2;
       expect(await ensoShortcutsHelpers.VERSION()).to.eq(currentVersion);
     });
 

@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.17;
 
 abstract contract Roles {
     bytes32 public constant OWNER_ROLE = keccak256("enso.access.roles.owner");

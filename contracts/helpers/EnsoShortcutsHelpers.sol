@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.17;
 
 /**
  * @dev SignedMathHelpers contract is recommended to use only in Shortcuts passed to EnsoWallet.

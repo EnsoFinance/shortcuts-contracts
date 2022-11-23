@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.17;
 
 /**
  * @dev This contract is used to generate creation code for the UpgradeableClones contract

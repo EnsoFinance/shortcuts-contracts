@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.17;
 
 /**
   * @notice Helper contract to extract a variety of types from a tuple within the context of a weiroll script

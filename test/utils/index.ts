@@ -3,6 +3,7 @@ import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from
 import {
   EnsoWallet,
   EnsoWalletFactory,
+  EnsoShortcuts,
   Events,
   PayableEvents,
   TupleFactory,

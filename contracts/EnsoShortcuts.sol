@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.17;
 
 import "@ensofinance/weiroll/contracts/VM.sol";
-import "./libraries/Permit2Lib.sol"
+import "./permit2/libraries/Permit2Lib.sol";
 
 contract EnsoShortcuts is VM {
-    //using Permit2Lib for ERC20;
+    using Permit2Lib for ERC20;
 
     // @notice Execute a shortcut from this contract
     // @param commands An array of bytes32 values that encode calls
@@ -28,10 +28,8 @@ contract EnsoShortcuts is VM {
         bytes32 r,
         bytes32 s,
         bytes32[] calldata commands,
-        bytes[] calldata state)
-        external
-        returns (bytes[] memory returnData)
-    {
+        bytes[] calldata state
+    ) external returns (bytes[] memory returnData) {
         token.permit2(
           msg.sender,
           address(this),

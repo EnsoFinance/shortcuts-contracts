@@ -12,7 +12,7 @@ describe('EnsoHelpers', async () => {
     });
 
     it('has VERSION', async () => {
-      const currentVersion = 1n;
+      const currentVersion = 1;
       expect(await mathHelpers.VERSION()).to.eq(currentVersion);
     });
 
@@ -56,7 +56,7 @@ describe('EnsoHelpers', async () => {
 
     it('add reverts on overflow', async () => {
       const a = ethers.constants.One;
-      const b = ethers.constants.MaxUInt256;
+      const b = ethers.constants.MaxUint256;
 
       await expect(mathHelpers.add(a, b)).to.be.reverted;
     });

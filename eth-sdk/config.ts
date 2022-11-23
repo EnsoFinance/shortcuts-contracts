@@ -9,6 +9,7 @@ export default defineConfig({
       WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       stETH: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
       dai: '0x6b175474e89094c44da98b954eedeac495271d0f',
+      usdt: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
       euler: {
         euler: '0x27182842E098f60e3D576794A5bFFb0777E025d3',
         markets: '0x3520d5a913427E6F0D6A83E07ccD4A4da316e4d3',
