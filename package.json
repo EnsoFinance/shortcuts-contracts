@@ -1,6 +1,6 @@
 {
   "name": "@ensofinance/shortcuts-contracts",
-  "version": "0.7.0-alpha.1",
+  "version": "0.7.0-alpha.2",
   "scripts": {
     "forge:dependencies": "git submodule update --init --recursive",
     "prepare": "yarn forge:dependencies && yarn hardhat typechain && yarn eth-sdk",
