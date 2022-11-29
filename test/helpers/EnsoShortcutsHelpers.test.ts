@@ -39,6 +39,13 @@ describe('EnsoHelpers', async () => {
       expect(await ensoShortcutsHelpers.bytes32ToAddress(ethers.utils.hexZeroPad(testAddress, 32))).to.eq(testAddress);
     });
 
+    it('bytesToUint256', async () => {
+      const testNumber = ethers.constants.WeiPerEther.mul(50);
+      expect(await ensoShortcutsHelpers.bytesToUint256(ethers.utils.hexZeroPad(testNumber.toHexString(), 32))).to.eq(
+        testNumber
+      );
+    });
+
     it('bytes32ToUint256', async () => {
       const testNumber = ethers.constants.WeiPerEther.mul(50);
       expect(await ensoShortcutsHelpers.bytes32ToUint256(ethers.utils.hexZeroPad(testNumber.toHexString(), 32))).to.eq(
