@@ -19,9 +19,11 @@ contract DumbEnsoWallet is AccessController, ApprovableMinimalWallet {
     function initialize(
         address owner,
         bytes32 salt,
+        bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
+        (shortcutId);
         if (SALT.getBytes32() != bytes32(0)) revert AlreadyInit();
         SALT.setBytes32(salt);
         _setPermission(OWNER_ROLE, owner, true);
@@ -31,7 +33,8 @@ contract DumbEnsoWallet is AccessController, ApprovableMinimalWallet {
         }
     }
 
-    function executeShortcut(bytes32[] calldata commands, bytes[] calldata state) public payable isPermitted(EXECUTOR_ROLE) returns (bytes[] memory) {
+    function executeShortcut(bytes32 shortcutId, bytes32[] calldata commands, bytes[] calldata state) public payable isPermitted(EXECUTOR_ROLE) returns (bytes[] memory) {
+        (shortcutId);
         return _execute(commands, state);
     }
 

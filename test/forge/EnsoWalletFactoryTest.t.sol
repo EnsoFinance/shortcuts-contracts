@@ -68,14 +68,14 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
             commands.push(keccak256("hello world"));
             state.push(bytes("hello world"));
         }
-        factory.deploy(emptyCommands, emptyState);
+        factory.deploy(bytes32(0), emptyCommands, emptyState);
         ensoWallet = DumbEnsoWallet(factory.getAddress());
         user = new EnsoWalletUser(address(factory));
         user2 = new EnsoWalletUser(address(factory));
-        destructFactory.deploy(emptyCommands, emptyState);
+        destructFactory.deploy(bytes32(0), emptyCommands, emptyState);
         destroyedEnsoWallet = DestructEnsoWallet(destructFactory.getAddress());
         // destruct EnsoWallet
-        destroyedEnsoWallet.executeShortcut(emptyCommands, emptyState);
+        destroyedEnsoWallet.executeShortcut(bytes32(0), emptyCommands, emptyState);
         // deploy tokens
         mockERC20 = new MockERC20("Test", "TEST");
         mockERC721 = new MockERC721("Test", "TEST");
@@ -279,7 +279,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     function testFailToExecuteAfterEmergencyUpgrade() public {
         beacon.upgradeFallback(address(basicWalletReference));
         beacon.emergencyUpgrade();
-        ensoWallet.executeShortcut(commands, state);
+        ensoWallet.executeShortcut(bytes32(0), commands, state);
     }
 
     function testWithdrawAfterEmergencyUpgrade() public {
@@ -364,41 +364,41 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     }
 
     function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {
-        user.deployEnsoWallet(c, s);
+        user.deployEnsoWallet(bytes32(0), c, s);
     }
 
     function testFuzzDeployCustom(string memory l, bytes32[] memory c, bytes[] memory s) public {
         vm.assume(bytes(l).length > 0);
-        user.deployCustomEnsoWallet(l, c, s);
+        user.deployCustomEnsoWallet(l, bytes32(0), c, s);
     }
 
     function testFuzzExecute(bytes32[] memory c, bytes[] memory s) public {
         vm.expectEmit(true, true, true, true);
         emit VMData(c, s);
-        ensoWallet.executeShortcut(c, s);
+        ensoWallet.executeShortcut(bytes32(0), c, s);
     }
 
     function testDestroyRedeploy() public {
         // code is wiped
         assertTrue(address(destroyedEnsoWallet).code.length == 0);
-        destructFactory.deploy(emptyCommands, emptyState);
+        destructFactory.deploy(bytes32(0), emptyCommands, emptyState);
         assertEq(destroyedEnsoWallet.getPermission(destroyedEnsoWallet.OWNER_ROLE(), address(this)), true);
         assertFalse(address(destroyedEnsoWallet).code.length == 0);
     }
 
     // Attempt to self-destruct the EnsoWallet using call
     function testTryToDestroyEnsoWallet() public {
-        destructFactory2.deploy(emptyCommands, emptyState);
+        destructFactory2.deploy(bytes32(0), emptyCommands, emptyState);
         destructEnsoWallet = DestructEnsoWallet(destructFactory2.getAddress());
 
         assertEq(destructEnsoWallet.getPermission(destructEnsoWallet.OWNER_ROLE(), address(this)), true);
         // destruct EnsoWallet
-        destructEnsoWallet.executeShortcut(emptyCommands, emptyState);
+        destructEnsoWallet.executeShortcut(bytes32(0), emptyCommands, emptyState);
 
         // state is not wiped
         assertEq(destructEnsoWallet.getPermission(destructEnsoWallet.OWNER_ROLE(), address(this)), true);
 
-        destructEnsoWallet.executeShortcut(emptyCommands, emptyState);
+        destructEnsoWallet.executeShortcut(bytes32(0), emptyCommands, emptyState);
         address destructEnsoWalletAddr = address(destructEnsoWallet);
         // NOTE: A caveat with selfdestruct is that it seems to maintain it's "codesize" until the end of the current transaction
         bytes32 codeHash;
@@ -421,40 +421,40 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         assertTrue(address(destroyedEnsoWallet).code.length == 0);
         // reference still has it's code
         assertTrue(address(ensoWalletReference).code.length > 0);
-        destructFactory.deploy(emptyCommands, emptyState);
+        destructFactory.deploy(bytes32(0), emptyCommands, emptyState);
         destroyedEnsoWallet = DestructEnsoWallet(destructFactory.getAddress());
     }
 
     function testExecuteNoState() public {
-        ensoWallet.executeShortcut(emptyCommands, emptyState);
+        ensoWallet.executeShortcut(bytes32(0), emptyCommands, emptyState);
     }
 
     function testExecuteLargeState() public {
-        ensoWallet.executeShortcut(commands, state);
+        ensoWallet.executeShortcut(bytes32(0), commands, state);
     }
 
     function testDeployNoState() public {
-        user2.deployEnsoWallet(emptyCommands, emptyState);
+        user2.deployEnsoWallet(bytes32(0), emptyCommands, emptyState);
     }
 
     function testDeployLargeState() public {
-        user2.deployEnsoWallet(commands, state);
+        user2.deployEnsoWallet(bytes32(0), commands, state);
     }
 
     function testFailToRemoveOwnership() public {
-        user.deployEnsoWallet(emptyCommands, emptyState);
+        user.deployEnsoWallet(bytes32(0), emptyCommands, emptyState);
         user.setPermission(user.wallet().OWNER_ROLE(), address(user), false);
     }
 
     function testFailExecuteNoPermission() public {
-        user.deployEnsoWallet(emptyCommands, emptyState);
-        user.wallet().executeShortcut(commands, state);
+        user.deployEnsoWallet(bytes32(0), emptyCommands, emptyState);
+        user.wallet().executeShortcut(bytes32(0), commands, state);
     }
 
     function testExecuteMultiOwner() public {
-        user.deployEnsoWallet(emptyCommands, emptyState);
+        user.deployEnsoWallet(bytes32(0), emptyCommands, emptyState);
         user.setPermission(user.wallet().EXECUTOR_ROLE(), address(this), true);
-        user.wallet().executeShortcut(commands, state);
+        user.wallet().executeShortcut(bytes32(0), commands, state);
     }
 
     receive() external payable {}

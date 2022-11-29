@@ -29,28 +29,32 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     }
 
     // @notice Deploy a wallet using the msg.sender as the salt
+    // @param shortcutId The bytes32 value representing a shortcut
     // @param commands The optional commands for executing a shortcut after deployment
     // @param state The optional state for executing a shortcut after deployment
     function deploy(
+        bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) public payable returns (IEnsoWallet) {
         bytes32 salt = bytes32(uint256(uint160(msg.sender)));
-        return _deploy(salt, "", commands, state);
+        return _deploy(salt, "", shortcutId, commands, state);
     }
 
     // @notice Deploy a wallet using a hash of the msg.sender and a label as the salt
     // @param label The label to indentify deployment
+    // @param shortcutId The bytes32 value representing a shortcut
     // @param commands The optional commands for executing a shortcut after deployment
     // @param state The optional state for executing a shortcut after deployment
     function deployCustom(
         string memory label,
+        bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) public payable returns (IEnsoWallet) {
         if (bytes(label).length == 0) revert NoLabel();
         bytes32 salt = _customSalt(msg.sender, label);
-        return _deploy(salt, label, commands, state);
+        return _deploy(salt, label, shortcutId, commands, state);
     }
 
     // @notice Get the deployment address for the msg.sender
@@ -77,16 +81,18 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     // @notice The internal function for deploying a new wallet
     // @param salt The salt for deploy the address deterministically
     // @param label The label to indentify deployment in the emitted event
+    // @param shortcutId The bytes32 value representing a shortcut
     // @param commands The optional commands for executing a shortcut after deployment
     // @param state The optional state for executing a shortcut after deployment
     function _deploy(
         bytes32 salt,
         string memory label,
+        bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) internal returns (IEnsoWallet instance) {
         instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(salt)));
-        instance.initialize{ value: msg.value }(msg.sender, salt, commands, state);
+        instance.initialize{ value: msg.value }(msg.sender, salt, shortcutId, commands, state);
         emit Deployed(instance, label);
     }
 

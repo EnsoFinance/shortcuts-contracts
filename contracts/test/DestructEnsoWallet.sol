@@ -25,6 +25,7 @@ contract DestructEnsoWallet is AccessController, ApprovableMinimalWallet {
     function initialize(
         address owner,
         bytes32 salt,
+        bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
@@ -33,11 +34,12 @@ contract DestructEnsoWallet is AccessController, ApprovableMinimalWallet {
         _setPermission(OWNER_ROLE, owner, true);
         _setPermission(EXECUTOR_ROLE, owner, true);
         if (commands.length != 0) {
-            executeShortcut(commands, state);
+            executeShortcut(shortcutId, commands, state);
         }
     }
 
-    function executeShortcut(bytes32[] calldata commands, bytes[] calldata state) public isPermitted(EXECUTOR_ROLE) returns (bytes[] memory data) {
+    function executeShortcut(bytes32 shortcutId, bytes32[] calldata commands, bytes[] calldata state) public isPermitted(EXECUTOR_ROLE) returns (bytes[] memory data) {
+        (shortcutId);
         Destroyer destroyer = new Destroyer();
         (bool success, bytes memory ret) = address(destroyer).delegatecall(
             abi.encodeWithSelector(destroyer.kill.selector, commands, state)

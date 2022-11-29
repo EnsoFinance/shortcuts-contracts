@@ -19,11 +19,13 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
     // @dev A wallet is considered initialized if the SALT is set in state. Subsequent calls to this function will fail.
     // @param owner The address of the wallet owner
     // @param salt The salt used to deploy the proxy that uses this contract as it's implementation
+    // @param shortcutId The bytes32 value representing a shortcut
     // @param commands The optional commands for executing a shortcut
     // @param state The optional state for executing a shortcut
     function initialize(
         address owner,
         bytes32 salt,
+        bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external override payable {
@@ -32,7 +34,7 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         _setPermission(OWNER_ROLE, owner, true);
         _setPermission(EXECUTOR_ROLE, owner, true);
         if (commands.length != 0) {
-            _execute(commands, state);
+            _executeShortcut(shortcutId, commands, state);
         }
     }
 
@@ -52,16 +54,38 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
     }
 
     // @notice Execute a shortcut from this contract
+    // @param shortcutId The bytes32 value representing a shortcut
     // @param commands An array of bytes32 values that encode calls
     // @param state An array of bytes that are used to generate call data for each command
-    function executeShortcut(bytes32[] calldata commands, bytes[] calldata state)
+    function executeShortcut(
+        bytes32 shortcutId,
+        bytes32[] calldata commands,
+        bytes[] calldata state
+    )
         external
         payable
         isPermitted(EXECUTOR_ROLE)
         returns (bytes[] memory returnData)
     {
+        returnData = _executeShortcut(shortcutId, commands, state);
+    }
+
+    // @notice Internal function to execute a shortcut from this contract
+    // @param shortcutId The bytes32 value representing a shortcut
+    // @param commands An array of bytes32 values that encode calls
+    // @param state An array of bytes that are used to generate call data for each command
+    function _executeShortcut(
+        bytes32 shortcutId,
+        bytes32[] calldata commands,
+        bytes[] calldata state
+    )
+        internal
+        returns (bytes[] memory returnData)
+    {
+        (shortcutId); // ShortcutId just needs to be retrieved from call data, can support events in future upgrade
         returnData = _execute(commands, state);
     }
+
 
     // @notice Internal function for checking the ERC-1271 signer
     // @param signer The address that signed a message

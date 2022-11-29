@@ -2,7 +2,7 @@ import {expect} from './chai-setup';
 import {ethers} from 'hardhat';
 import {Contract, ContractTransaction, BigNumber} from 'ethers';
 import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
-import {setup} from './utils';
+import {setup, ZERO_BYTES32} from './utils';
 
 async function expectEventFromEnsoWallet(
   tx: ContractTransaction,
@@ -47,14 +47,14 @@ describe('EnsoWallet', async () => {
     const weirolledEvents = weiroll.createContract(Events as any);
     planner.add(weirolledEvents.logString(message));
     const {commands, state} = planner.plan();
-    const tx = await userWithEnsoWallet.EnsoWallet.executeShortcut(commands, state);
+    const tx = await userWithEnsoWallet.EnsoWallet.executeShortcut(ZERO_BYTES32, commands, state);
 
     await expectEventFromEnsoWallet(tx, Events, 'LogString', message);
   });
 
   it('should not allow user to execute on other user EnsoWallet', async () => {
     const imposter = await getImposter()
-    await expect(imposter.EnsoWallet.executeShortcut([], [])).to.be.revertedWith('NotPermitted');
+    await expect(imposter.EnsoWallet.executeShortcut(ZERO_BYTES32, [], [])).to.be.revertedWith('NotPermitted');
   });
 
   it('should check valid signature (bytes32)', async function() {
