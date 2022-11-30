@@ -5757,7 +5757,7 @@
       "chainId": "31337",
       "contracts": {
         "MinimalWallet": {
-          "address": "0xb8c70beFAd54641951FC43604d5e0CEFeE5F0565",
+          "address": "0x4411DA20F8F291150D2DE58a845Be91eaB4dcdD7",
           "abi": [
             {
               "inputs": [],
@@ -6153,7 +6153,7 @@
           ]
         },
         "EnsoWallet": {
-          "address": "0x498D5a77E1b7f508AF018f5BCd286134Ea91179c",
+          "address": "0x19740262c9a413816EC2884a5241eA53aB7096Ed",
           "abi": [
             {
               "inputs": [],
@@ -6284,6 +6284,11 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -6342,6 +6347,11 @@
                   "type": "bytes32"
                 },
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -6361,12 +6371,12 @@
               "inputs": [
                 {
                   "internalType": "bytes32",
-                  "name": "_hash",
+                  "name": "hash",
                   "type": "bytes32"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "_signature",
+                  "name": "signature",
                   "type": "bytes"
                 }
               ],
@@ -6385,12 +6395,12 @@
               "inputs": [
                 {
                   "internalType": "bytes",
-                  "name": "_message",
+                  "name": "message",
                   "type": "bytes"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "_signature",
+                  "name": "signature",
                   "type": "bytes"
                 }
               ],
@@ -6757,7 +6767,7 @@
           ]
         },
         "EnsoBeacon": {
-          "address": "0xEB3Ae33373ead1022BB4E6a4d308cC6f79f3e925",
+          "address": "0xb7097B5Cf1Dd5e3896Cc27366Dc2CA80De5502AC",
           "abi": [
             {
               "inputs": [
@@ -7297,7 +7307,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x7dF071fCEeE47C66E3Bf16667d2CD3d5b8c1b52C",
+          "address": "0x09bfFa3C7275A3Fa01595a72204e5A659B6C5067",
           "abi": [
             {
               "inputs": [
@@ -7447,6 +7457,11 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -7474,6 +7489,11 @@
                   "internalType": "string",
                   "name": "label",
                   "type": "string"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
                 },
                 {
                   "internalType": "bytes32[]",
@@ -7641,985 +7661,6 @@
               "name": "upgradeToAndCall",
               "outputs": [],
               "stateMutability": "payable",
-              "type": "function"
-            }
-          ]
-        },
-        "EnsoShortcutsHelpers": {
-          "address": "0x93d4F2F06D4AB401Ab573Fe88f8D6B57A78F3ac8",
-          "abi": [
-            {
-              "inputs": [],
-              "name": "VERSION",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "input",
-                  "type": "bytes32"
-                }
-              ],
-              "name": "bytes32ToAddress",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "input",
-                  "type": "bytes32"
-                }
-              ],
-              "name": "bytes32ToUint256",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "input",
-                  "type": "bytes"
-                }
-              ],
-              "name": "bytesToString",
-              "outputs": [
-                {
-                  "internalType": "string",
-                  "name": "",
-                  "type": "string"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "balanceAddress",
-                  "type": "address"
-                }
-              ],
-              "name": "getBalance",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "balance",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "getBlockTimestamp",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "timestamp",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "value",
-                  "type": "int256"
-                }
-              ],
-              "name": "int256ToUint256",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "a",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "b",
-                  "type": "address"
-                }
-              ],
-              "name": "isAddressEqual",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "isEqual",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "isEqualOrGreaterThan",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "isEqualOrLessThan",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "isGreaterThan",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "isLessThan",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bool",
-                  "name": "condition",
-                  "type": "bool"
-                }
-              ],
-              "name": "not",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bool",
-                  "name": "condition",
-                  "type": "bool"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "toggle",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "value",
-                  "type": "uint256"
-                }
-              ],
-              "name": "uint256ToInt256",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            }
-          ]
-        },
-        "MathHelpers": {
-          "address": "0xC9e817C177D481DaC9d071CA201B88B789eDAC22",
-          "abi": [
-            {
-              "inputs": [],
-              "name": "VERSION",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "add",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "average",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bool",
-                  "name": "condition",
-                  "type": "bool"
-                },
-                {
-                  "internalType": "bytes4",
-                  "name": "method",
-                  "type": "bytes4"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "conditional",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "div",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "max",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "min",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "mod",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "mul",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "a",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "b",
-                  "type": "uint256"
-                }
-              ],
-              "name": "sub",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            }
-          ]
-        },
-        "SignedMathHelpers": {
-          "address": "0xA042E2BDb359D47461643C458F6A021f78941559",
-          "abi": [
-            {
-              "inputs": [],
-              "name": "VERSION",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "n",
-                  "type": "int256"
-                }
-              ],
-              "name": "abs",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "a",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "b",
-                  "type": "int256"
-                }
-              ],
-              "name": "add",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "a",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "b",
-                  "type": "int256"
-                }
-              ],
-              "name": "average",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bool",
-                  "name": "condition",
-                  "type": "bool"
-                },
-                {
-                  "internalType": "bytes4",
-                  "name": "method",
-                  "type": "bytes4"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "a",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "b",
-                  "type": "int256"
-                }
-              ],
-              "name": "conditional",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "a",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "b",
-                  "type": "int256"
-                }
-              ],
-              "name": "div",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "a",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "b",
-                  "type": "int256"
-                }
-              ],
-              "name": "max",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "a",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "b",
-                  "type": "int256"
-                }
-              ],
-              "name": "min",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "a",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "b",
-                  "type": "int256"
-                }
-              ],
-              "name": "mul",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "int256",
-                  "name": "a",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "b",
-                  "type": "int256"
-                }
-              ],
-              "name": "sub",
-              "outputs": [
-                {
-                  "internalType": "int256",
-                  "name": "",
-                  "type": "int256"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            }
-          ]
-        },
-        "TupleHelpers": {
-          "address": "0x2EBdDF85D5dF07C877A657d0a8Fa0aF73D8daE05",
-          "abi": [
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "tuple",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "index",
-                  "type": "uint256"
-                }
-              ],
-              "name": "extractArray",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "tuple",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "index",
-                  "type": "uint256"
-                }
-              ],
-              "name": "extractDynamicArray",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "tuple",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "index",
-                  "type": "uint256"
-                }
-              ],
-              "name": "extractDynamicElement",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "tuple",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "index",
-                  "type": "uint256"
-                }
-              ],
-              "name": "extractElement",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "tuple",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "index",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "bool[]",
-                  "name": "isDynamicTypeFormat",
-                  "type": "bool[]"
-                }
-              ],
-              "name": "extractTuple",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "pure",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "tuple",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "index",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "bool[]",
-                  "name": "isDynamicTypeFormat",
-                  "type": "bool[]"
-                }
-              ],
-              "name": "extractTupleArray",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "pure",
               "type": "function"
             }
           ]

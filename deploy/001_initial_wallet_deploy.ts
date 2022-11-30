@@ -47,46 +47,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   await deployEnsoWalletFactory();
-
-  const {deploy: deployEnsoShortcutsHelpers} = await deterministic('EnsoShortcutsHelpers', {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await deployEnsoShortcutsHelpers();
-
-  const {deploy: deployMathHelpers} = await deterministic('MathHelpers', {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await deployMathHelpers();
-
-  const {deploy: deploySignedMathHelpers} = await deterministic('SignedMathHelpers', {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await deploySignedMathHelpers();
-
-  const {deploy: deployTupleHelpers} = await deterministic('TupleHelpers', {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await deployTupleHelpers();
 };
 export default func;
-func.tags = ['EnsoWalletFactory', 'EnsoBeacon', 'EnsoWallet', 'MinimalWallet', 'EnsoShortcutsHelpers', 'MathHelpers', 'SignedMathHelpers', 'TupleHelpers'];
+func.tags = ['EnsoWallet'];
