@@ -5,7 +5,7 @@
       "chainId": "1",
       "contracts": {
         "EnsoBeacon": {
-          "address": "0xEB3Ae33373ead1022BB4E6a4d308cC6f79f3e925",
+          "address": "0xb7097B5Cf1Dd5e3896Cc27366Dc2CA80De5502AC",
           "abi": [
             {
               "inputs": [
@@ -882,7 +882,7 @@
           ]
         },
         "EnsoWallet": {
-          "address": "0x498D5a77E1b7f508AF018f5BCd286134Ea91179c",
+          "address": "0x19740262c9a413816EC2884a5241eA53aB7096Ed",
           "abi": [
             {
               "inputs": [],
@@ -1013,6 +1013,11 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -1071,6 +1076,11 @@
                   "type": "bytes32"
                 },
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -1090,12 +1100,12 @@
               "inputs": [
                 {
                   "internalType": "bytes32",
-                  "name": "_hash",
+                  "name": "hash",
                   "type": "bytes32"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "_signature",
+                  "name": "signature",
                   "type": "bytes"
                 }
               ],
@@ -1114,12 +1124,12 @@
               "inputs": [
                 {
                   "internalType": "bytes",
-                  "name": "_message",
+                  "name": "message",
                   "type": "bytes"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "_signature",
+                  "name": "signature",
                   "type": "bytes"
                 }
               ],
@@ -1486,7 +1496,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x7dF071fCEeE47C66E3Bf16667d2CD3d5b8c1b52C",
+          "address": "0x09bfFa3C7275A3Fa01595a72204e5A659B6C5067",
           "abi": [
             {
               "inputs": [
@@ -1636,6 +1646,11 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -1663,6 +1678,11 @@
                   "internalType": "string",
                   "name": "label",
                   "type": "string"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
                 },
                 {
                   "internalType": "bytes32[]",
@@ -2079,7 +2099,7 @@
           ]
         },
         "MinimalWallet": {
-          "address": "0xb8c70beFAd54641951FC43604d5e0CEFeE5F0565",
+          "address": "0x4411DA20F8F291150D2DE58a845Be91eaB4dcdD7",
           "abi": [
             {
               "inputs": [],
@@ -2881,7 +2901,7 @@
       "chainId": "137",
       "contracts": {
         "EnsoBeacon": {
-          "address": "0xEB3Ae33373ead1022BB4E6a4d308cC6f79f3e925",
+          "address": "0xb7097B5Cf1Dd5e3896Cc27366Dc2CA80De5502AC",
           "abi": [
             {
               "inputs": [
@@ -3758,7 +3778,7 @@
           ]
         },
         "EnsoWallet": {
-          "address": "0x498D5a77E1b7f508AF018f5BCd286134Ea91179c",
+          "address": "0x19740262c9a413816EC2884a5241eA53aB7096Ed",
           "abi": [
             {
               "inputs": [],
@@ -3889,6 +3909,11 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -3947,6 +3972,11 @@
                   "type": "bytes32"
                 },
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -3966,12 +3996,12 @@
               "inputs": [
                 {
                   "internalType": "bytes32",
-                  "name": "_hash",
+                  "name": "hash",
                   "type": "bytes32"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "_signature",
+                  "name": "signature",
                   "type": "bytes"
                 }
               ],
@@ -3990,12 +4020,12 @@
               "inputs": [
                 {
                   "internalType": "bytes",
-                  "name": "_message",
+                  "name": "message",
                   "type": "bytes"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "_signature",
+                  "name": "signature",
                   "type": "bytes"
                 }
               ],
@@ -4362,7 +4392,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x7dF071fCEeE47C66E3Bf16667d2CD3d5b8c1b52C",
+          "address": "0x09bfFa3C7275A3Fa01595a72204e5A659B6C5067",
           "abi": [
             {
               "inputs": [
@@ -4512,6 +4542,11 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -4539,6 +4574,11 @@
                   "internalType": "string",
                   "name": "label",
                   "type": "string"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
                 },
                 {
                   "internalType": "bytes32[]",
@@ -4955,7 +4995,7 @@
           ]
         },
         "MinimalWallet": {
-          "address": "0xb8c70beFAd54641951FC43604d5e0CEFeE5F0565",
+          "address": "0x4411DA20F8F291150D2DE58a845Be91eaB4dcdD7",
           "abi": [
             {
               "inputs": [],
@@ -5751,1930 +5791,13 @@
       }
     }
   ],
-  "31337": [
-    {
-      "name": "hardhat",
-      "chainId": "31337",
-      "contracts": {
-        "MinimalWallet": {
-          "address": "0x4411DA20F8F291150D2DE58a845Be91eaB4dcdD7",
-          "abi": [
-            {
-              "inputs": [],
-              "name": "InvalidArrayLength",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "NotPermitted",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "WithdrawFailed",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "EXECUTOR_ROLE",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "OWNER_ROLE",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "role",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "address",
-                  "name": "account",
-                  "type": "address"
-                }
-              ],
-              "name": "getPermission",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "",
-                  "type": "bytes"
-                }
-              ],
-              "name": "onERC1155BatchReceived",
-              "outputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "",
-                  "type": "bytes4"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "",
-                  "type": "bytes"
-                }
-              ],
-              "name": "onERC1155Received",
-              "outputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "",
-                  "type": "bytes4"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "",
-                  "type": "bytes"
-                }
-              ],
-              "name": "onERC721Received",
-              "outputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "",
-                  "type": "bytes4"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "components": [
-                    {
-                      "internalType": "enum MinimalWallet.Protocol",
-                      "name": "protocol",
-                      "type": "uint8"
-                    },
-                    {
-                      "internalType": "address",
-                      "name": "token",
-                      "type": "address"
-                    },
-                    {
-                      "internalType": "address[]",
-                      "name": "operators",
-                      "type": "address[]"
-                    }
-                  ],
-                  "internalType": "struct MinimalWallet.ApprovalNote[]",
-                  "name": "notes",
-                  "type": "tuple[]"
-                }
-              ],
-              "name": "revokeApprovals",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC1155",
-                  "name": "erc1155",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address[]",
-                  "name": "operators",
-                  "type": "address[]"
-                }
-              ],
-              "name": "revokeERC1155Approvals",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC20",
-                  "name": "erc20",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address[]",
-                  "name": "operators",
-                  "type": "address[]"
-                }
-              ],
-              "name": "revokeERC20Approvals",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC721",
-                  "name": "erc721",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address[]",
-                  "name": "operators",
-                  "type": "address[]"
-                }
-              ],
-              "name": "revokeERC721Approvals",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "interfaceId",
-                  "type": "bytes4"
-                }
-              ],
-              "name": "supportsInterface",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "components": [
-                    {
-                      "internalType": "enum MinimalWallet.Protocol",
-                      "name": "protocol",
-                      "type": "uint8"
-                    },
-                    {
-                      "internalType": "address",
-                      "name": "token",
-                      "type": "address"
-                    },
-                    {
-                      "internalType": "uint256[]",
-                      "name": "ids",
-                      "type": "uint256[]"
-                    },
-                    {
-                      "internalType": "uint256[]",
-                      "name": "amounts",
-                      "type": "uint256[]"
-                    }
-                  ],
-                  "internalType": "struct MinimalWallet.TransferNote[]",
-                  "name": "notes",
-                  "type": "tuple[]"
-                }
-              ],
-              "name": "withdraw",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC1155",
-                  "name": "erc1155",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "ids",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "amounts",
-                  "type": "uint256[]"
-                }
-              ],
-              "name": "withdrawERC1155s",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC20[]",
-                  "name": "erc20s",
-                  "type": "address[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "amounts",
-                  "type": "uint256[]"
-                }
-              ],
-              "name": "withdrawERC20s",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC721",
-                  "name": "erc721",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "ids",
-                  "type": "uint256[]"
-                }
-              ],
-              "name": "withdrawERC721s",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "amount",
-                  "type": "uint256"
-                }
-              ],
-              "name": "withdrawETH",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "stateMutability": "payable",
-              "type": "receive"
-            }
-          ]
-        },
-        "EnsoWallet": {
-          "address": "0x19740262c9a413816EC2884a5241eA53aB7096Ed",
-          "abi": [
-            {
-              "inputs": [],
-              "name": "AlreadyInit",
-              "type": "error"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "command_index",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "address",
-                  "name": "target",
-                  "type": "address"
-                },
-                {
-                  "internalType": "string",
-                  "name": "message",
-                  "type": "string"
-                }
-              ],
-              "name": "ExecutionFailed",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "InvalidArrayLength",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "NotPermitted",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "UnsafeSetting",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "WithdrawFailed",
-              "type": "error"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "bytes32",
-                  "name": "role",
-                  "type": "bytes32"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "account",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "bool",
-                  "name": "permission",
-                  "type": "bool"
-                }
-              ],
-              "name": "PermissionSet",
-              "type": "event"
-            },
-            {
-              "inputs": [],
-              "name": "EXECUTOR_ROLE",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "OWNER_ROLE",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "target",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "value",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "data",
-                  "type": "bytes"
-                }
-              ],
-              "name": "execute",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "success",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "payable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "shortcutId",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "bytes32[]",
-                  "name": "commands",
-                  "type": "bytes32[]"
-                },
-                {
-                  "internalType": "bytes[]",
-                  "name": "state",
-                  "type": "bytes[]"
-                }
-              ],
-              "name": "executeShortcut",
-              "outputs": [
-                {
-                  "internalType": "bytes[]",
-                  "name": "returnData",
-                  "type": "bytes[]"
-                }
-              ],
-              "stateMutability": "payable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "role",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "address",
-                  "name": "account",
-                  "type": "address"
-                }
-              ],
-              "name": "getPermission",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "owner",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bytes32",
-                  "name": "salt",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "bytes32",
-                  "name": "shortcutId",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "bytes32[]",
-                  "name": "commands",
-                  "type": "bytes32[]"
-                },
-                {
-                  "internalType": "bytes[]",
-                  "name": "state",
-                  "type": "bytes[]"
-                }
-              ],
-              "name": "initialize",
-              "outputs": [],
-              "stateMutability": "payable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "hash",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "signature",
-                  "type": "bytes"
-                }
-              ],
-              "name": "isValidSignature",
-              "outputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "magicValue",
-                  "type": "bytes4"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "message",
-                  "type": "bytes"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "signature",
-                  "type": "bytes"
-                }
-              ],
-              "name": "isValidSignature",
-              "outputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "magicValue",
-                  "type": "bytes4"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "",
-                  "type": "bytes"
-                }
-              ],
-              "name": "onERC1155BatchReceived",
-              "outputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "",
-                  "type": "bytes4"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "",
-                  "type": "bytes"
-                }
-              ],
-              "name": "onERC1155Received",
-              "outputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "",
-                  "type": "bytes4"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "",
-                  "type": "bytes"
-                }
-              ],
-              "name": "onERC721Received",
-              "outputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "",
-                  "type": "bytes4"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "components": [
-                    {
-                      "internalType": "enum MinimalWallet.Protocol",
-                      "name": "protocol",
-                      "type": "uint8"
-                    },
-                    {
-                      "internalType": "address",
-                      "name": "token",
-                      "type": "address"
-                    },
-                    {
-                      "internalType": "address[]",
-                      "name": "operators",
-                      "type": "address[]"
-                    }
-                  ],
-                  "internalType": "struct MinimalWallet.ApprovalNote[]",
-                  "name": "notes",
-                  "type": "tuple[]"
-                }
-              ],
-              "name": "revokeApprovals",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC1155",
-                  "name": "erc1155",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address[]",
-                  "name": "operators",
-                  "type": "address[]"
-                }
-              ],
-              "name": "revokeERC1155Approvals",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC20",
-                  "name": "erc20",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address[]",
-                  "name": "operators",
-                  "type": "address[]"
-                }
-              ],
-              "name": "revokeERC20Approvals",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC721",
-                  "name": "erc721",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address[]",
-                  "name": "operators",
-                  "type": "address[]"
-                }
-              ],
-              "name": "revokeERC721Approvals",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "role",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "address",
-                  "name": "account",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bool",
-                  "name": "permission",
-                  "type": "bool"
-                }
-              ],
-              "name": "setPermission",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes4",
-                  "name": "interfaceId",
-                  "type": "bytes4"
-                }
-              ],
-              "name": "supportsInterface",
-              "outputs": [
-                {
-                  "internalType": "bool",
-                  "name": "",
-                  "type": "bool"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "components": [
-                    {
-                      "internalType": "enum MinimalWallet.Protocol",
-                      "name": "protocol",
-                      "type": "uint8"
-                    },
-                    {
-                      "internalType": "address",
-                      "name": "token",
-                      "type": "address"
-                    },
-                    {
-                      "internalType": "uint256[]",
-                      "name": "ids",
-                      "type": "uint256[]"
-                    },
-                    {
-                      "internalType": "uint256[]",
-                      "name": "amounts",
-                      "type": "uint256[]"
-                    }
-                  ],
-                  "internalType": "struct MinimalWallet.TransferNote[]",
-                  "name": "notes",
-                  "type": "tuple[]"
-                }
-              ],
-              "name": "withdraw",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC1155",
-                  "name": "erc1155",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "ids",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "amounts",
-                  "type": "uint256[]"
-                }
-              ],
-              "name": "withdrawERC1155s",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC20[]",
-                  "name": "erc20s",
-                  "type": "address[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "amounts",
-                  "type": "uint256[]"
-                }
-              ],
-              "name": "withdrawERC20s",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "contract IERC721",
-                  "name": "erc721",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "ids",
-                  "type": "uint256[]"
-                }
-              ],
-              "name": "withdrawERC721s",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "amount",
-                  "type": "uint256"
-                }
-              ],
-              "name": "withdrawETH",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "stateMutability": "payable",
-              "type": "receive"
-            }
-          ]
-        },
-        "EnsoBeacon": {
-          "address": "0xb7097B5Cf1Dd5e3896Cc27366Dc2CA80De5502AC",
-          "abi": [
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "coreImplementation_",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "fallbackImplementation_",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "constructor"
-            },
-            {
-              "inputs": [],
-              "name": "InvalidAccount",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "InvalidImplementation",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "NoPendingUpgrade",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "NotPermitted",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "Wait",
-              "type": "error"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousAdmin",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newAdmin",
-                  "type": "address"
-                }
-              ],
-              "name": "AdministrationTransferStarted",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousAdmin",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newAdmin",
-                  "type": "address"
-                }
-              ],
-              "name": "AdministrationTransferred",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousImplementation",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newImplementation",
-                  "type": "address"
-                }
-              ],
-              "name": "CoreUpgraded",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "uint256",
-                  "name": "newDelay",
-                  "type": "uint256"
-                }
-              ],
-              "name": "Delay",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousDelegate",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newDelegate",
-                  "type": "address"
-                }
-              ],
-              "name": "DelegationTransferStarted",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousDelegate",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newDelegate",
-                  "type": "address"
-                }
-              ],
-              "name": "DelegationTransferred",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [],
-              "name": "EmergencyUpgrade",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newFactory",
-                  "type": "address"
-                }
-              ],
-              "name": "Factory",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousImplementation",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newImplementation",
-                  "type": "address"
-                }
-              ],
-              "name": "FallbackUpgraded",
-              "type": "event"
-            },
-            {
-              "inputs": [],
-              "name": "acceptAdministration",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "acceptDelegation",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "ownable",
-                  "type": "address"
-                }
-              ],
-              "name": "acceptOwnership",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "admin",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "coreImplementation",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "delay",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "delegate",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "emergencyUpgrade",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "factory",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "fallbackImplementation",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "finalizeUpgrade",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "implementation",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "pendingAdmin",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "pendingCoreImplementation",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "pendingDelegate",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "pendingFactoryImplementation",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "pendingFactoryUpgradeData",
-              "outputs": [
-                {
-                  "internalType": "bytes",
-                  "name": "",
-                  "type": "bytes"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "renounceAdministration",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "renounceDelegation",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "newDelay",
-                  "type": "uint256"
-                }
-              ],
-              "name": "setDelay",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newFactory",
-                  "type": "address"
-                }
-              ],
-              "name": "setFactory",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newAdmin",
-                  "type": "address"
-                }
-              ],
-              "name": "transferAdministration",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newDelegate",
-                  "type": "address"
-                }
-              ],
-              "name": "transferDelegation",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "ownable",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "newOwner",
-                  "type": "address"
-                }
-              ],
-              "name": "transferOwnership",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newImplementation",
-                  "type": "address"
-                },
-                {
-                  "internalType": "address",
-                  "name": "factoryImplementation",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "data",
-                  "type": "bytes"
-                }
-              ],
-              "name": "upgradeCore",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newImplementation",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "data",
-                  "type": "bytes"
-                }
-              ],
-              "name": "upgradeFactory",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newImplementation",
-                  "type": "address"
-                }
-              ],
-              "name": "upgradeFallback",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "upgradeTimestamp",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "",
-                  "type": "uint256"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            }
-          ]
-        },
-        "EnsoWalletFactory": {
-          "address": "0x09bfFa3C7275A3Fa01595a72204e5A659B6C5067",
-          "abi": [
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "ensoBeacon_",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "nonpayable",
-              "type": "constructor"
-            },
-            {
-              "inputs": [],
-              "name": "AlreadyInit",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "InvalidAccount",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "NoLabel",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "NotOwner",
-              "type": "error"
-            },
-            {
-              "inputs": [],
-              "name": "NotPermitted",
-              "type": "error"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousAdmin",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newAdmin",
-                  "type": "address"
-                }
-              ],
-              "name": "AdminChanged",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": true,
-                  "internalType": "address",
-                  "name": "beacon",
-                  "type": "address"
-                }
-              ],
-              "name": "BeaconUpgraded",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "contract IEnsoWallet",
-                  "name": "instance",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "string",
-                  "name": "label",
-                  "type": "string"
-                }
-              ],
-              "name": "Deployed",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousOwner",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newOwner",
-                  "type": "address"
-                }
-              ],
-              "name": "OwnershipTransferStarted",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "previousOwner",
-                  "type": "address"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "address",
-                  "name": "newOwner",
-                  "type": "address"
-                }
-              ],
-              "name": "OwnershipTransferred",
-              "type": "event"
-            },
-            {
-              "anonymous": false,
-              "inputs": [
-                {
-                  "indexed": true,
-                  "internalType": "address",
-                  "name": "implementation",
-                  "type": "address"
-                }
-              ],
-              "name": "Upgraded",
-              "type": "event"
-            },
-            {
-              "inputs": [],
-              "name": "acceptOwnership",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "shortcutId",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "bytes32[]",
-                  "name": "commands",
-                  "type": "bytes32[]"
-                },
-                {
-                  "internalType": "bytes[]",
-                  "name": "state",
-                  "type": "bytes[]"
-                }
-              ],
-              "name": "deploy",
-              "outputs": [
-                {
-                  "internalType": "contract IEnsoWallet",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "payable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "string",
-                  "name": "label",
-                  "type": "string"
-                },
-                {
-                  "internalType": "bytes32",
-                  "name": "shortcutId",
-                  "type": "bytes32"
-                },
-                {
-                  "internalType": "bytes32[]",
-                  "name": "commands",
-                  "type": "bytes32[]"
-                },
-                {
-                  "internalType": "bytes[]",
-                  "name": "state",
-                  "type": "bytes[]"
-                }
-              ],
-              "name": "deployCustom",
-              "outputs": [
-                {
-                  "internalType": "contract IEnsoWallet",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "payable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "ensoBeacon",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "getAddress",
-              "outputs": [
-                {
-                  "internalType": "address payable",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "user",
-                  "type": "address"
-                },
-                {
-                  "internalType": "string",
-                  "name": "label",
-                  "type": "string"
-                }
-              ],
-              "name": "getCustomAddress",
-              "outputs": [
-                {
-                  "internalType": "address payable",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "user",
-                  "type": "address"
-                }
-              ],
-              "name": "getUserAddress",
-              "outputs": [
-                {
-                  "internalType": "address payable",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "initialize",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "owner",
-              "outputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "proxiableUUID",
-              "outputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "",
-                  "type": "bytes32"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newOwner",
-                  "type": "address"
-                }
-              ],
-              "name": "transferOwnership",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newImplementation",
-                  "type": "address"
-                }
-              ],
-              "name": "upgradeTo",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "newImplementation",
-                  "type": "address"
-                },
-                {
-                  "internalType": "bytes",
-                  "name": "data",
-                  "type": "bytes"
-                }
-              ],
-              "name": "upgradeToAndCall",
-              "outputs": [],
-              "stateMutability": "payable",
-              "type": "function"
-            }
-          ]
-        }
-      }
-    }
-  ],
   "42161": [
     {
       "name": "arbitrum",
       "chainId": "42161",
       "contracts": {
         "EnsoBeacon": {
-          "address": "0xEB3Ae33373ead1022BB4E6a4d308cC6f79f3e925",
+          "address": "0xb7097B5Cf1Dd5e3896Cc27366Dc2CA80De5502AC",
           "abi": [
             {
               "inputs": [
@@ -8551,7 +6674,7 @@
           ]
         },
         "EnsoWallet": {
-          "address": "0x498D5a77E1b7f508AF018f5BCd286134Ea91179c",
+          "address": "0x19740262c9a413816EC2884a5241eA53aB7096Ed",
           "abi": [
             {
               "inputs": [],
@@ -8682,6 +6805,11 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -8740,6 +6868,11 @@
                   "type": "bytes32"
                 },
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -8759,12 +6892,12 @@
               "inputs": [
                 {
                   "internalType": "bytes32",
-                  "name": "_hash",
+                  "name": "hash",
                   "type": "bytes32"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "_signature",
+                  "name": "signature",
                   "type": "bytes"
                 }
               ],
@@ -8783,12 +6916,12 @@
               "inputs": [
                 {
                   "internalType": "bytes",
-                  "name": "_message",
+                  "name": "message",
                   "type": "bytes"
                 },
                 {
                   "internalType": "bytes",
-                  "name": "_signature",
+                  "name": "signature",
                   "type": "bytes"
                 }
               ],
@@ -9155,7 +7288,7 @@
           ]
         },
         "EnsoWalletFactory": {
-          "address": "0x7dF071fCEeE47C66E3Bf16667d2CD3d5b8c1b52C",
+          "address": "0x09bfFa3C7275A3Fa01595a72204e5A659B6C5067",
           "abi": [
             {
               "inputs": [
@@ -9305,6 +7438,11 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
+                },
+                {
                   "internalType": "bytes32[]",
                   "name": "commands",
                   "type": "bytes32[]"
@@ -9332,6 +7470,11 @@
                   "internalType": "string",
                   "name": "label",
                   "type": "string"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "shortcutId",
+                  "type": "bytes32"
                 },
                 {
                   "internalType": "bytes32[]",
@@ -9748,7 +7891,7 @@
           ]
         },
         "MinimalWallet": {
-          "address": "0xb8c70beFAd54641951FC43604d5e0CEFeE5F0565",
+          "address": "0x4411DA20F8F291150D2DE58a845Be91eaB4dcdD7",
           "abi": [
             {
               "inputs": [],
