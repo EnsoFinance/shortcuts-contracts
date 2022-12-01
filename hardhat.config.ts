@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 import {HardhatUserConfig} from 'hardhat/types';
 import 'hardhat-deploy';
-import '@nomiclabs/hardhat-ethers';
 import 'hardhat-gas-reporter';
 import '@typechain/hardhat';
 import 'solidity-coverage';
@@ -20,9 +19,10 @@ const config: HardhatUserConfig = {
       {
         version: '0.8.16',
         settings: {
+          viaIR: true,
           optimizer: {
             enabled: true,
-            runs: 2000,
+            runs: 100000000,
           },
         },
       },

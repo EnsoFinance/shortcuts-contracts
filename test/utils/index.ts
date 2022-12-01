@@ -7,8 +7,11 @@ import {
   PayableEvents,
   TupleFactory,
   EnsoShortcutsHelpers,
-  TupleHelpers
+  TupleHelpers,
 } from '../../typechain';
+
+const OWNER_SLOT = '0xebef2b212afb6c9cfdbd10b61834a8dc955e5fbf0aacd1c641d5cbdedf4022d0';
+export const ZERO_BYTES32 = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
   addresses: string[],
@@ -55,6 +58,7 @@ export async function setupUsersWithEnsoWallets<
 
 export const setup = deployments.createFixture(async () => {
   const {deployer} = await getNamedAccounts();
+  const {deterministic} = deployments;
 
   await deployments.deploy('Events', {
     from: deployer,
@@ -74,9 +78,21 @@ export const setup = deployments.createFixture(async () => {
     autoMine: true,
   });
 
+  const factoryImplementation = await ethers.getContract('EnsoWalletFactory');
+
+  const {deploy: deployUpgradeableProxy, address: UpgradeableProxyAddress} = await deterministic('UpgradeableProxy', {
+    from: deployer,
+    args: [factoryImplementation.address],
+    log: true,
+    autoMine: true,
+    skipIfAlreadyDeployed: true,
+  });
+
+  await deployUpgradeableProxy();
+
   const contracts = {
     core: {
-      EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContract('EnsoWalletFactory'),
+      EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContractAt('EnsoWalletFactory', UpgradeableProxyAddress),
       EnsoWallet: <EnsoWallet>await ethers.getContract('EnsoWallet'),
     },
     utils: {
@@ -90,15 +106,20 @@ export const setup = deployments.createFixture(async () => {
     },
   };
 
+  const owner = await ethers.provider.getStorageAt(contracts.core.EnsoWalletFactory.address, OWNER_SLOT);
+  if (owner == ZERO_BYTES32) {
+    await contracts.core.EnsoWalletFactory.initialize();
+  }
+
   const [user, secondUserWithEnsoWallet, ...users] = await setupUsersWithEnsoWallets(
     await getUnnamedAccounts(),
     contracts.core
   );
 
   const deployerUser = await setupUserWithEnsoWallet(deployer, contracts.core);
-  await deployerUser.EnsoWalletFactory.deploy([], []);
+  await deployerUser.EnsoWalletFactory.deploy(ZERO_BYTES32, [], []);
 
-  await secondUserWithEnsoWallet.EnsoWalletFactory.deploy([], []);
+  await secondUserWithEnsoWallet.EnsoWalletFactory.deploy(ZERO_BYTES32, [], []);
 
   return {
     contracts,

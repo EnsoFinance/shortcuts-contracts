@@ -2,46 +2,49 @@
 
 pragma solidity ^0.8.16;
 
-contract DumbEnsoWallet {
-    address public caller;
+import "../access/AccessController.sol";
+import "./ApprovableMinimalWallet.sol";
+
+contract DumbEnsoWallet is AccessController, ApprovableMinimalWallet {
+    using StorageAPI for bytes32;
+
+    // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967
+    bytes32 internal constant SALT = bytes32(uint256(keccak256("enso.wallet.salt")) - 1);
 
     event VMData(bytes32[] commands, bytes[] state);
     event SenderData(address sender, uint256 value);
 
-    // Already initialized
     error AlreadyInit();
-    // Not caller
-    error NotCaller();
-    // Invalid address
-    error InvalidAddress();
 
     function initialize(
-        address caller_,
+        address owner,
+        bytes32 salt,
+        bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
     ) external payable {
-        if (caller != address(0)) revert AlreadyInit();
-        caller = caller_;
+        (shortcutId);
+        if (SALT.getBytes32() != bytes32(0)) revert AlreadyInit();
+        SALT.setBytes32(salt);
+        _setPermission(OWNER_ROLE, owner, true);
+        _setPermission(EXECUTOR_ROLE, owner, true);
         if (commands.length != 0) {
-            execute(commands, state);
+            _execute(commands, state);
         }
     }
 
-    function execute(bytes32[] calldata commands, bytes[] calldata state) public payable returns (bytes[] memory) {
+    function executeShortcut(
+        bytes32 shortcutId,
+        bytes32[] calldata commands,
+        bytes[] calldata state
+    ) public payable isPermitted(EXECUTOR_ROLE) returns (bytes[] memory) {
+        (shortcutId);
         return _execute(commands, state);
     }
 
     function _execute(bytes32[] calldata commands, bytes[] memory state) internal returns (bytes[] memory) {
         emit VMData(commands, state);
         emit SenderData(msg.sender, msg.value);
-        // TODO: foundry bug?
-        //      comparing to address(this) / msg.sender doesn't return the address alone
-        //           ie.
-        //           val: EnsoWalletFactoryTest: [0xb4c79dab8f259c7aee6e5b2aa729821864227e84])
-        //           val: 0xb42486fb2979f5f97072f2f4af6673782f846963)
-        // if (msg.sender != caller) revert NotCaller();
         return state;
     }
-
-    receive() external payable {}
 }

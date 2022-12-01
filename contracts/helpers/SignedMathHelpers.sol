@@ -104,8 +104,8 @@ contract SignedMathHelpers {
      */
     function conditional(bool condition, bytes4 method, int256 a, int256 b) external view returns (int256) {
         if (condition) {
-          (bool success, bytes memory n) = address(this).staticcall(abi.encodeWithSelector(method, a, b));
-          if (success) return abi.decode(n, (int256));
+            (bool success, bytes memory n) = address(this).staticcall(abi.encodeWithSelector(method, a, b));
+            if (success) return abi.decode(n, (int256));
         }
         return a;
     }

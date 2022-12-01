@@ -1,8 +1,8 @@
 import {expect} from './chai-setup';
 import {ethers} from 'hardhat';
-import {Contract, ContractTransaction, BigNumber} from 'ethers';
+import {Contract, ContractTransaction} from 'ethers';
 import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
-import {setup} from './utils';
+import {setup, ZERO_BYTES32} from './utils';
 
 async function expectEventFromEnsoWallet(
   tx: ContractTransaction,
@@ -13,6 +13,22 @@ async function expectEventFromEnsoWallet(
   await expect(tx)
     .to.emit(emitterContract, eventName)
     .withArgs(...eventArgs);
+}
+
+async function getImposter() {
+  const {
+    userWithEnsoWallet,
+    userWithoutEnsoWallet: imposter,
+    contracts: {
+      core: {EnsoWallet},
+    },
+  } = await setup();
+
+  imposter.EnsoWallet = EnsoWallet.attach(userWithEnsoWallet.EnsoWallet.address).connect(
+    await ethers.getSigner(imposter.address)
+  );
+
+  return imposter;
 }
 
 describe('EnsoWallet', async () => {
@@ -28,26 +44,85 @@ describe('EnsoWallet', async () => {
 
     const message = 'Hello World!';
 
-    const weirolledEvents = weiroll.createContract(Events as any);
+    const weirolledEvents = weiroll.createContract(Events);
     planner.add(weirolledEvents.logString(message));
     const {commands, state} = planner.plan();
-    const tx = await userWithEnsoWallet.EnsoWallet.execute(commands, state);
+    const tx = await userWithEnsoWallet.EnsoWallet.executeShortcut(ZERO_BYTES32, commands, state);
 
     await expectEventFromEnsoWallet(tx, Events, 'LogString', message);
   });
 
   it('should not allow user to execute on other user EnsoWallet', async () => {
-    const {
-      userWithEnsoWallet,
-      userWithoutEnsoWallet: impostor,
-      contracts: {
-        core: {EnsoWallet},
-      },
-    } = await setup();
+    const imposter = await getImposter();
+    await expect(imposter.EnsoWallet.executeShortcut(ZERO_BYTES32, [], [])).to.be.revertedWith('NotPermitted');
+  });
 
-    impostor.EnsoWallet = EnsoWallet.attach(userWithEnsoWallet.EnsoWallet.address).connect(
-      await ethers.getSigner(impostor.address)
+  it('should check valid signature (bytes32)', async function () {
+    const {userWithEnsoWallet} = await setup();
+    const signer = await ethers.getSigner(userWithEnsoWallet.address);
+    const message = 'TEST';
+    const signature = await signer.signMessage(message);
+    const response = await userWithEnsoWallet.EnsoWallet['isValidSignature(bytes32,bytes)'](
+      ethers.utils.hashMessage(message),
+      signature
     );
-    await expect(impostor.EnsoWallet.execute([], [])).to.be.revertedWith('NotCaller');
+    expect(response).to.equal('0x1626ba7e'); //Magic value
+  });
+
+  it('should fail to check invalid signature (bytes32)', async function () {
+    const imposter = await getImposter();
+    const signer = await ethers.getSigner(imposter.address);
+    const message = 'FAIL';
+    const signature = await signer.signMessage(message);
+    const response = await imposter.EnsoWallet['isValidSignature(bytes32,bytes)'](
+      ethers.utils.hashMessage(message),
+      signature
+    );
+    expect(response).to.equal('0xffffffff'); //Invalid value
+  });
+
+  it('should fail to check invalid message (bytes32)', async function () {
+    const imposter = await getImposter();
+    const signer = await ethers.getSigner(imposter.address);
+    const message = 'FAIL';
+    const signature = await signer.signMessage(message);
+    const response = await imposter.EnsoWallet['isValidSignature(bytes32,bytes)'](
+      ethers.utils.hashMessage(''),
+      signature
+    ); //Bad message
+    expect(response).to.equal('0xffffffff'); //Invalid value
+  });
+
+  it('should check valid signature (bytes)', async function () {
+    const {userWithEnsoWallet} = await setup();
+    const signer = await ethers.getSigner(userWithEnsoWallet.address);
+    const message = 'TEST';
+    const signature = await signer.signMessage(message);
+    const response = await userWithEnsoWallet.EnsoWallet['isValidSignature(bytes,bytes)'](
+      ethers.utils.toUtf8Bytes(message),
+      signature
+    );
+    expect(response).to.equal('0x20c13b0b'); //Magic value
+  });
+
+  it('should fail to check invalid signature (bytes)', async function () {
+    const imposter = await getImposter();
+    const signer = await ethers.getSigner(imposter.address);
+    const message = 'FAIL';
+    const signature = await signer.signMessage(message);
+    const response = await imposter.EnsoWallet['isValidSignature(bytes,bytes)'](
+      ethers.utils.toUtf8Bytes(message),
+      signature
+    );
+    expect(response).to.equal('0xffffffff'); //Invalid value
+  });
+
+  it('should fail to check invalid message (bytes)', async function () {
+    const imposter = await getImposter();
+    const signer = await ethers.getSigner(imposter.address);
+    const message = 'FAIL';
+    const signature = await signer.signMessage(message);
+    const response = await imposter.EnsoWallet['isValidSignature(bytes,bytes)']('0x', signature); //Bad message
+    expect(response).to.equal('0xffffffff'); //Invalid value
   });
 });
