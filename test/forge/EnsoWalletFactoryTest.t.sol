@@ -83,24 +83,24 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     }
 
     function testWithdrawETH() public {
-        (bool success,) = address(ensoWallet).call{ value : 10**18 }("");
+        (bool success, ) = address(ensoWallet).call{value: 10 ** 18}("");
         require(success);
-        assertEq(address(ensoWallet).balance, 10**18);
-        ensoWallet.withdrawETH(10**18);
+        assertEq(address(ensoWallet).balance, 10 ** 18);
+        ensoWallet.withdrawETH(10 ** 18);
         assertEq(address(ensoWallet).balance, 0);
     }
 
     function testFailWithdrawETH() public {
-        ensoWallet.withdrawETH(10**18);
+        ensoWallet.withdrawETH(10 ** 18);
     }
 
     function testWithdrawERC20() public {
-        mockERC20.transfer(address(ensoWallet), 10**18);
-        assertEq(mockERC20.balanceOf(address(ensoWallet)), 10**18);
+        mockERC20.transfer(address(ensoWallet), 10 ** 18);
+        assertEq(mockERC20.balanceOf(address(ensoWallet)), 10 ** 18);
         IERC20[] memory erc20s = new IERC20[](1);
         uint256[] memory amounts = new uint256[](1);
         erc20s[0] = mockERC20;
-        amounts[0] = 10**18;
+        amounts[0] = 10 ** 18;
         ensoWallet.withdrawERC20s(erc20s, amounts);
         assertEq(mockERC20.balanceOf(address(ensoWallet)), 0);
     }
@@ -109,7 +109,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         IERC20[] memory erc20s = new IERC20[](1);
         uint256[] memory amounts = new uint256[](1);
         erc20s[0] = mockERC20;
-        amounts[0] = 10**18;
+        amounts[0] = 10 ** 18;
         ensoWallet.withdrawERC20s(erc20s, amounts);
     }
 
@@ -149,16 +149,16 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testWithdrawAll() public {
         // Deposit all
-        (bool success,) = address(ensoWallet).call{ value : 10**18 }("");
+        (bool success, ) = address(ensoWallet).call{value: 10 ** 18}("");
         require(success);
-        mockERC20.transfer(address(ensoWallet), 10**18);
+        mockERC20.transfer(address(ensoWallet), 10 ** 18);
         mockERC721.safeTransferFrom(address(this), address(ensoWallet), 0);
         mockERC721.safeTransferFrom(address(this), address(ensoWallet), 1);
         mockERC1155.safeTransferFrom(address(this), address(ensoWallet), 0, 1, "");
 
         // Confirm deposit
-        assertEq(address(ensoWallet).balance, 10**18);
-        assertEq(mockERC20.balanceOf(address(ensoWallet)), 10**18);
+        assertEq(address(ensoWallet).balance, 10 ** 18);
+        assertEq(mockERC20.balanceOf(address(ensoWallet)), 10 ** 18);
         assertEq(mockERC721.balanceOf(address(ensoWallet)), 2);
         assertEq(mockERC1155.balanceOf(address(ensoWallet), 0), 1);
 
@@ -167,12 +167,12 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
         notes[0].protocol = MinimalWallet.Protocol.ETH;
         notes[0].amounts = new uint256[](1);
-        notes[0].amounts[0] = 10**18;
+        notes[0].amounts[0] = 10 ** 18;
 
         notes[1].protocol = MinimalWallet.Protocol.ERC20;
         notes[1].token = address(mockERC20);
         notes[1].amounts = new uint256[](1);
-        notes[1].amounts[0] = 10**18;
+        notes[1].amounts[0] = 10 ** 18;
 
         notes[2].protocol = MinimalWallet.Protocol.ERC721;
         notes[2].token = address(mockERC721);
@@ -284,14 +284,14 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testWithdrawAfterEmergencyUpgrade() public {
         // Deposit ETH
-        (bool success,) = address(ensoWallet).call{ value : 10**18 }("");
+        (bool success, ) = address(ensoWallet).call{value: 10 ** 18}("");
         require(success);
-        assertEq(address(ensoWallet).balance, 10**18);
+        assertEq(address(ensoWallet).balance, 10 ** 18);
         // Emergency
         beacon.upgradeFallback(address(basicWalletReference));
         beacon.emergencyUpgrade();
         // Withdraw ETH
-        ensoWallet.withdrawETH(10**18);
+        ensoWallet.withdrawETH(10 ** 18);
         assertEq(address(ensoWallet).balance, 0);
     }
 

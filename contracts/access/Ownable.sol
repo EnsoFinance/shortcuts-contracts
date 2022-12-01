@@ -18,7 +18,7 @@ abstract contract Ownable {
     error NotPermitted();
     error InvalidAccount();
 
-    modifier onlyOwner {
+    modifier onlyOwner() {
         if (msg.sender != OWNER.getAddress()) revert NotOwner();
         _;
     }

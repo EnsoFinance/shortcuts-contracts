@@ -16,13 +16,8 @@ abstract contract AccessController is ACL, Roles {
     // @param role The bytes32 value of the role
     // @param account The address of the account
     // @param permission The permission status
-    function setPermission(
-        bytes32 role,
-        address account,
-        bool permission
-    ) external isPermitted(OWNER_ROLE) {
-        if (role == OWNER_ROLE && account == msg.sender && permission == false)
-            revert UnsafeSetting();
+    function setPermission(bytes32 role, address account, bool permission) external isPermitted(OWNER_ROLE) {
+        if (role == OWNER_ROLE && account == msg.sender && permission == false) revert UnsafeSetting();
         _setPermission(role, account, permission);
     }
 
@@ -30,11 +25,7 @@ abstract contract AccessController is ACL, Roles {
     // @param role The bytes32 value of the role
     // @param account The address of the account
     // @param permission The permission status
-    function _setPermission(
-        bytes32 role,
-        address account,
-        bool permission
-    ) internal {
+    function _setPermission(bytes32 role, address account, bool permission) internal {
         bytes32 key = _getKey(role, account);
         key.setBool(permission);
         emit PermissionSet(role, account, permission);

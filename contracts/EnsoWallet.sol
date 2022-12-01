@@ -28,7 +28,7 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
-    ) external override payable {
+    ) external payable override {
         if (SALT.getBytes32() != bytes32(0)) revert AlreadyInit();
         SALT.setBytes32(salt);
         _setPermission(OWNER_ROLE, owner, true);
@@ -61,12 +61,7 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
-    )
-        external
-        payable
-        isPermitted(EXECUTOR_ROLE)
-        returns (bytes[] memory returnData)
-    {
+    ) external payable isPermitted(EXECUTOR_ROLE) returns (bytes[] memory returnData) {
         returnData = _executeShortcut(shortcutId, commands, state);
     }
 
@@ -78,14 +73,10 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         bytes32 shortcutId,
         bytes32[] calldata commands,
         bytes[] calldata state
-    )
-        internal
-        returns (bytes[] memory returnData)
-    {
+    ) internal returns (bytes[] memory returnData) {
         (shortcutId); // ShortcutId just needs to be retrieved from call data, can support events in future upgrade
         returnData = _execute(commands, state);
     }
-
 
     // @notice Internal function for checking the ERC-1271 signer
     // @param signer The address that signed a message

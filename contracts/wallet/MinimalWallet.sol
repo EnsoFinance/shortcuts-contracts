@@ -68,7 +68,9 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
                 amounts = note.amounts;
                 _withdrawERC1155s(IERC1155(note.token), ids, amounts);
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -81,25 +83,21 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     // @notice Withdraw ERC20s
     // @param erc20s An array of erc20 addresses
     // @param amounts An array of amounts for each erc20
-    function withdrawERC20s(
-        IERC20[] memory erc20s,
-        uint256[] memory amounts
-    ) external isPermitted(OWNER_ROLE) {
+    function withdrawERC20s(IERC20[] memory erc20s, uint256[] memory amounts) external isPermitted(OWNER_ROLE) {
         uint256 length = erc20s.length;
         if (amounts.length != length) revert InvalidArrayLength();
         for (uint256 i; i < length; ) {
             _withdrawERC20(erc20s[i], amounts[i]);
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
     // @notice Withdraw multiple ERC721 ids for a single ERC721 contract
     // @param erc721 The address of the ERC721 contract
     // @param ids An array of ids that are to be withdrawn
-    function withdrawERC721s(
-        IERC721 erc721,
-        uint256[] memory ids
-    ) external isPermitted(OWNER_ROLE) {
+    function withdrawERC721s(IERC721 erc721, uint256[] memory ids) external isPermitted(OWNER_ROLE) {
         _withdrawERC721s(erc721, ids);
     }
 
@@ -133,37 +131,30 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
             } else if (protocol == Protocol.ERC1155) {
                 _revokeERC1155Approvals(IERC1155(note.token), note.operators);
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
     // @notice Revoke approval of an ERC20 for an array of operators
     // @param erc20 The address of the ERC20 token
     // @param operators The array of operators to have approval revoked
-    function revokeERC20Approvals(
-        IERC20 erc20,
-        address[] memory operators
-    ) external isPermitted(OWNER_ROLE) {
+    function revokeERC20Approvals(IERC20 erc20, address[] memory operators) external isPermitted(OWNER_ROLE) {
         _revokeERC20Approvals(erc20, operators);
     }
 
     // @notice Revoke approval of an ERC721 for an array of operators
     // @param erc721 The address of the ERC721 token
     // @param operators The array of operators to have approval revoked
-    function revokeERC721Approvals(
-        IERC721 erc721,
-        address[] memory operators
-    ) external isPermitted(OWNER_ROLE) {
+    function revokeERC721Approvals(IERC721 erc721, address[] memory operators) external isPermitted(OWNER_ROLE) {
         _revokeERC721Approvals(erc721, operators);
     }
 
     // @notice Revoke approval of an ERC1155 for an array of operators
     // @param erc1155 The address of the ERC1155 token
     // @param operators The array of operators to have approval revoked
-    function revokeERC1155Approvals(
-        IERC1155 erc1155,
-        address[] memory operators
-    ) external isPermitted(OWNER_ROLE) {
+    function revokeERC1155Approvals(IERC1155 erc1155, address[] memory operators) external isPermitted(OWNER_ROLE) {
         _revokeERC1155Approvals(erc1155, operators);
     }
 
@@ -172,67 +163,56 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     ////////////////////////////////////////////////////
 
     function _withdrawETH(uint256 amount) internal {
-        (bool success, ) = msg.sender.call{ value : amount }("");
+        (bool success, ) = msg.sender.call{value: amount}("");
         if (!success) revert WithdrawFailed();
     }
 
-    function _withdrawERC20(
-        IERC20 erc20,
-        uint256 amount
-    ) internal {
+    function _withdrawERC20(IERC20 erc20, uint256 amount) internal {
         erc20.safeTransfer(msg.sender, amount);
     }
 
-    function _withdrawERC721s(
-        IERC721 erc721,
-        uint256[] memory ids
-    ) internal {
+    function _withdrawERC721s(IERC721 erc721, uint256[] memory ids) internal {
         uint256 length = ids.length;
         for (uint256 i; i < length; ) {
             erc721.safeTransferFrom(address(this), msg.sender, ids[i]);
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
-    function _withdrawERC1155s(
-        IERC1155 erc1155,
-        uint256[] memory ids,
-        uint256[] memory amounts
-    ) internal {
+    function _withdrawERC1155s(IERC1155 erc1155, uint256[] memory ids, uint256[] memory amounts) internal {
         // safeBatchTransferFrom will validate the array lengths
         erc1155.safeBatchTransferFrom(address(this), msg.sender, ids, amounts, "");
     }
 
-    function _revokeERC20Approvals(
-        IERC20 erc20,
-        address[] memory operators
-    ) internal {
+    function _revokeERC20Approvals(IERC20 erc20, address[] memory operators) internal {
         uint256 length = operators.length;
         for (uint256 i; i < length; ) {
             erc20.safeApprove(operators[i], 0);
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
-    function _revokeERC721Approvals(
-        IERC721 erc721,
-        address[] memory operators
-    ) internal {
+    function _revokeERC721Approvals(IERC721 erc721, address[] memory operators) internal {
         uint256 length = operators.length;
         for (uint256 i; i < length; ) {
             erc721.setApprovalForAll(operators[i], false);
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 
-    function _revokeERC1155Approvals(
-        IERC1155 erc1155,
-        address[] memory operators
-    ) internal {
+    function _revokeERC1155Approvals(IERC1155 erc1155, address[] memory operators) internal {
         uint256 length = operators.length;
         for (uint256 i; i < length; ) {
             erc1155.setApprovalForAll(operators[i], false);
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
     }
 

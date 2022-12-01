@@ -38,14 +38,7 @@ contract TupleFactory {
     function allTypesTuple()
         public
         view
-        returns (
-            uint256,
-            string memory,
-            uint256[] memory,
-            string[] memory,
-            Example memory,
-            Example[] memory
-        )
+        returns (uint256, string memory, uint256[] memory, string[] memory, Example memory, Example[] memory)
     {
         return (exampleInt1, exampleString, exampleIntArray, exampleStringArray, exampleStruct, exampleStructArray);
     }

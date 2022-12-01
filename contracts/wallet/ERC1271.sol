@@ -8,22 +8,14 @@ import "../interfaces/IERC1271.sol";
 abstract contract ERC1271 is IERC1271 {
     using ECDSA for bytes32;
 
-    bytes4 constant internal MAGICVALUE_BYTES = 0x20c13b0b;
-    bytes4 constant internal MAGICVALUE_BYTES32 = 0x1626ba7e;
-    bytes4 constant internal INVALID_SIGNATURE = 0xffffffff;
+    bytes4 internal constant MAGICVALUE_BYTES = 0x20c13b0b;
+    bytes4 internal constant MAGICVALUE_BYTES32 = 0x1626ba7e;
+    bytes4 internal constant INVALID_SIGNATURE = 0xffffffff;
 
     // @notice Checks for a valid signature
     // @param hash A bytes32 hash of a message
     // @param signature The signed hash of the message
-    function isValidSignature(
-        bytes32 hash,
-        bytes memory signature
-    )
-        public
-        override
-        view
-        returns (bytes4 magicValue)
-    {
+    function isValidSignature(bytes32 hash, bytes memory signature) public view override returns (bytes4 magicValue) {
         address signer = hash.recover(signature);
         magicValue = _checkSigner(signer) ? MAGICVALUE_BYTES32 : INVALID_SIGNATURE;
     }
@@ -34,12 +26,7 @@ abstract contract ERC1271 is IERC1271 {
     function isValidSignature(
         bytes memory message,
         bytes memory signature
-    )
-        public
-        override
-        view
-        returns (bytes4 magicValue)
-    {
+    ) public view override returns (bytes4 magicValue) {
         address signer = ECDSA.toEthSignedMessageHash(message).recover(signature);
         magicValue = _checkSigner(signer) ? MAGICVALUE_BYTES : INVALID_SIGNATURE;
     }

@@ -33,7 +33,11 @@ contract DumbEnsoWallet is AccessController, ApprovableMinimalWallet {
         }
     }
 
-    function executeShortcut(bytes32 shortcutId, bytes32[] calldata commands, bytes[] calldata state) public payable isPermitted(EXECUTOR_ROLE) returns (bytes[] memory) {
+    function executeShortcut(
+        bytes32 shortcutId,
+        bytes32[] calldata commands,
+        bytes[] calldata state
+    ) public payable isPermitted(EXECUTOR_ROLE) returns (bytes[] memory) {
         (shortcutId);
         return _execute(commands, state);
     }

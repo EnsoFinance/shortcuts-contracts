@@ -1,5 +1,4 @@
 import {expect} from './chai-setup';
-import {ethers} from 'hardhat';
 import {Contract, ContractTransaction, BigNumber} from 'ethers';
 import {Planner, Contract as weiroll} from '@ensofinance/weiroll.js';
 import {setup, ZERO_BYTES32} from './utils';
@@ -37,7 +36,7 @@ describe('EnsoWalletFactory', async () => {
     const message = "I'm deploying a EnsoWallet!";
     const number = BigNumber.from(42);
 
-    const weirolledEvents = weiroll.createContract(Events as any);
+    const weirolledEvents = weiroll.createContract(Events);
     const planner = new Planner();
     planner.add(weirolledEvents.logString(message));
     planner.add(weirolledEvents.logUint(number));
@@ -63,7 +62,7 @@ describe('EnsoWalletFactory', async () => {
 
     const number = BigNumber.from(42);
 
-    const weirolledEvents = weiroll.createContract(PayableEvents as any);
+    const weirolledEvents = weiroll.createContract(PayableEvents);
     const planner = new Planner();
     const value = 1;
 
@@ -85,14 +84,16 @@ describe('EnsoWalletFactory', async () => {
   it('should not allow user to deploy multiple EnsoWallets', async () => {
     const {userWithEnsoWallet} = await setup();
 
-    await expect(userWithEnsoWallet.EnsoWalletFactory.deploy(ZERO_BYTES32, [], [])).to.be.revertedWith('create2 failed');
+    await expect(userWithEnsoWallet.EnsoWalletFactory.deploy(ZERO_BYTES32, [], [])).to.be.revertedWith(
+      'create2 failed'
+    );
   });
 
   it('should allow user to deploy multiple custom EnsoWallets', async () => {
     const {userWithEnsoWallet} = await setup();
-    const label1 = "engineering";
+    const label1 = 'engineering';
     const predict1 = await userWithEnsoWallet.EnsoWalletFactory.getCustomAddress(userWithEnsoWallet.address, label1);
-    const label2 = "legal";
+    const label2 = 'legal';
     const predict2 = await userWithEnsoWallet.EnsoWalletFactory.getCustomAddress(userWithEnsoWallet.address, label2);
 
     const tx1 = await userWithEnsoWallet.EnsoWalletFactory.deployCustom(label1, ZERO_BYTES32, [], []);
