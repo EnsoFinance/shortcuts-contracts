@@ -12,13 +12,17 @@ contract UpgradeableProxy {
 
     fallback() external payable {
         assembly {
-          let addr := sload(_IMPLEMENTATION_SLOT)
-          calldatacopy(0, 0, calldatasize())
-          let result := delegatecall(gas(), addr, 0, calldatasize(), 0, 0)
-          returndatacopy(0, 0, returndatasize())
-          switch result
-          case 0 { revert(0, returndatasize()) }
-          default { return(0, returndatasize()) }
+            let addr := sload(_IMPLEMENTATION_SLOT)
+            calldatacopy(0, 0, calldatasize())
+            let result := delegatecall(gas(), addr, 0, calldatasize(), 0, 0)
+            returndatacopy(0, 0, returndatasize())
+            switch result
+            case 0 {
+                revert(0, returndatasize())
+            }
+            default {
+                return(0, returndatasize())
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import "../interfaces/IOwnable.sol";
 
 interface IBeaconAdmin {
     function acceptAdministration() external;
+
     function acceptDelegation() external;
 }
 

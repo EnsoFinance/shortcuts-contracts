@@ -13,7 +13,11 @@ library StorageAPI {
             }
             case 0x01 {
                 sstore(key, add(mul(length, 2), 1))
-                for {let i:= 0} lt(mul(i, 0x20), length) {i := add(i, 0x01)} {
+                for {
+                    let i := 0
+                } lt(mul(i, 0x20), length) {
+                    i := add(i, 0x01)
+                } {
                     sstore(add(slot, i), mload(add(data, mul(add(i, 1), 0x20))))
                 }
             }
@@ -65,7 +69,11 @@ library StorageAPI {
                 let decodedLength := div(length, 2)
                 let i := 0
                 mstore(data, decodedLength)
-                for {} lt(mul(i, 0x20), decodedLength) {i := add(i, 0x01)} {
+                for {
+
+                } lt(mul(i, 0x20), decodedLength) {
+                    i := add(i, 0x01)
+                } {
                     mstore(add(add(data, 0x20), mul(i, 0x20)), sload(add(slot, i)))
                 }
                 mstore(0x40, add(data, add(0x20, mul(i, 0x20))))

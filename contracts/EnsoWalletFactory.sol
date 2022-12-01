@@ -92,7 +92,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
         bytes[] calldata state
     ) internal returns (IEnsoWallet instance) {
         instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(salt)));
-        instance.initialize{ value: msg.value }(msg.sender, salt, shortcutId, commands, state);
+        instance.initialize{value: msg.value}(msg.sender, salt, shortcutId, commands, state);
         emit Deployed(instance, label);
     }
 
@@ -106,10 +106,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     // @notice Internal function to derive the deployment address from a salt
     // @param salt The bytes32 salt to generate the deployment address
     function _predictDeterministicAddress(bytes32 salt) internal view returns (address payable) {
-        return payable(ensoBeacon.predictDeterministicAddress(
-            salt,
-            address(this)
-        ));
+        return payable(ensoBeacon.predictDeterministicAddress(salt, address(this)));
     }
 
     // @notice Internal function to support UUPS upgrades of the implementing proxy

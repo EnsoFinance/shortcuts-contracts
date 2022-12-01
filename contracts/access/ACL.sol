@@ -18,10 +18,7 @@ abstract contract ACL {
     // @param role The bytes32 value of the role
     // @param account The address of the account
     // @return The permission status
-    function getPermission(
-        bytes32 role,
-        address account
-    ) external view returns (bool) {
+    function getPermission(bytes32 role, address account) external view returns (bool) {
         return _getPermission(role, account);
     }
 
@@ -29,10 +26,7 @@ abstract contract ACL {
     // @param role The bytes32 value of the role
     // @param account The address of the account
     // @return The permission status
-    function _getPermission(
-        bytes32 role,
-        address account
-    ) internal view returns (bool) {
+    function _getPermission(bytes32 role, address account) internal view returns (bool) {
         bytes32 key = _getKey(role, account);
         return key.getBool();
     }
@@ -41,10 +35,7 @@ abstract contract ACL {
     // @param role The bytes32 value of the role
     // @param account The address of the account
     // @return The bytes32 storage slot
-    function _getKey(
-        bytes32 role,
-        address account
-    ) internal pure returns (bytes32) {
+    function _getKey(bytes32 role, address account) internal pure returns (bytes32) {
         return keccak256(abi.encode(role, account));
     }
 }

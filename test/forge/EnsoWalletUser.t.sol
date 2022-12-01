@@ -26,7 +26,12 @@ contract EnsoWalletUser is Test {
         assertEq(wallet.getPermission(wallet.OWNER_ROLE(), address(this)), true);
     }
 
-    function deployCustomEnsoWallet(string memory label, bytes32 shortcutId, bytes32[] memory commands, bytes[] memory state) public payable {
+    function deployCustomEnsoWallet(
+        string memory label,
+        bytes32 shortcutId,
+        bytes32[] memory commands,
+        bytes[] memory state
+    ) public payable {
         vm.expectEmit(true, true, true, true);
         emit Deployed(EnsoWallet(factory.getCustomAddress(address(this), label)), label);
         factory.deployCustom(label, shortcutId, commands, state);

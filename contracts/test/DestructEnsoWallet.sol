@@ -38,7 +38,11 @@ contract DestructEnsoWallet is AccessController, ApprovableMinimalWallet {
         }
     }
 
-    function executeShortcut(bytes32 shortcutId, bytes32[] calldata commands, bytes[] calldata state) public isPermitted(EXECUTOR_ROLE) returns (bytes[] memory data) {
+    function executeShortcut(
+        bytes32 shortcutId,
+        bytes32[] calldata commands,
+        bytes[] calldata state
+    ) public isPermitted(EXECUTOR_ROLE) returns (bytes[] memory data) {
         (shortcutId);
         Destroyer destroyer = new Destroyer();
         (bool success, bytes memory ret) = address(destroyer).delegatecall(

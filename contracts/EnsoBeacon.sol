@@ -38,20 +38,17 @@ contract EnsoBeacon is IBeacon {
     error NoPendingUpgrade();
     error Wait();
 
-    modifier onlyAdmin {
+    modifier onlyAdmin() {
         if (msg.sender != admin) revert NotPermitted();
         _;
     }
 
-    modifier onlyDelegate {
+    modifier onlyDelegate() {
         if (msg.sender != delegate) revert NotPermitted();
         _;
     }
 
-    constructor(
-        address coreImplementation_,
-        address fallbackImplementation_
-    ) {
+    constructor(address coreImplementation_, address fallbackImplementation_) {
         admin = msg.sender;
         delegate = msg.sender;
         coreImplementation = coreImplementation_;
