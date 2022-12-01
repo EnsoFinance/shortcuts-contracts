@@ -84,7 +84,7 @@ func.tags = [
   'EnsoWallet',
   'EnsoShortcutsHelpers',
   'MathHelpers',
-  'PercentageMathHelpers',
   'SignedMathHelpers',
   'TupleHelpers',
+  'PercentageMathHelpers',
 ];
