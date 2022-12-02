@@ -16,6 +16,11 @@ contract DumbEnsoWallet is AccessController, ApprovableMinimalWallet {
 
     error AlreadyInit();
 
+    constructor() {
+        // Set salt to 0xff so that the implementation cannot be initialized
+        SALT.setBytes32(bytes32(type(uint256).max)); 
+    }
+
     function initialize(
         address owner,
         bytes32 salt,

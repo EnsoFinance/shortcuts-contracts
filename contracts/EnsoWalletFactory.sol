@@ -20,6 +20,8 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
 
     constructor(address ensoBeacon_) {
         ensoBeacon = ensoBeacon_;
+        // Set owner to 0xff so that the implementation cannot be initialized
+        OWNER.setAddress(address(type(uint160).max));
     }
 
     // @notice A function to initialize state on the proxy the delegates to this contract

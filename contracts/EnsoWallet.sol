@@ -15,6 +15,11 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
 
     error AlreadyInit();
 
+    constructor() {
+        // Set salt to 0xff so that the implementation cannot be initialized
+        SALT.setBytes32(bytes32(type(uint256).max)); 
+    }
+
     // @notice Initialize wallet by setting state and permissions
     // @dev A wallet is considered initialized if the SALT is set in state. Subsequent calls to this function will fail.
     // @param owner The address of the wallet owner
