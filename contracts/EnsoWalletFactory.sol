@@ -25,9 +25,11 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     }
 
     // @notice A function to initialize state on the proxy the delegates to this contract
-    function initialize() external {
+    // @param newOwner The new owner of this contract
+    function initialize(address newOwner) external {
+        if (newOwner == address(0)) revert InvalidAccount();
         if (OWNER.getAddress() != address(0)) revert AlreadyInit();
-        OWNER.setAddress(msg.sender);
+        OWNER.setAddress(newOwner);
     }
 
     // @notice Deploy a wallet using the msg.sender as the salt

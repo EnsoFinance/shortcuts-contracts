@@ -61,7 +61,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         mockFactoryReference = new MockFactoryUpgrade(address(beacon));
         mockWalletReference = new MockWalletUpgrade();
         factory = EnsoWalletFactory(address(new UpgradeableProxy(address(factoryReference))));
-        factory.initialize();
+        factory.initialize(address(this));
         destructFactory = new EnsoWalletFactory(address(destructBeacon));
         destructFactory2 = new EnsoWalletFactory(address(destructBeacon));
         for (uint256 i = 0; i < 50; i++) {
