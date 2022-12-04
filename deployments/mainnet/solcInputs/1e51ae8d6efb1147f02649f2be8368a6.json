@@ -1,0 +1,36 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/helpers/PercentageMathHelpers.sol": {
+      "content": "// SPDX-License-Identifier: agpl-3.0\npragma solidity ^0.8.16;\n\n/**\n * @dev PercentageMath contract is recommended to use only in Shortcuts passed to EnsoWallet\n *\n * Forked from Aave PercentageMath library:\n * - protocol-v2/contracts/protocol/libraries/math/PercentageMath.sol (https://github.com/aave/protocol-v2/blob/ice/mainnet-deployment-03-12-2020/contracts/protocol/libraries/math/PercentageMath.sol)\n */\n\ncontract PercentageMathHelpers {\n  uint256 public constant VERSION = 1;\n  uint256 constant PERCENTAGE_FACTOR = 1e4; //percentage plus two decimals\n  uint256 constant HALF_PERCENT = PERCENTAGE_FACTOR / 2;\n\n  /**\n   * @dev Executes a percentage multiplication\n   * @param value The value of which the percentage needs to be calculated\n   * @param percentage The percentage of the value to be calculated\n   * @return The percentage of value\n   **/\n\n  function percentMul(uint256 value, uint256 percentage) external pure returns (uint256) {\n    if (value == 0 || percentage == 0) {\n      return 0;\n    }\n\n    require(\n      value <= (type(uint256).max - HALF_PERCENT) / percentage, \"multiplication overflow\"\n    );\n\n    return (value * percentage + HALF_PERCENT) / PERCENTAGE_FACTOR;\n  }\n\n  /**\n   * @dev Executes a percentage division\n   * @param value The value of which the percentage needs to be calculated\n   * @param percentage The percentage of the value to be calculated\n   * @return The value divided the percentage\n   **/\n  function percentDiv(uint256 value, uint256 percentage) external pure returns (uint256) {\n    require(percentage != 0, \"Division by 0\");\n    uint256 halfPercentage = percentage / 2;\n\n    require(\n      value <= (type(uint256).max - halfPercentage) / PERCENTAGE_FACTOR, \"multiplication overflow\"\n    );\n\n    return (value * PERCENTAGE_FACTOR + halfPercentage) / percentage;\n  }\n}\n"
+    }
+  },
+  "settings": {
+    "viaIR": true,
+    "optimizer": {
+      "enabled": true,
+      "runs": 100000
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
