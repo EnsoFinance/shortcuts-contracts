@@ -20,7 +20,7 @@ describe('EnsoWalletFactory', async () => {
     const predict = await user.EnsoWalletFactory.getAddress();
 
     const tx = await user.EnsoWalletFactory.deploy(ZERO_BYTES32, [], []);
-    await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(predict, '');
+    await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(predict, '', user.address);
   });
 
   it('should allow to execute while deploying EnsoWallet', async () => {
@@ -45,7 +45,7 @@ describe('EnsoWalletFactory', async () => {
 
     const tx = await user.EnsoWalletFactory.deploy(ZERO_BYTES32, commands, state);
 
-    await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress, '');
+    await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress, '', user.address);
 
     await expectEventFromEnsoWallet(tx, Events, 'LogUint', number.toString());
     await expectEventFromEnsoWallet(tx, Events, 'LogString', message);
@@ -75,7 +75,7 @@ describe('EnsoWalletFactory', async () => {
       value: value,
     });
 
-    await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress, '');
+    await expect(tx).to.emit(user.EnsoWalletFactory, 'Deployed').withArgs(EnsoWalletAddress, '', user.address);
 
     await expectEventFromEnsoWallet(tx, PayableEvents, 'LogUint', value.toString());
     await expectEventFromEnsoWallet(tx, PayableEvents, 'LogUint', number.toString());
@@ -97,9 +97,9 @@ describe('EnsoWalletFactory', async () => {
     const predict2 = await userWithEnsoWallet.EnsoWalletFactory.getCustomAddress(userWithEnsoWallet.address, label2);
 
     const tx1 = await userWithEnsoWallet.EnsoWalletFactory.deployCustom(label1, ZERO_BYTES32, [], []);
-    await expect(tx1).to.emit(userWithEnsoWallet.EnsoWalletFactory, 'Deployed').withArgs(predict1, label1);
+    await expect(tx1).to.emit(userWithEnsoWallet.EnsoWalletFactory, 'Deployed').withArgs(predict1, label1, userWithEnsoWallet.address);
 
     const tx2 = await userWithEnsoWallet.EnsoWalletFactory.deployCustom(label2, ZERO_BYTES32, [], []);
-    await expect(tx2).to.emit(userWithEnsoWallet.EnsoWalletFactory, 'Deployed').withArgs(predict2, label2);
+    await expect(tx2).to.emit(userWithEnsoWallet.EnsoWalletFactory, 'Deployed').withArgs(predict2, label2, userWithEnsoWallet.address);
   });
 });

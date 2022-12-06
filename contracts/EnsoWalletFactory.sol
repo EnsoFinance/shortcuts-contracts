@@ -13,7 +13,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
 
     address public immutable ensoBeacon;
 
-    event Deployed(IEnsoWallet instance, string label);
+    event Deployed(IEnsoWallet instance, string label, address deployer);
 
     error AlreadyInit();
     error NoLabel();
@@ -97,7 +97,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     ) internal returns (IEnsoWallet instance) {
         instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(salt)));
         instance.initialize{value: msg.value}(msg.sender, salt, shortcutId, commands, state);
-        emit Deployed(instance, label);
+        emit Deployed(instance, label, msg.sender);
     }
 
     // @notice Internal function to generate a custom salt using a user address and label
