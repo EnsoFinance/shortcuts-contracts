@@ -272,7 +272,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testUpgradeWallet() public {
         beacon.upgradeCore(address(mockWalletReference), address(0), "");
-        beacon.finalizeUpgrade();
+        beacon.finalizeCore();
         assertTrue(MockWalletUpgrade(payable(ensoWallet)).newFunctionTest());
     }
 
@@ -289,6 +289,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         assertEq(address(ensoWallet).balance, 10 ** 18);
         // Emergency
         beacon.upgradeFallback(address(basicWalletReference));
+        beacon.finalizeFallback();
         beacon.emergencyUpgrade();
         // Withdraw ETH
         ensoWallet.withdrawETH(10 ** 18);
@@ -314,9 +315,10 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     function testUpgradeWalletAndFactory() public {
         factory.transferOwnership(address(beacon));
         beacon.acceptOwnership(address(factory));
-        beacon.setFactory(address(factory));
+        beacon.updateFactory(address(factory));
+        beacon.finalizeFactory();
         beacon.upgradeCore(address(mockWalletReference), address(mockFactoryReference), "");
-        beacon.finalizeUpgrade();
+        beacon.finalizeCore();
         assertTrue(MockWalletUpgrade(payable(ensoWallet)).newFunctionTest());
         assertTrue(MockFactoryUpgrade(address(factory)).newFunctionTest());
     }
@@ -359,8 +361,25 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testChangeDelay() public {
         uint256 newDelay = 100;
-        beacon.setDelay(newDelay);
+        beacon.updateDelay(newDelay);
+        beacon.finalizeDelay();
         assertEq(beacon.delay(), newDelay);
+    }
+
+    function testFailNoTimelock() public {
+        beacon.finalizeDelay(); // No timelock initiated
+    }
+
+    function testFailTimelockActive() public {
+        // Initialize 100 sec delay
+        uint256 newDelay = 100;
+        beacon.updateDelay(newDelay);
+        beacon.finalizeDelay();
+        assertEq(beacon.delay(), newDelay);
+        // Initate update
+        beacon.updateDelay(0);
+        // Try to finalize without waiting for timelock to finish
+        beacon.finalizeDelay();
     }
 
     function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {
