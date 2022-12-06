@@ -42,7 +42,7 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     // @notice Withdraw an array of assets
     // @dev Works for ETH, ERC20s, ERC721s, and ERC1155s
     // @param notes A tuple that contains the protocol id, token address, array of ids and amounts
-    function withdraw(TransferNote[] memory notes) external isPermitted(OWNER_ROLE) {
+    function withdraw(TransferNote[] calldata notes) external isPermitted(OWNER_ROLE) {
         TransferNote memory note;
         Protocol protocol;
         uint256[] memory ids;
@@ -83,7 +83,10 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     // @notice Withdraw ERC20s
     // @param erc20s An array of erc20 addresses
     // @param amounts An array of amounts for each erc20
-    function withdrawERC20s(IERC20[] memory erc20s, uint256[] memory amounts) external isPermitted(OWNER_ROLE) {
+    function withdrawERC20s(
+        IERC20[] calldata erc20s,
+        uint256[] calldata amounts
+    ) external isPermitted(OWNER_ROLE) {
         uint256 length = erc20s.length;
         if (amounts.length != length) revert InvalidArrayLength();
         for (uint256 i; i < length; ) {
@@ -97,7 +100,10 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     // @notice Withdraw multiple ERC721 ids for a single ERC721 contract
     // @param erc721 The address of the ERC721 contract
     // @param ids An array of ids that are to be withdrawn
-    function withdrawERC721s(IERC721 erc721, uint256[] memory ids) external isPermitted(OWNER_ROLE) {
+    function withdrawERC721s(
+        IERC721 erc721,
+        uint256[] calldata ids
+    ) external isPermitted(OWNER_ROLE) {
         _withdrawERC721s(erc721, ids);
     }
 
@@ -107,8 +113,8 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     // @param amounts An array of amounts per id
     function withdrawERC1155s(
         IERC1155 erc1155,
-        uint256[] memory ids,
-        uint256[] memory amounts
+        uint256[] calldata ids,
+        uint256[] calldata amounts
     ) external isPermitted(OWNER_ROLE) {
         _withdrawERC1155s(erc1155, ids, amounts);
     }
@@ -116,7 +122,7 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     // @notice Revoke approval on an array of assets and operators
     // @dev Works for ERC20s, ERC721s, and ERC1155s
     // @param notes A tuple that contains the protocol id, token address, and array of operators
-    function revokeApprovals(ApprovalNote[] memory notes) external isPermitted(OWNER_ROLE) {
+    function revokeApprovals(ApprovalNote[] calldata notes) external isPermitted(OWNER_ROLE) {
         ApprovalNote memory note;
         Protocol protocol;
 
@@ -140,21 +146,30 @@ contract MinimalWallet is ACL, Roles, ERC721Holder, ERC1155Holder {
     // @notice Revoke approval of an ERC20 for an array of operators
     // @param erc20 The address of the ERC20 token
     // @param operators The array of operators to have approval revoked
-    function revokeERC20Approvals(IERC20 erc20, address[] memory operators) external isPermitted(OWNER_ROLE) {
+    function revokeERC20Approvals(
+        IERC20 erc20,
+        address[] calldata operators
+    ) external isPermitted(OWNER_ROLE) {
         _revokeERC20Approvals(erc20, operators);
     }
 
     // @notice Revoke approval of an ERC721 for an array of operators
     // @param erc721 The address of the ERC721 token
     // @param operators The array of operators to have approval revoked
-    function revokeERC721Approvals(IERC721 erc721, address[] memory operators) external isPermitted(OWNER_ROLE) {
+    function revokeERC721Approvals(
+        IERC721 erc721,
+        address[] calldata operators
+    ) external isPermitted(OWNER_ROLE) {
         _revokeERC721Approvals(erc721, operators);
     }
 
     // @notice Revoke approval of an ERC1155 for an array of operators
     // @param erc1155 The address of the ERC1155 token
     // @param operators The array of operators to have approval revoked
-    function revokeERC1155Approvals(IERC1155 erc1155, address[] memory operators) external isPermitted(OWNER_ROLE) {
+    function revokeERC1155Approvals(
+        IERC1155 erc1155,
+        address[] calldata operators
+    ) external isPermitted(OWNER_ROLE) {
         _revokeERC1155Approvals(erc1155, operators);
     }
 
