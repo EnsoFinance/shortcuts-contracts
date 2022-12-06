@@ -46,7 +46,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     }
 
     // @notice Deploy a wallet using a hash of the msg.sender and a label as the salt
-    // @param label The label to indentify deployment
+    // @param label The label to identify deployment
     // @param shortcutId The bytes32 value representing a shortcut
     // @param commands The optional commands for executing a shortcut after deployment
     // @param state The optional state for executing a shortcut after deployment
@@ -84,7 +84,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
 
     // @notice The internal function for deploying a new wallet
     // @param salt The salt for deploy the address deterministically
-    // @param label The label to indentify deployment in the emitted event
+    // @param label The label to identify deployment in the emitted event
     // @param shortcutId The bytes32 value representing a shortcut
     // @param commands The optional commands for executing a shortcut after deployment
     // @param state The optional state for executing a shortcut after deployment

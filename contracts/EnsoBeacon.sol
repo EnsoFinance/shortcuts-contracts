@@ -54,7 +54,7 @@ contract EnsoBeacon is IBeacon, Timelock {
         return coreImplementation;
     }
 
-    // @notice Switch from the core implementation to the fallback implemenation
+    // @notice Switch from the core implementation to the fallback implementation
     function emergencyUpgrade() external onlyDelegate {
         _upgradeCore(fallbackImplementation);
         emit EmergencyUpgrade();
@@ -144,7 +144,7 @@ contract EnsoBeacon is IBeacon, Timelock {
     }
 
     // @notice Renounce admin role. No upgrades can be done if this function is called.
-    // @dev This function renounes both the admin and the delegate roles.
+    // @dev This function renounces both the admin and the delegate roles.
     function renounceAdministration() external onlyAdmin {
         address previousAdmin = admin;
         address previousDelegate = delegate;
@@ -176,7 +176,7 @@ contract EnsoBeacon is IBeacon, Timelock {
     }
 
     // @notice Renounce delegate role. Emergency upgrades cannot happen while this role remain unfilled.
-    // @dev The admin can alway give this role to another address with the transferDelegation function
+    // @dev The admin can always give this role to another address with the transferDelegation function
     function renounceDelegation() external onlyDelegate {
         address previousDelegate = delegate;
         delete delegate;
