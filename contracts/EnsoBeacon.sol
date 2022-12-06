@@ -199,6 +199,7 @@ contract EnsoBeacon is IBeacon, Timelock {
     // @notice Initiate an update of factory address
     // @param newFactory The address of the new factory
     function updateFactory(address newFactory) external onlyAdmin {
+        if (newFactory == address(0)) revert InvalidAccount();
         // Set timelock
         bytes32 key = this.updateFactory.selector;
         bytes memory data = abi.encode(newFactory);

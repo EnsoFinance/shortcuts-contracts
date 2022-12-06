@@ -11,13 +11,20 @@ abstract contract AccessController is ACL, Roles {
     event PermissionSet(bytes32 role, address account, bool permission);
 
     error UnsafeSetting();
+    error InvalidAccount();
 
     // @notice Sets user permission over a role
     // @param role The bytes32 value of the role
     // @param account The address of the account
     // @param permission The permission status
-    function setPermission(bytes32 role, address account, bool permission) external isPermitted(OWNER_ROLE) {
-        if (role == OWNER_ROLE && account == msg.sender && permission == false) revert UnsafeSetting();
+    function setPermission(
+        bytes32 role,
+        address account,
+        bool permission
+    ) external isPermitted(OWNER_ROLE) {
+        if (account == address(0)) revert InvalidAccount();
+        if (role == OWNER_ROLE && account == msg.sender && permission == false)
+            revert UnsafeSetting();
         _setPermission(role, account, permission);
     }
 
