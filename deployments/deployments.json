@@ -545,7 +545,7 @@
           ]
         },
         "EnsoShortcutsHelpers": {
-          "address": "0x93d4F2F06D4AB401Ab573Fe88f8D6B57A78F3ac8",
+          "address": "0x2b7f5C0ae63365eb033bbC2e67821d3a6650986f",
           "abi": [
             {
               "inputs": [],
@@ -606,12 +606,50 @@
                   "type": "bytes"
                 }
               ],
+              "name": "bytesToBytes32",
+              "outputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "",
+                  "type": "bytes32"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
               "name": "bytesToString",
               "outputs": [
                 {
                   "internalType": "string",
                   "name": "",
                   "type": "string"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
+              "name": "bytesToUint256",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
                 }
               ],
               "stateMutability": "pure",
@@ -2494,8 +2532,74 @@
             }
           ]
         },
+        "PercentageMathHelpers": {
+          "address": "0x7CA714435CceCdb4969A66Ed72CAf8b7A8241B14",
+          "abi": [
+            {
+              "inputs": [],
+              "name": "VERSION",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "percentage",
+                  "type": "uint256"
+                }
+              ],
+              "name": "percentDiv",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "percentage",
+                  "type": "uint256"
+                }
+              ],
+              "name": "percentMul",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            }
+          ]
+        },
         "SignedMathHelpers": {
-          "address": "0xA042E2BDb359D47461643C458F6A021f78941559",
+          "address": "0x5012E9A673f11aF27b1d353EeFd4542e7ac6d553",
           "abi": [
             {
               "inputs": [],
@@ -2734,7 +2838,7 @@
           ]
         },
         "TupleHelpers": {
-          "address": "0x2EBdDF85D5dF07C877A657d0a8Fa0aF73D8daE05",
+          "address": "0x8e140cCe7b194a507960cc746E83dAf296B0CEF7",
           "abi": [
             {
               "inputs": [
@@ -3441,7 +3545,7 @@
           ]
         },
         "EnsoShortcutsHelpers": {
-          "address": "0x93d4F2F06D4AB401Ab573Fe88f8D6B57A78F3ac8",
+          "address": "0x2b7f5C0ae63365eb033bbC2e67821d3a6650986f",
           "abi": [
             {
               "inputs": [],
@@ -3502,12 +3606,50 @@
                   "type": "bytes"
                 }
               ],
+              "name": "bytesToBytes32",
+              "outputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "",
+                  "type": "bytes32"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
               "name": "bytesToString",
               "outputs": [
                 {
                   "internalType": "string",
                   "name": "",
                   "type": "string"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
+              "name": "bytesToUint256",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
                 }
               ],
               "stateMutability": "pure",
@@ -5390,8 +5532,74 @@
             }
           ]
         },
+        "PercentageMathHelpers": {
+          "address": "0x7CA714435CceCdb4969A66Ed72CAf8b7A8241B14",
+          "abi": [
+            {
+              "inputs": [],
+              "name": "VERSION",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "percentage",
+                  "type": "uint256"
+                }
+              ],
+              "name": "percentDiv",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "percentage",
+                  "type": "uint256"
+                }
+              ],
+              "name": "percentMul",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            }
+          ]
+        },
         "SignedMathHelpers": {
-          "address": "0xA042E2BDb359D47461643C458F6A021f78941559",
+          "address": "0x5012E9A673f11aF27b1d353EeFd4542e7ac6d553",
           "abi": [
             {
               "inputs": [],
@@ -5630,7 +5838,7 @@
           ]
         },
         "TupleHelpers": {
-          "address": "0x2EBdDF85D5dF07C877A657d0a8Fa0aF73D8daE05",
+          "address": "0x8e140cCe7b194a507960cc746E83dAf296B0CEF7",
           "abi": [
             {
               "inputs": [
@@ -6337,7 +6545,7 @@
           ]
         },
         "EnsoShortcutsHelpers": {
-          "address": "0x93d4F2F06D4AB401Ab573Fe88f8D6B57A78F3ac8",
+          "address": "0x2b7f5C0ae63365eb033bbC2e67821d3a6650986f",
           "abi": [
             {
               "inputs": [],
@@ -6398,12 +6606,50 @@
                   "type": "bytes"
                 }
               ],
+              "name": "bytesToBytes32",
+              "outputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "",
+                  "type": "bytes32"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
               "name": "bytesToString",
               "outputs": [
                 {
                   "internalType": "string",
                   "name": "",
                   "type": "string"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes",
+                  "name": "input",
+                  "type": "bytes"
+                }
+              ],
+              "name": "bytesToUint256",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
                 }
               ],
               "stateMutability": "pure",
@@ -8287,7 +8533,7 @@
           ]
         },
         "SignedMathHelpers": {
-          "address": "0xA042E2BDb359D47461643C458F6A021f78941559",
+          "address": "0x5012E9A673f11aF27b1d353EeFd4542e7ac6d553",
           "abi": [
             {
               "inputs": [],
@@ -8526,7 +8772,7 @@
           ]
         },
         "TupleHelpers": {
-          "address": "0x2EBdDF85D5dF07C877A657d0a8Fa0aF73D8daE05",
+          "address": "0x8e140cCe7b194a507960cc746E83dAf296B0CEF7",
           "abi": [
             {
               "inputs": [
@@ -8677,6 +8923,72 @@
                   "internalType": "bytes32",
                   "name": "",
                   "type": "bytes32"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            }
+          ]
+        },
+        "PercentageMathHelpers": {
+          "address": "0x7CA714435CceCdb4969A66Ed72CAf8b7A8241B14",
+          "abi": [
+            {
+              "inputs": [],
+              "name": "VERSION",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "percentage",
+                  "type": "uint256"
+                }
+              ],
+              "name": "percentDiv",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "percentage",
+                  "type": "uint256"
+                }
+              ],
+              "name": "percentMul",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
                 }
               ],
               "stateMutability": "pure",
