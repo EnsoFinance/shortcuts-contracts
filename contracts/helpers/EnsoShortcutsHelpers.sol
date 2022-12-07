@@ -92,6 +92,13 @@ contract EnsoShortcutsHelpers {
     }
 
     /**
+     * @dev Returns `input` bytes as bytes32.
+     */
+    function bytesToBytes32(bytes calldata input) external pure returns (bytes32) {
+        return bytes32(input);
+    }
+
+    /**
      * @dev Returns `input` bytes32 as uint256.
      */
     function bytes32ToUint256(bytes32 input) external pure returns (uint256) {

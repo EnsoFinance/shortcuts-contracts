@@ -28,6 +28,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   await deployMathHelpers();
 
+  const {deploy: deployPercentageMathHelpers} = await deterministic('PercentageMathHelpers', {
+    from: deployer,
+    args: [],
+    log: true,
+    autoMine: true,
+    skipIfAlreadyDeployed: true,
+  });
+
+  await deployPercentageMathHelpers();
+
   const {deploy: deploySignedMathHelpers} = await deterministic('SignedMathHelpers', {
     from: deployer,
     args: [],
