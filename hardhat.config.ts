@@ -41,11 +41,6 @@ const config: HardhatUserConfig = {
       url: nodeUrl('localhost'),
       accounts: accounts('localhost'),
     },
-    kovan: {
-      url: nodeUrl('kovan'),
-      accounts: accounts('kovan'),
-      saveDeployments: true,
-    },
     goerli: {
       url: nodeUrl('goerli'),
       accounts: accounts('goerli'),
@@ -84,11 +79,6 @@ const config: HardhatUserConfig = {
     avalanche: {
       url: nodeUrl('avalanche'),
       accounts: accounts('avalanche'),
-      saveDeployments: true,
-    },
-    rinkeby: {
-      url: nodeUrl('rinkeby'),
-      accounts: accounts('rinkeby'),
       saveDeployments: true,
     },
   }),
