@@ -92,6 +92,14 @@ contract EnsoShortcutsHelpers {
     }
 
     /**
+     * @dev Returns `input` bytes as uint256.
+     */
+    function bytesToUint256(bytes calldata input) external pure returns (uint256) {
+        require(input.length == 32, "EnsoShortcutsHelpers: input length is not 32 bytes");
+        return uint256(bytes32(input));
+    }
+
+    /**
      * @dev Returns `input` bytes as bytes32.
      */
     function bytesToBytes32(bytes calldata input) external pure returns (bytes32) {
