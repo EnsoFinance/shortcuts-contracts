@@ -481,7 +481,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     }
 
     function testFailToInitializeImplementation() public {
-        ensoWalletReference.initialize(address(this), bytes32(uint256(1)), emptyCommands, emptyState);
+        ensoWalletReference.initialize(address(this), bytes32(uint256(1)), bytes32(0), emptyCommands, emptyState);
     }
 
     receive() external payable {}
