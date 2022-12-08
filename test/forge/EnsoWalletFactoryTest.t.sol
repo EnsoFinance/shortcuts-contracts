@@ -315,12 +315,16 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
     function testUpgradeWalletAndFactory() public {
         factory.transferOwnership(address(beacon));
         beacon.acceptOwnership(address(factory));
-        beacon.updateFactory(address(factory));
-        beacon.finalizeFactory();
+        beacon.setFactory(address(factory));
         beacon.upgradeCore(address(mockWalletReference), address(mockFactoryReference), "");
         beacon.finalizeCore();
         assertTrue(MockWalletUpgrade(payable(ensoWallet)).newFunctionTest());
         assertTrue(MockFactoryUpgrade(address(factory)).newFunctionTest());
+    }
+
+    function testFailSetFactoryTwice() public {
+        beacon.setFactory(address(factory));
+        beacon.setFactory(address(factory));
     }
 
     function testTransferFactoryOwnership() public {

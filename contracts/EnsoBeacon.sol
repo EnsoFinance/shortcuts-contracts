@@ -24,12 +24,12 @@ contract EnsoBeacon is IBeacon, Timelock {
     event AdministrationTransferStarted(address previousAdmin, address newAdmin);
     event DelegationTransferred(address previousDelegate, address newDelegate);
     event DelegationTransferStarted(address previousDelegate, address newDelegate);
-    event Factory(address newFactory, bool finalized);
     event Delay(uint256 newDelay, bool finalized);
 
     error InvalidImplementation();
     error InvalidAccount();
     error NotPermitted();
+    error FactorySet();
 
     modifier onlyAdmin() {
         if (msg.sender != admin) revert NotPermitted();
@@ -196,27 +196,12 @@ contract EnsoBeacon is IBeacon, Timelock {
         IOwnable(ownable).acceptOwnership();
     }
 
-    // @notice Initiate an update of factory address
+    // @notice Set the factory address. Once set, the factory cannot be changed
     // @param newFactory The address of the new factory
-    function updateFactory(address newFactory) external onlyAdmin {
+    function setFactory(address newFactory) external onlyAdmin {
+        if (factory != address(0)) revert FactorySet();
         if (newFactory == address(0)) revert InvalidAccount();
-        // Set timelock
-        bytes32 key = this.updateFactory.selector;
-        bytes memory data = abi.encode(newFactory);
-        _startTimelock(key, data);
-        emit Factory(newFactory, false);
-    }
-
-    // @notice Finalize the factory address in state
-    function finalizeFactory() external {
-        // Resolve timelock
-        bytes32 key = this.updateFactory.selector;
-        (address newFactory) = abi.decode(
-            _resolveTimelock(key), (address)
-        );
-        // Set factory
         factory = newFactory;
-        emit Factory(newFactory, true);
     }
 
     // @notice Initiate an update of the delay value
