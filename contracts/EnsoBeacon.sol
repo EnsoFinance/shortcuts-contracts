@@ -69,7 +69,7 @@ contract EnsoBeacon is IBeacon, Timelock {
         address factoryImplementation,
         bytes memory factoryUpgradeData
     ) external onlyAdmin {
-        address currentImplementation = fallbackImplementation;
+        address currentImplementation = coreImplementation;
         if (newImplementation == address(0)) revert InvalidImplementation();
         if (newImplementation == currentImplementation) revert InvalidImplementation();
         bytes32 key = this.upgradeCore.selector;
