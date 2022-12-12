@@ -8,6 +8,9 @@ import "./interfaces/IUUPS.sol";
 import "./access/Timelock.sol";
 
 contract EnsoBeacon is IBeacon, Timelock {
+
+    uint256 constant public MAX_DELAY = 2419200; // 4 weeks
+
     address public admin;
     address public delegate;
     address public factory;
@@ -28,6 +31,7 @@ contract EnsoBeacon is IBeacon, Timelock {
 
     error InvalidImplementation();
     error InvalidAccount();
+    error InvalidDelay();
     error NotPermitted();
     error FactorySet();
 
@@ -207,6 +211,7 @@ contract EnsoBeacon is IBeacon, Timelock {
     // @notice Initiate an update of the delay value
     // @param newDelay The new delay in seconds
     function updateDelay(uint256 newDelay) external onlyAdmin {
+        if (newDelay > MAX_DELAY) revert InvalidDelay();
         // Set timelock
         bytes32 key = this.updateDelay.selector;
         bytes memory data = abi.encode(newDelay);
@@ -221,6 +226,7 @@ contract EnsoBeacon is IBeacon, Timelock {
         (uint256 newDelay) = abi.decode(
             _resolveTimelock(key), (uint256)
         );
+        if (newDelay > MAX_DELAY) revert InvalidDelay(); // sanity check
         // Set delay
         delay = newDelay;
         emit Delay(newDelay, true);
