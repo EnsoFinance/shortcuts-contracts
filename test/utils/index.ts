@@ -58,7 +58,6 @@ export async function setupUsersWithEnsoWallets<
 
 export const setup = deployments.createFixture(async () => {
   const {deployer} = await getNamedAccounts();
-  const {deterministic} = deployments;
 
   await deployments.deploy('Events', {
     from: deployer,
@@ -78,17 +77,6 @@ export const setup = deployments.createFixture(async () => {
     autoMine: true,
   });
 
-  const factoryImplementation = await ethers.getContract('EnsoWalletFactory');
-
-  const {deploy: deployFactoryDeployer, address: FactoryDeployerAddress} = await deterministic('FactoryDeployer', {
-    from: deployer,
-    args: [factoryImplementation.address],
-    log: true,
-    autoMine: true,
-    skipIfAlreadyDeployed: true,
-  });
-
-  await deployFactoryDeployer();
   const factoryDeployer = await ethers.getContract('FactoryDeployer')
   const factoryAddress = await factoryDeployer.factory()
 

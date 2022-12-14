@@ -7,8 +7,8 @@ import "../proxy/UpgradeableProxy.sol";
 contract FactoryDeployer {
     address public immutable factory;
 
-    constructor(address factoryImplementation) {
+    constructor(address owner, address factoryImplementation) {
         factory = address(new UpgradeableProxy(factoryImplementation));
-        EnsoWalletFactory(factory).initialize(msg.sender);
+        EnsoWalletFactory(factory).initialize(owner);
     }
 }
