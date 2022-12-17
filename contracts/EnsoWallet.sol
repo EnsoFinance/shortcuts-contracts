@@ -5,9 +5,10 @@ import "@ensofinance/weiroll/contracts/VM.sol";
 import "./access/AccessController.sol";
 import "./wallet/ERC1271.sol";
 import "./wallet/MinimalWallet.sol";
+import "./wallet/ModuleManager.sol";
 import "./interfaces/IEnsoWallet.sol";
 
-contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet {
+contract EnsoWallet is IEnsoWallet, VM, AccessController, ModuleManager, ERC1271, MinimalWallet {
     using StorageAPI for bytes32;
 
     // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967
@@ -52,10 +53,7 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
         uint256 value,
         bytes memory data
     ) external payable isPermitted(EXECUTOR_ROLE) returns (bool success) {
-        // solium-disable-next-line security/no-inline-assembly
-        assembly {
-            success := call(gas(), target, value, add(data, 0x20), mload(data), 0, 0)
-        }
+        return _executeCall(target, value, data);
     }
 
     // @notice Execute a shortcut from this contract
@@ -81,6 +79,21 @@ contract EnsoWallet is IEnsoWallet, VM, AccessController, ERC1271, MinimalWallet
     ) internal returns (bytes[] memory returnData) {
         (shortcutId); // ShortcutId just needs to be retrieved from call data, can support events in future upgrade
         returnData = _execute(commands, state);
+    }
+
+    // @notice Internal function to execute an arbitrary call on another contract
+    // @param target The address of the target contract
+    // @param value The ether value that is to be sent with the call
+    // @param data The call data to be sent to the target
+    function _executeCall(
+        address target,
+        uint256 value,
+        bytes memory data
+    ) internal override returns (bool success) {
+        // solium-disable-next-line security/no-inline-assembly
+        assembly {
+            success := call(gas(), target, value, add(data, 0x20), mload(data), 0, 0)
+        }
     }
 
     // @notice Internal function for checking the ERC-1271 signer
