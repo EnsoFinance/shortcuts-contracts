@@ -4,9 +4,11 @@
 
 ## Contracts
 
+Shortcuts contracts allow users to cheaply and deterministically deploy wallets capable of running Enso Shortcuts. By using a beacon proxy pattern, user wallets can be automatically upgraded to the most recent version of the Enso Wallet contract.
+
 ```ml
 ├─ EnsoWallet - "Wallet implementation that supports Enso shortcuts"
-├─ EnsoWalletFactory - "Factory for deploy Enso wallets"
+├─ EnsoWalletFactory - "Factory for deploying Enso wallets"
 ├─ EnsoBeacon - "Provides the current Enso wallet implementation to wallet proxies"
 ├─ access
 │  ├─ AccessController - "Gives a contract the ability to allow/restrict access to certain roles"
