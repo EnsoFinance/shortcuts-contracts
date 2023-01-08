@@ -1,0 +1,16 @@
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  description: Enso V2 Contracts
+  name: shortcuts-contracts
+  annotations:
+    github.com/project-slug: EnsoFinance/shortcuts-contracts
+spec:
+  type: service
+  lifecycle: production
+  owner: group:blockend
+  system: shortcuts
+  dependencyOf:
+    - component:shortcuts-backend
