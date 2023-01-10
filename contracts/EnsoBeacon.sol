@@ -45,9 +45,9 @@ contract EnsoBeacon is IBeacon, Timelock {
         _;
     }
 
-    constructor(address coreImplementation_, address fallbackImplementation_) {
-        admin = msg.sender;
-        delegate = msg.sender;
+    constructor(address admin_, address coreImplementation_, address fallbackImplementation_) {
+        admin = admin_;
+        delegate = admin_;
         coreImplementation = coreImplementation_;
         fallbackImplementation = fallbackImplementation_;
     }

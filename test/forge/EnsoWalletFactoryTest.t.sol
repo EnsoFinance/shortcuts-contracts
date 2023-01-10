@@ -55,8 +55,8 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         basicWalletReference = new MinimalWallet();
         ensoWalletReference = new DumbEnsoWallet();
         destructEnsoWalletReference = new DestructEnsoWallet();
-        beacon = new EnsoBeacon(address(ensoWalletReference), address(0));
-        destructBeacon = new EnsoBeacon(address(destructEnsoWalletReference), address(0));
+        beacon = new EnsoBeacon(address(this), address(ensoWalletReference), address(0));
+        destructBeacon = new EnsoBeacon(address(this), address(destructEnsoWalletReference), address(0));
         factoryReference = new EnsoWalletFactory(address(beacon));
         mockFactoryReference = new MockFactoryUpgrade(address(beacon));
         mockWalletReference = new MockWalletUpgrade();
