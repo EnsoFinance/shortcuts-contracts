@@ -6,7 +6,8 @@
       "esModuleInterop": true,
       "experimentalDecorators": true,
       "forceConsistentCasingInFileNames": true,
-      "lib": ["es2019"],
+      "lib": ["es2020"],
+      "target": "es2020",
       "module": "commonjs",
       "moduleResolution": "node",
       "noImplicitAny": true,
@@ -15,5 +16,5 @@
       "sourceMap": true,
       "strict": true,
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "dist"]
 }

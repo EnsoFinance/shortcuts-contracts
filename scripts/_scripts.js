@@ -81,7 +81,7 @@ async function performAction(rawArgs) {
         ' '
       )}`
     );
-  } else if (firstArg === 'verify') {
+  } else if (firstArg === 'verify:etherscan') {
     const {fixedArgs, extra} = parseArgs(args, 1, {});
     const network = fixedArgs[0];
     if (!network) {
@@ -89,6 +89,14 @@ async function performAction(rawArgs) {
       return;
     }
     await execute(`hardhat --network ${network} etherscan-verify ${extra.join(' ')}`);
+  } else if (firstArg === 'verify:sourcify') {
+    const {fixedArgs, extra} = parseArgs(args, 1, {});
+    const network = fixedArgs[0];
+    if (!network) {
+      console.error(`need to specify the network as first argument`);
+      return;
+    }
+    await execute(`hardhat --network ${network} sourcify ${extra.join(' ')}`);
   } else if (firstArg === 'export') {
     const {fixedArgs} = parseArgs(args, 2, {});
     await execute(`hardhat --network ${fixedArgs[0]} export --export ${fixedArgs[1]}`);
@@ -145,20 +153,6 @@ async function performAction(rawArgs) {
       } ${
         options['no-impersonation'] ? `HARDHAT_DEPLOY_NO_IMPERSONATION=true` : ''
       } HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test ${extra.join(' ')}`
-    );
-  } else if (firstArg === 'fork:actions') {
-    const {fixedArgs, options, extra} = parseArgs(args, 1, {
-      blockNumber: 'string',
-      'no-impersonation': 'boolean',
-    });
-    await execute(
-      `cross-env HARDHAT_FORK=${fixedArgs[0]} ${
-        options.blockNumber ? `HARDHAT_FORK_NUMBER=${options.blockNumber}` : ''
-      } ${
-        options['no-impersonation'] ? `HARDHAT_DEPLOY_NO_IMPERSONATION=true` : ''
-      } HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true npx hardhat test actions-playground/**.test.ts ${extra.join(
-        ' '
-      )}`
     );
   } else if (firstArg === 'fork:dev') {
     const {fixedArgs, options, extra} = parseArgs(args, 1, {

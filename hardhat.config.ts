@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 import {HardhatUserConfig} from 'hardhat/types';
 import 'hardhat-deploy';
-import '@nomiclabs/hardhat-ethers';
 import 'hardhat-gas-reporter';
 import '@typechain/hardhat';
 import 'solidity-coverage';
@@ -20,9 +19,10 @@ const config: HardhatUserConfig = {
       {
         version: '0.8.16',
         settings: {
+          viaIR: true,
           optimizer: {
             enabled: true,
-            runs: 2000,
+            runs: 100000000,
           },
         },
       },
@@ -40,11 +40,6 @@ const config: HardhatUserConfig = {
     localhost: {
       url: nodeUrl('localhost'),
       accounts: accounts('localhost'),
-    },
-    kovan: {
-      url: nodeUrl('kovan'),
-      accounts: accounts('kovan'),
-      saveDeployments: true,
     },
     goerli: {
       url: nodeUrl('goerli'),
@@ -84,11 +79,6 @@ const config: HardhatUserConfig = {
     avalanche: {
       url: nodeUrl('avalanche'),
       accounts: accounts('avalanche'),
-      saveDeployments: true,
-    },
-    rinkeby: {
-      url: nodeUrl('rinkeby'),
-      accounts: accounts('rinkeby'),
       saveDeployments: true,
     },
   }),

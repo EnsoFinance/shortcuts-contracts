@@ -2,8 +2,7 @@
 set -o allexport
 source .env
 
-yarn deploy polygon
-
-yarn deploy arbitrum
-
-yarn deploy mainnet
+echo "Deploy to all networks"
+    && yarn deploy polygon \
+    && yarn deploy arbitrum \
+    && yarn deploy mainnet

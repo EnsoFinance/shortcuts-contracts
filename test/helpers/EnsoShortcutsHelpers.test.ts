@@ -46,6 +46,15 @@ describe('EnsoHelpers', async () => {
       );
     });
 
+    it('bytesToBytes32', async () => {
+      const randomBytes64 = ethers.utils.randomBytes(64);
+      const testBytes = ethers.utils.hexlify(randomBytes64);
+
+      expect(await ensoShortcutsHelpers.bytesToBytes32(randomBytes64)).to.eq(
+        ethers.utils.hexDataSlice(testBytes, 0, 32)
+      );
+    });
+
     it('bytes32ToUint256', async () => {
       const testNumber = ethers.constants.WeiPerEther.mul(50);
       expect(await ensoShortcutsHelpers.bytes32ToUint256(ethers.utils.hexZeroPad(testNumber.toHexString(), 32))).to.eq(

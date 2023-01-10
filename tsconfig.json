@@ -5,7 +5,8 @@
     "./hardhat.config.ts",
     "scripts",
     "deploy",
-    "tests",
+    "test",
     "typechain/**/*",
-    "utils"]
+    "utils"
+  ]
 }
