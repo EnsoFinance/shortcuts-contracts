@@ -11,7 +11,7 @@ contract EnsoShortcutsHelpers {
     uint256 public constant VERSION = 2;
 
     /**
-     * @dev Returns the ether balance of given `balanceAdderess`.
+     * @dev Returns the ether balance of given `balanceAddress`.
      */
     function getBalance(address balanceAddress) external view returns (uint256 balance) {
         return address(balanceAddress).balance;

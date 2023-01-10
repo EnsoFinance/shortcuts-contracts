@@ -80,7 +80,7 @@ export const setup = deployments.createFixture(async () => {
 
   const factoryImplementation = await ethers.getContract('EnsoWalletFactory');
 
-  const {deploy: deployUpgradeableProxy, address: UpgradeableProxyAddress} = await deterministic('UpgradeableProxy', {
+  const {deploy: deployFactoryDeployer, address: FactoryDeployerAddress} = await deterministic('FactoryDeployer', {
     from: deployer,
     args: [factoryImplementation.address],
     log: true,
@@ -88,11 +88,13 @@ export const setup = deployments.createFixture(async () => {
     skipIfAlreadyDeployed: true,
   });
 
-  await deployUpgradeableProxy();
+  await deployFactoryDeployer();
+  const factoryDeployer = await ethers.getContract('FactoryDeployer')
+  const factoryAddress = await factoryDeployer.factory()
 
   const contracts = {
     core: {
-      EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContractAt('EnsoWalletFactory', UpgradeableProxyAddress),
+      EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContractAt('EnsoWalletFactory', factoryAddress),
       EnsoWallet: <EnsoWallet>await ethers.getContract('EnsoWallet'),
     },
     utils: {
@@ -105,11 +107,6 @@ export const setup = deployments.createFixture(async () => {
       TupleFactory: <TupleFactory>await ethers.getContract('TupleFactory'),
     },
   };
-
-  const owner = await ethers.provider.getStorageAt(contracts.core.EnsoWalletFactory.address, OWNER_SLOT);
-  if (owner == ZERO_BYTES32) {
-    await contracts.core.EnsoWalletFactory.initialize();
-  }
 
   const [user, secondUserWithEnsoWallet, ...users] = await setupUsersWithEnsoWallets(
     await getUnnamedAccounts(),

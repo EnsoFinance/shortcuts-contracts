@@ -61,7 +61,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         mockFactoryReference = new MockFactoryUpgrade(address(beacon));
         mockWalletReference = new MockWalletUpgrade();
         factory = EnsoWalletFactory(address(new UpgradeableProxy(address(factoryReference))));
-        factory.initialize();
+        factory.initialize(address(this));
         destructFactory = new EnsoWalletFactory(address(destructBeacon));
         destructFactory2 = new EnsoWalletFactory(address(destructBeacon));
         for (uint256 i = 0; i < 50; i++) {
@@ -272,7 +272,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testUpgradeWallet() public {
         beacon.upgradeCore(address(mockWalletReference), address(0), "");
-        beacon.finalizeUpgrade();
+        beacon.finalizeCore();
         assertTrue(MockWalletUpgrade(payable(ensoWallet)).newFunctionTest());
     }
 
@@ -289,6 +289,7 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         assertEq(address(ensoWallet).balance, 10 ** 18);
         // Emergency
         beacon.upgradeFallback(address(basicWalletReference));
+        beacon.finalizeFallback();
         beacon.emergencyUpgrade();
         // Withdraw ETH
         ensoWallet.withdrawETH(10 ** 18);
@@ -316,9 +317,14 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         beacon.acceptOwnership(address(factory));
         beacon.setFactory(address(factory));
         beacon.upgradeCore(address(mockWalletReference), address(mockFactoryReference), "");
-        beacon.finalizeUpgrade();
+        beacon.finalizeCore();
         assertTrue(MockWalletUpgrade(payable(ensoWallet)).newFunctionTest());
         assertTrue(MockFactoryUpgrade(address(factory)).newFunctionTest());
+    }
+
+    function testFailSetFactoryTwice() public {
+        beacon.setFactory(address(factory));
+        beacon.setFactory(address(factory));
     }
 
     function testTransferFactoryOwnership() public {
@@ -359,8 +365,25 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
 
     function testChangeDelay() public {
         uint256 newDelay = 100;
-        beacon.setDelay(newDelay);
+        beacon.updateDelay(newDelay);
+        beacon.finalizeDelay();
         assertEq(beacon.delay(), newDelay);
+    }
+
+    function testFailNoTimelock() public {
+        beacon.finalizeDelay(); // No timelock initiated
+    }
+
+    function testFailTimelockActive() public {
+        // Initialize 100 sec delay
+        uint256 newDelay = 100;
+        beacon.updateDelay(newDelay);
+        beacon.finalizeDelay();
+        assertEq(beacon.delay(), newDelay);
+        // Initate update
+        beacon.updateDelay(0);
+        // Try to finalize without waiting for timelock to finish
+        beacon.finalizeDelay();
     }
 
     function testFuzzDeploy(bytes32[] memory c, bytes[] memory s) public {
@@ -455,6 +478,10 @@ contract EnsoWalletFactoryTest is Test, ERC721Holder, ERC1155Holder {
         user.deployEnsoWallet(bytes32(0), emptyCommands, emptyState);
         user.setPermission(user.wallet().EXECUTOR_ROLE(), address(this), true);
         user.wallet().executeShortcut(bytes32(0), commands, state);
+    }
+
+    function testFailToInitializeImplementation() public {
+        ensoWalletReference.initialize(address(this), bytes32(uint256(1)), bytes32(0), emptyCommands, emptyState);
     }
 
     receive() external payable {}

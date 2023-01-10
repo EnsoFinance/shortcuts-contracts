@@ -5,8 +5,12 @@ pragma solidity ^0.8.16;
 import "./interfaces/IBeacon.sol";
 import "./interfaces/IOwnable.sol";
 import "./interfaces/IUUPS.sol";
+import "./access/Timelock.sol";
 
-contract EnsoBeacon is IBeacon {
+contract EnsoBeacon is IBeacon, Timelock {
+
+    uint256 constant public MAX_DELAY = 2419200; // 4 weeks
+
     address public admin;
     address public delegate;
     address public factory;
@@ -15,28 +19,21 @@ contract EnsoBeacon is IBeacon {
 
     address public pendingAdmin;
     address public pendingDelegate;
-    address public pendingCoreImplementation;
-    address public pendingFactoryImplementation;
-    bytes public pendingFactoryUpgradeData;
 
-    uint256 public delay;
-    uint256 public upgradeTimestamp;
-
-    event CoreUpgraded(address previousImplementation, address newImplementation);
-    event FallbackUpgraded(address previousImplementation, address newImplementation);
+    event CoreUpgraded(address previousImplementation, address newImplementation, bool finalized);
+    event FallbackUpgraded(address previousImplementation, address newImplementation, bool finalized);
     event EmergencyUpgrade();
     event AdministrationTransferred(address previousAdmin, address newAdmin);
     event AdministrationTransferStarted(address previousAdmin, address newAdmin);
     event DelegationTransferred(address previousDelegate, address newDelegate);
     event DelegationTransferStarted(address previousDelegate, address newDelegate);
-    event Factory(address newFactory);
-    event Delay(uint256 newDelay);
+    event Delay(uint256 newDelay, bool finalized);
 
     error InvalidImplementation();
     error InvalidAccount();
+    error InvalidDelay();
     error NotPermitted();
-    error NoPendingUpgrade();
-    error Wait();
+    error FactorySet();
 
     modifier onlyAdmin() {
         if (msg.sender != admin) revert NotPermitted();
@@ -61,63 +58,73 @@ contract EnsoBeacon is IBeacon {
         return coreImplementation;
     }
 
-    // @notice Switch from the core implementation to the fallback implemenation
+    // @notice Switch from the core implementation to the fallback implementation
     function emergencyUpgrade() external onlyDelegate {
         _upgradeCore(fallbackImplementation);
         emit EmergencyUpgrade();
     }
 
-    // @notice Finalize the new core implementation
-    function finalizeUpgrade() external {
-        // Load timestamp and check
-        uint256 timestamp = upgradeTimestamp;
-        if (timestamp == 0) revert NoPendingUpgrade();
-        if (timestamp + delay > block.timestamp) revert Wait();
-        delete upgradeTimestamp;
-        // Load implementation data and check
-        address newImplementation = pendingCoreImplementation;
-        address factoryImplementation = pendingFactoryImplementation;
-        bytes memory data = pendingFactoryUpgradeData;
-        if (newImplementation == address(0)) revert InvalidImplementation(); // sanity check
-        delete pendingCoreImplementation;
-        delete pendingFactoryImplementation;
-        delete pendingFactoryUpgradeData;
-        // Upgrade
-        _upgradeCore(newImplementation);
-        if (factoryImplementation != address(0)) _upgradeFactory(factoryImplementation, data);
-    }
-
     // @notice Initialize an upgrade to a new core implementation
     // @param newImplementation The address of the new core implementation
     // @param factoryImplementation Optionally include a new factory implementation to upgrade the factory simultaneously. Pass zero address if no upgrade is needed
-    // @param data Calldata for upgrading the new factory. Pass zero bytes if factory is not being upgraded or no additional call needs to be made
+    // @param factoryUpgradeData Calldata for upgrading the new factory. Pass zero bytes if factory is not being upgraded or no additional call needs to be made
     function upgradeCore(
         address newImplementation,
         address factoryImplementation,
-        bytes memory data
+        bytes memory factoryUpgradeData
     ) external onlyAdmin {
+        address currentImplementation = coreImplementation;
         if (newImplementation == address(0)) revert InvalidImplementation();
-        upgradeTimestamp = block.timestamp;
-        pendingCoreImplementation = newImplementation;
-        // If the following is null data, at least we ensure that any old pending values are overwritten
-        pendingFactoryImplementation = factoryImplementation;
-        pendingFactoryUpgradeData = data;
+        if (newImplementation == currentImplementation) revert InvalidImplementation();
+        bytes32 key = this.upgradeCore.selector;
+        bytes memory data = abi.encode(newImplementation, factoryImplementation, factoryUpgradeData);
+        _startTimelock(key, data);
+        emit CoreUpgraded(currentImplementation, newImplementation, false);
     }
 
-    // @notice Upgrade the fallback implementation
+    // @notice Finalize the new core implementation
+    function finalizeCore() external {
+        // Resolve timelock
+        bytes32 key = this.upgradeCore.selector;
+        (address newImplementation, address factoryImplementation, bytes memory factoryUpgradeData) = abi.decode(
+            _resolveTimelock(key), (address, address, bytes)
+        );
+        // Upgrade
+        _upgradeCore(newImplementation);
+        if (factoryImplementation != address(0)) _upgradeFactory(factoryImplementation, factoryUpgradeData);
+    }
+
+    // @notice Initialize an upgrade to a new fallback implementation
     // @param newImplementation The address of the new fallback implementation
     function upgradeFallback(address newImplementation) external onlyAdmin {
+        address currentImplementation = fallbackImplementation;
         if (newImplementation == address(0)) revert InvalidImplementation();
-        if (newImplementation == fallbackImplementation) revert InvalidImplementation();
+        if (newImplementation == currentImplementation) revert InvalidImplementation();
+        bytes32 key = this.upgradeFallback.selector;
+        bytes memory data = abi.encode(newImplementation);
+        _startTimelock(key, data);
+        emit FallbackUpgraded(currentImplementation, newImplementation, false);
+    }
+
+    // @notice Finalize the new fallback implementation
+    function finalizeFallback() external {
+        // Resolve timelock
+        bytes32 key = this.upgradeFallback.selector;
+        (address newImplementation) = abi.decode(
+            _resolveTimelock(key), (address)
+        );
+        // Upgrade
+        if (newImplementation == address(0)) revert InvalidImplementation(); // sanity check
         address previousImplementation = fallbackImplementation;
         fallbackImplementation = newImplementation;
-        emit FallbackUpgraded(previousImplementation, newImplementation);
+        emit FallbackUpgraded(previousImplementation, newImplementation, true);
     }
 
     // @notice Upgrade the factory implementation
     // @param newImplementation The address of the new factory implementation
     // @param data Calldata for upgrading the new factory. Pass zero bytes if no additional call needs to be made
     function upgradeFactory(address newImplementation, bytes memory data) external onlyAdmin {
+        if (newImplementation == address(0)) revert InvalidImplementation();
         _upgradeFactory(newImplementation, data);
     }
 
@@ -141,7 +148,7 @@ contract EnsoBeacon is IBeacon {
     }
 
     // @notice Renounce admin role. No upgrades can be done if this function is called.
-    // @dev This function renounes both the admin and the delegate roles.
+    // @dev This function renounces both the admin and the delegate roles.
     function renounceAdministration() external onlyAdmin {
         address previousAdmin = admin;
         address previousDelegate = delegate;
@@ -173,7 +180,7 @@ contract EnsoBeacon is IBeacon {
     }
 
     // @notice Renounce delegate role. Emergency upgrades cannot happen while this role remain unfilled.
-    // @dev The admin can alway give this role to another address with the transferDelegation function
+    // @dev The admin can always give this role to another address with the transferDelegation function
     function renounceDelegation() external onlyDelegate {
         address previousDelegate = delegate;
         delete delegate;
@@ -193,18 +200,36 @@ contract EnsoBeacon is IBeacon {
         IOwnable(ownable).acceptOwnership();
     }
 
-    // @notice Set the current factory address in state
+    // @notice Set the factory address. Once set, the factory cannot be changed
     // @param newFactory The address of the new factory
     function setFactory(address newFactory) external onlyAdmin {
+        if (factory != address(0)) revert FactorySet();
+        if (newFactory == address(0)) revert InvalidAccount();
         factory = newFactory;
-        emit Factory(newFactory);
     }
 
-    // @notice Update the delay between in initiating an upgrade and finalizing the upgrade
+    // @notice Initiate an update of the delay value
     // @param newDelay The new delay in seconds
-    function setDelay(uint256 newDelay) external onlyAdmin {
+    function updateDelay(uint256 newDelay) external onlyAdmin {
+        if (newDelay > MAX_DELAY) revert InvalidDelay();
+        // Set timelock
+        bytes32 key = this.updateDelay.selector;
+        bytes memory data = abi.encode(newDelay);
+        _startTimelock(key, data);
+        emit Delay(newDelay, false);
+    }
+
+    // @notice Finalize the delay in state
+    function finalizeDelay() external {
+        // Resolve timelock
+        bytes32 key = this.updateDelay.selector;
+        (uint256 newDelay) = abi.decode(
+            _resolveTimelock(key), (uint256)
+        );
+        if (newDelay > MAX_DELAY) revert InvalidDelay(); // sanity check
+        // Set delay
         delay = newDelay;
-        emit Delay(newDelay);
+        emit Delay(newDelay, true);
     }
 
     // @notice Internal function for setting the new core implementation
@@ -214,7 +239,7 @@ contract EnsoBeacon is IBeacon {
         //if (newImplementation == coreImplementation) revert InvalidImplementation();
         address previousImplementation = coreImplementation;
         coreImplementation = newImplementation;
-        emit CoreUpgraded(previousImplementation, newImplementation);
+        emit CoreUpgraded(previousImplementation, newImplementation, true);
     }
 
     // @notice Internal function for upgrading the factory implementation
@@ -226,5 +251,11 @@ contract EnsoBeacon is IBeacon {
         } else {
             IUUPS(factory).upgradeTo(newImplementation);
         }
+    }
+
+    function _resolveTimelock(bytes32 key) internal returns (bytes memory data) {
+        _checkTimelock(key);
+        data = _getTimelockValue(key);
+        _resetTimelock(key);
     }
 }

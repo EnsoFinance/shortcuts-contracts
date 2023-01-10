@@ -13,19 +13,23 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
 
     address public immutable ensoBeacon;
 
-    event Deployed(IEnsoWallet instance, string label);
+    event Deployed(IEnsoWallet instance, string label, address deployer);
 
     error AlreadyInit();
     error NoLabel();
 
     constructor(address ensoBeacon_) {
         ensoBeacon = ensoBeacon_;
+        // Set owner to 0xff so that the implementation cannot be initialized
+        OWNER.setAddress(address(type(uint160).max));
     }
 
     // @notice A function to initialize state on the proxy the delegates to this contract
-    function initialize() external {
+    // @param newOwner The new owner of this contract
+    function initialize(address newOwner) external {
+        if (newOwner == address(0)) revert InvalidAccount();
         if (OWNER.getAddress() != address(0)) revert AlreadyInit();
-        OWNER.setAddress(msg.sender);
+        OWNER.setAddress(newOwner);
     }
 
     // @notice Deploy a wallet using the msg.sender as the salt
@@ -42,7 +46,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     }
 
     // @notice Deploy a wallet using a hash of the msg.sender and a label as the salt
-    // @param label The label to indentify deployment
+    // @param label The label to identify deployment
     // @param shortcutId The bytes32 value representing a shortcut
     // @param commands The optional commands for executing a shortcut after deployment
     // @param state The optional state for executing a shortcut after deployment
@@ -80,7 +84,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
 
     // @notice The internal function for deploying a new wallet
     // @param salt The salt for deploy the address deterministically
-    // @param label The label to indentify deployment in the emitted event
+    // @param label The label to identify deployment in the emitted event
     // @param shortcutId The bytes32 value representing a shortcut
     // @param commands The optional commands for executing a shortcut after deployment
     // @param state The optional state for executing a shortcut after deployment
@@ -93,7 +97,7 @@ contract EnsoWalletFactory is Ownable, UUPSUpgradeable {
     ) internal returns (IEnsoWallet instance) {
         instance = IEnsoWallet(payable(ensoBeacon.cloneDeterministic(salt)));
         instance.initialize{value: msg.value}(msg.sender, salt, shortcutId, commands, state);
-        emit Deployed(instance, label);
+        emit Deployed(instance, label, msg.sender);
     }
 
     // @notice Internal function to generate a custom salt using a user address and label

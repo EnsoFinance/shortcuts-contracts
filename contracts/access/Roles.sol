@@ -2,6 +2,7 @@
 pragma solidity ^0.8.16;
 
 abstract contract Roles {
-    bytes32 public constant OWNER_ROLE = keccak256("enso.access.roles.owner");
-    bytes32 public constant EXECUTOR_ROLE = keccak256("enso.access.roles.executor");
+    // Using same slot generation technique as eip-1967 -- https://eips.ethereum.org/EIPS/eip-1967
+    bytes32 public constant OWNER_ROLE = bytes32(uint256(keccak256("enso.access.roles.owner")) - 1);
+    bytes32 public constant EXECUTOR_ROLE = bytes32(uint256(keccak256("enso.access.roles.executor")) - 1);
 }
