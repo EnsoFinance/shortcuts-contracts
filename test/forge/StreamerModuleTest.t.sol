@@ -6,15 +6,15 @@ import {EnsoWalletFactory} from "../../contracts/EnsoWalletFactory.sol";
 import {EnsoBeacon} from "../../contracts/EnsoBeacon.sol";
 import {EnsoWallet} from "../../contracts/EnsoWallet.sol";
 import {UpgradeableProxy} from "../../contracts/proxy/UpgradeableProxy.sol";
-import {Streamer} from "../../contracts/modules/Streamer.sol";
+import {StreamerModule} from "../../contracts/test/StreamerModule.sol";
 
-contract StreamerTest is Test{
+contract StreamerModuleTest is Test{
     EnsoWallet internal ensoWalletReference;
     EnsoWallet internal ensoWallet;
     EnsoWalletFactory internal factoryReference;
     EnsoWalletFactory internal factory;
     EnsoBeacon internal beacon;
-    Streamer internal streamer;
+    StreamerModule internal streamer;
 
     bytes32[] internal emptyCommands;
     bytes[] internal emptyState;
@@ -27,7 +27,7 @@ contract StreamerTest is Test{
         factory.initialize(address(this));
         factory.deploy(bytes32(0), emptyCommands, emptyState);
         ensoWallet = EnsoWallet(factory.getAddress());
-        streamer = new Streamer();
+        streamer = new StreamerModule();
     }
 
     function testStreamETH() public {
@@ -39,7 +39,7 @@ contract StreamerTest is Test{
         ensoWallet.setPermission(ensoWallet.MODULE_ROLE(), address(streamer), true);
         // Start stream
         bytes memory data = abi.encodeWithSelector(
-            Streamer.addStream.selector,
+            StreamerModule.addStream.selector,
             address(this),
             1,
             0,

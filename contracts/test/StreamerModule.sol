@@ -3,7 +3,7 @@ pragma solidity ^0.8.16;
 
 import "../interfaces/IModuleManager.sol";
 
-contract Streamer {
+contract StreamerModule {
 
     struct StreamInfo {
         uint256 amountPerSec;
