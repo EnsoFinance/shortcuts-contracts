@@ -2,7 +2,6 @@ import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
 import {EnsoWallet, EnsoWalletFactory, Events, PayableEvents} from '../../typechain';
 
-const OWNER_SLOT = '0xebef2b212afb6c9cfdbd10b61834a8dc955e5fbf0aacd1c641d5cbdedf4022d0';
 export const ZERO_BYTES32 = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 export async function setupUsers<T extends {[contractName: string]: Contract}>(
