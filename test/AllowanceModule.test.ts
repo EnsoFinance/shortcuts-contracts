@@ -33,27 +33,27 @@ describe('AllowanceModule delegate', function() {
 
         await ensoWallet.setPermission(await ensoWallet.MODULE_ROLE(), safeModule.address, true);
 
-        let addDelegateData = await safeModule.interface.encodeFunctionData('addDelegate', [accounts[4].address])
+        const addDelegateData = await safeModule.interface.encodeFunctionData('addDelegate', [accounts[4].address])
         await ensoWallet.execute(safeModule.address, 0, addDelegateData)
 
-        let delegates = await safeModule.getDelegates(ensoWallet.address, 0, 10)
+        const delegates = await safeModule.getDelegates(ensoWallet.address, 0, 10)
         expect(delegates.results.length).to.equal(1)
         expect(delegates.results[0]).to.equal(accounts[4].address)
 
-        let setAllowanceData = await safeModule.interface.encodeFunctionData('setAllowance', [accounts[4].address, token.address, 100, 0, 0])
+        const setAllowanceData = await safeModule.interface.encodeFunctionData('setAllowance', [accounts[4].address, token.address, 100, 0, 0])
         await ensoWallet.execute(safeModule.address, 0, setAllowanceData)
 
-        let tokens = await safeModule.getTokens(ensoWallet.address, accounts[4].address)
+        const tokens = await safeModule.getTokens(ensoWallet.address, accounts[4].address)
         expect(tokens.length).to.equal(1)
         expect(tokens[0]).to.equal(token.address)
-        let tokenAllowance = await safeModule.getTokenAllowance(ensoWallet.address, accounts[4].address, token.address)
+        const tokenAllowance = await safeModule.getTokenAllowance(ensoWallet.address, accounts[4].address, token.address)
         expect(tokenAllowance[0]).to.equal(100)
         expect(tokenAllowance[1]).to.equal(0)
         expect(tokenAllowance[2]).to.equal(0)
         // Reset time should be set to current on first init
         expect(tokenAllowance[3]).to.not.equal(0)
         expect(tokenAllowance[4]).to.equal(1)
-        let unknownAllowance = await safeModule.getTokenAllowance(ensoWallet.address, accounts[3].address, token.address)
+        const unknownAllowance = await safeModule.getTokenAllowance(ensoWallet.address, accounts[3].address, token.address)
         expect(unknownAllowance[0]).to.equal(0)
         expect(unknownAllowance[1]).to.equal(0)
         expect(unknownAllowance[2]).to.equal(0)
@@ -63,12 +63,12 @@ describe('AllowanceModule delegate', function() {
         expect(await token.balanceOf(ensoWallet.address)).to.equal(1000)
         expect(await token.balanceOf(accounts[1].address)).to.equal(0)
 
-        let nonce = tokenAllowance[4]
-        let transferHash = await safeModule.generateTransferHash(
+        const nonce = tokenAllowance[4]
+        const transferHash = await safeModule.generateTransferHash(
             ensoWallet.address, token.address, accounts[1].address, 60, AddressZero, 0, nonce
         )
         
-        let signature = await signMessage(accounts[4], transferHash)
+        const signature = await signMessage(accounts[4], transferHash)
 
         await safeModule.executeAllowanceTransfer(
             ensoWallet.address, token.address, accounts[1].address, 60, AddressZero, 0, accounts[4].address, signature
@@ -77,16 +77,16 @@ describe('AllowanceModule delegate', function() {
         expect(await token.balanceOf(ensoWallet.address)).to.equal(940)
         expect(await token.balanceOf(accounts[1].address)).to.equal(60)
 
-        let tokenLimit = await safeModule.getTokenAllowance(ensoWallet.address, accounts[4].address, token.address)
+        const tokenLimit = await safeModule.getTokenAllowance(ensoWallet.address, accounts[4].address, token.address)
         expect(tokenLimit[0]).to.equal(100)
         expect(tokenLimit[1]).to.equal(60)
         expect(tokenLimit[2]).to.equal(0)
         expect(tokenLimit[3] > 0).to.equal(true)
         expect(tokenLimit[4]).to.equal(2)
 
-        let removeDelegateData = await safeModule.interface.encodeFunctionData('removeDelegate', [accounts[4].address, true])
+        const removeDelegateData = await safeModule.interface.encodeFunctionData('removeDelegate', [accounts[4].address, true])
         await ensoWallet.execute(safeModule.address, 0, removeDelegateData)
-        let removedAllowance = await safeModule.getTokenAllowance(ensoWallet.address, accounts[4].address, token.address)
+        const removedAllowance = await safeModule.getTokenAllowance(ensoWallet.address, accounts[4].address, token.address)
         expect(removedAllowance[0]).to.equal(0)
         expect(removedAllowance[1]).to.equal(0)
         expect(removedAllowance[2]).to.equal(0)
@@ -102,17 +102,17 @@ describe('AllowanceModule delegate', function() {
 
         await ensoWallet.setPermission(await ensoWallet.MODULE_ROLE(), safeModule.address, true);
 
-        let addDelegateData = await safeModule.interface.encodeFunctionData('addDelegate', [accounts[4].address])
+        const addDelegateData = await safeModule.interface.encodeFunctionData('addDelegate', [accounts[4].address])
         await ensoWallet.execute(safeModule.address, 0, addDelegateData)
 
-        let delegates = await safeModule.getDelegates(ensoWallet.address, 0, 10)
+        const delegates = await safeModule.getDelegates(ensoWallet.address, 0, 10)
         expect(delegates.results.length).to.equal(1)
         expect(delegates.results[0]).to.equal(accounts[4].address)
 
-        let setAllowanceData = await safeModule.interface.encodeFunctionData('setAllowance', [accounts[4].address, AddressZero, ethers.utils.parseEther('1.0'), 0, 0])
+        const setAllowanceData = await safeModule.interface.encodeFunctionData('setAllowance', [accounts[4].address, AddressZero, ethers.utils.parseEther('1.0'), 0, 0])
         await ensoWallet.execute(safeModule.address, 0, setAllowanceData)
 
-        let tokens = await safeModule.getTokens(ensoWallet.address, accounts[4].address)
+        const tokens = await safeModule.getTokens(ensoWallet.address, accounts[4].address)
         expect(tokens.length).to.equal(1)
         expect(tokens[0]).to.equal(AddressZero)
         let tokenAllowance = await safeModule.getTokenAllowance(ensoWallet.address, accounts[4].address, AddressZero)
