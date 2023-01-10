@@ -253,6 +253,9 @@ contract EnsoBeacon is IBeacon, Timelock {
         }
     }
 
+    // @notice Internal function to check timelock and reset it after timelock has matured
+    // @param key The bytes32 key that represents the function that is timelocked
+    // @return The bytes data that is stored by the timelock
     function _resolveTimelock(bytes32 key) internal returns (bytes memory data) {
         _checkTimelock(key);
         data = _getTimelockValue(key);
