@@ -1,14 +1,6 @@
 import {Contract, Signer} from 'ethers';
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts, network} from 'hardhat';
-import {
-  EnsoWallet,
-  EnsoWalletFactory,
-  Events,
-  PayableEvents,
-  TupleFactory,
-  EnsoShortcutsHelpers,
-  TupleHelpers,
-} from '../../typechain';
+import {EnsoWallet, EnsoWalletFactory, Events, PayableEvents} from '../../typechain';
 
 const OWNER_SLOT = '0xebef2b212afb6c9cfdbd10b61834a8dc955e5fbf0aacd1c641d5cbdedf4022d0';
 export const ZERO_BYTES32 = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -71,12 +63,6 @@ export const setup = deployments.createFixture(async () => {
     autoMine: true,
   });
 
-  await deployments.deploy('TupleFactory', {
-    from: deployer,
-    args: [],
-    autoMine: true,
-  });
-
   const factoryDeployer = await ethers.getContract('FactoryDeployer')
   const factoryAddress = await factoryDeployer.factory()
 
@@ -85,14 +71,9 @@ export const setup = deployments.createFixture(async () => {
       EnsoWalletFactory: <EnsoWalletFactory>await ethers.getContractAt('EnsoWalletFactory', factoryAddress),
       EnsoWallet: <EnsoWallet>await ethers.getContract('EnsoWallet'),
     },
-    utils: {
-      EnsoShortcutsHelpers: <EnsoShortcutsHelpers>await ethers.getContract('EnsoShortcutsHelpers'),
-      TupleHelpers: <TupleHelpers>await ethers.getContract('TupleHelpers'),
-    },
     testing: {
       Events: <Events>await ethers.getContract('Events'),
       PayableEvents: <PayableEvents>await ethers.getContract('PayableEvents'),
-      TupleFactory: <TupleFactory>await ethers.getContract('TupleFactory'),
     },
   };
 
