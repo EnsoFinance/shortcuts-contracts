@@ -23,6 +23,8 @@ abstract contract Ownable {
         _;
     }
 
+    // @notice Transfer ownership of this contract, ownership is only transferred after new owner accepts
+    // @param newOwner The address of the new owner
     function transferOwnership(address newOwner) external onlyOwner {
         if (newOwner == address(0)) revert InvalidAccount();
         address currentOwner = OWNER.getAddress();
@@ -31,6 +33,7 @@ abstract contract Ownable {
         emit OwnershipTransferStarted(currentOwner, newOwner);
     }
 
+    // @notice Accept ownership of this contract
     function acceptOwnership() external {
         if (msg.sender != PENDING_OWNER.getAddress()) revert NotPermitted();
         PENDING_OWNER.setAddress(address(0));
@@ -39,6 +42,8 @@ abstract contract Ownable {
         emit OwnershipTransferred(previousOwner, msg.sender);
     }
 
+    // @notice The current owner of this contract
+    // @return The address of the current owner
     function owner() external view returns (address) {
         return OWNER.getAddress();
     }
