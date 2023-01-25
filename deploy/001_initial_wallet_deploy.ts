@@ -1,7 +1,8 @@
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
 
-const IMPL_SLOT = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+const ADMIN = '0xfae0bbFD75307865Dcdf21d9deFEFEDEee718431'
+const IMPL_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
 
 function wait(n: number){
   return new Promise(function(resolve){
@@ -19,8 +20,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployer} = await getNamedAccounts();
 
   const accounts = await ethers.provider.listAccounts();
-  const ownerAddress = accounts[0];
-
+  console.log('Deployer: ', accounts[0])
+  console.log('Admin: ', ADMIN)
+  
   const {deploy: deployMinimalWallet, address: MinimalWalletAddress} = await deterministic('MinimalWallet', {
     from: deployer,
     args: [],
@@ -52,7 +54,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (deployBeacon) {
     const deterministicBeacon = await deterministic('EnsoBeacon', {
       from: deployer,
-      args: [ownerAddress, EnsoWalletAddress, MinimalWalletAddress],
+      args: [ADMIN, EnsoWalletAddress, MinimalWalletAddress],
       log: true,
       autoMine: true,
       skipIfAlreadyDeployed: true,
@@ -78,7 +80,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (!factoryDeployerDeployment) {
     const deterministicFactoryDeployer = await deterministic('FactoryDeployer', {
       from: deployer,
-      args: [ownerAddress, EnsoWalletFactoryAddress],
+      args: [EnsoBeaconAddress, EnsoWalletFactoryAddress],
       log: true,
       autoMine: true,
       skipIfAlreadyDeployed: true,
@@ -105,7 +107,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     ] = await Promise.all([
         EnsoBeacon.coreImplementation(),
         EnsoBeacon.fallbackImplementation(),
-        ethers.utils.getAddress("0x" + (await ethers.provider.getStorageAt(FactoryProxyAddress, IMPL_SLOT)).substr(26)),
+        ethers.utils.getAddress("0x" + (await ethers.provider.getStorageAt(FactoryProxyAddress, IMPL_SLOT)).slice(26)),
         EnsoBeacon.delay(),
         EnsoBeacon.admin()
     ])
