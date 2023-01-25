@@ -10,4 +10,5 @@ echo "Deploy to all networks"
     && yarn deploy gnosis \
     && yarn deploy avalanche \
     && yarn deploy fantom \
+    && yarn deploy aurora \
     && yarn deploy mainnet
