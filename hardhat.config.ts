@@ -30,6 +30,7 @@ const config: HardhatUserConfig = {
   },
   namedAccounts: {
     deployer: 0,
+    admin: '0xfae0bbFD75307865Dcdf21d9deFEFEDEee718431',
   },
   networks: addForkConfiguration({
     hardhat: {

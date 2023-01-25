@@ -1,7 +1,6 @@
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
 
-const ADMIN = '0xfae0bbFD75307865Dcdf21d9deFEFEDEee718431'
 const IMPL_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
 
 function wait(n: number){
@@ -17,11 +16,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {deterministic, getArtifact, getOrNull} = deployments;
 
-  const {deployer} = await getNamedAccounts();
-
-  const accounts = await ethers.provider.listAccounts();
-  console.log('Deployer: ', accounts[0])
-  console.log('Admin: ', ADMIN)
+  const {deployer, admin} = await getNamedAccounts();
+  console.log('Deployer: ', deployer)
+  console.log('Admin: ', admin)
   
   const {deploy: deployMinimalWallet, address: MinimalWalletAddress} = await deterministic('MinimalWallet', {
     from: deployer,
@@ -54,7 +51,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (deployBeacon) {
     const deterministicBeacon = await deterministic('EnsoBeacon', {
       from: deployer,
-      args: [ADMIN, EnsoWalletAddress, MinimalWalletAddress],
+      args: [admin, EnsoWalletAddress, MinimalWalletAddress],
       log: true,
       autoMine: true,
       skipIfAlreadyDeployed: true,

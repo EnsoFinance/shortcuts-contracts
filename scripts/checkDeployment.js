@@ -1,12 +1,11 @@
-const { ethers } = require('hardhat')
+const { ethers, getNamedAccounts } = require('hardhat')
 const dotenv = require("dotenv")
 
 dotenv.config();
 
-const ADMIN = '0xfae0bbFD75307865Dcdf21d9deFEFEDEee718431'
 const IMPL_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc'
 
-const networkName = 'polygon'
+const networkName = 'localhost'
 
 const EnsoBeacon = require(`../deployments/${networkName}/EnsoBeacon.json`)
 const FactoryDeployer = require(`../deployments/${networkName}/FactoryDeployer.json`)
@@ -18,6 +17,7 @@ const url = process.env[`ETH_NODE_URI_${networkName.toUpperCase()}`]
 const provider = new ethers.providers.JsonRpcProvider(url)
 
 async function main() {
+    const namedAccounts = await getNamedAccounts()
     const ensoBeacon = new ethers.Contract(EnsoBeacon.address, EnsoBeacon.abi, provider)
     const factoryDeployer = new ethers.Contract(FactoryDeployer.address, FactoryDeployer.abi, provider)
     const [
@@ -42,7 +42,7 @@ async function main() {
     ])
     const factoryImplementation = ethers.utils.getAddress('0x' + factoryImplementationBytes.slice(26))
     console.log('Factory implementation: ', factoryImplementation)
-    if (ADMIN == admin) {
+    if (namedAccounts.admin == admin) {
         console.log('Admin correct')
     } else {
         console.log('Wrong admin ', admin)
