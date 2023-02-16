@@ -7,6 +7,8 @@ module.exports = {
   },
   env: {
     commonjs: true,
+    browser: true,
+    node: true,
   },
   plugins: ['@typescript-eslint'],
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
