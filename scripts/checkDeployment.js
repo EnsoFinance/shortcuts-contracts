@@ -7,11 +7,13 @@ const IMPL_SLOT = '0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d3
 
 const networkName = 'polygon'
 
+/* eslint-disable */
 import EnsoBeacon from `../deployments/${networkName}/EnsoBeacon.json`
 import FactoryDeployer from `../deployments/${networkName}/FactoryDeployer.json`
 import EnsoWalletFactory from `../deployments/${networkName}/EnsoWalletFactory.json`
 import EnsoWallet from `../deployments/${networkName}/EnsoWallet.json`
 import MinimalWallet from `../deployments/${networkName}/MinimalWallet.json`
+/* eslint-enable */
 
 const url = process.env[`ETH_NODE_URI_${networkName.toUpperCase()}`]
 const provider = new ethers.providers.JsonRpcProvider(url)

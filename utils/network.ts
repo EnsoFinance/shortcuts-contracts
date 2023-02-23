@@ -53,9 +53,9 @@ export function getPrivateKey(networkName?: string): string | undefined {
 
   const privateKey = process.env.PRIVATE_KEY;
   if (privateKey === '') {
-    return
+    return;
   }
-  return privateKey
+  return privateKey;
 }
 
 export function accounts(networkName?: string): any {

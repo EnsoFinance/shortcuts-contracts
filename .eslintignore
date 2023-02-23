@@ -12,3 +12,4 @@ _lib/
 *.json
 .yalc
 dist/
+scripts/checkDeployment.js
