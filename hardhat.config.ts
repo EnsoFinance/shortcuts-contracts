@@ -30,6 +30,7 @@ const config: HardhatUserConfig = {
   },
   namedAccounts: {
     deployer: 0,
+    admin: '0xfae0bbFD75307865Dcdf21d9deFEFEDEee718431',
   },
   networks: addForkConfiguration({
     hardhat: {
@@ -81,6 +82,16 @@ const config: HardhatUserConfig = {
       accounts: accounts('avalanche'),
       saveDeployments: true,
     },
+    fantom: {
+      url: nodeUrl('fantom'),
+      accounts: accounts('fantom'),
+      saveDeployments: true,
+    },
+    aurora: {
+      url: nodeUrl('aurora'),
+      accounts: accounts('aurora'),
+      saveDeployments: true,
+    }
   }),
   paths: {
     sources: 'contracts',

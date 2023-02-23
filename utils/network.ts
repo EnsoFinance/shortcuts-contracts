@@ -43,7 +43,26 @@ export function getMnemonic(networkName?: string): string {
   return mnemonic;
 }
 
-export function accounts(networkName?: string): {mnemonic: string} {
+export function getPrivateKey(networkName?: string): string | undefined {
+  if (networkName) {
+    const privateKey = process.env['PRIVATE_KEY_' + networkName.toUpperCase()];
+    if (privateKey && privateKey !== '') {
+      return privateKey;
+    }
+  }
+
+  const privateKey = process.env.PRIVATE_KEY;
+  if (privateKey === '') {
+    return;
+  }
+  return privateKey;
+}
+
+export function accounts(networkName?: string): any {
+  const privateKey = getPrivateKey(networkName);
+  if (privateKey) {
+    return [privateKey];
+  }
   const mnemonic = getMnemonic(networkName);
 
   return {mnemonic};

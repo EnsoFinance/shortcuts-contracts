@@ -1,6 +1,6 @@
 {
   "name": "@ensofinance/shortcuts-contracts",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "scripts": {
     "forge:dependencies": "git submodule update --init --recursive",
     "prepare": "yarn forge:dependencies && yarn hardhat typechain",
@@ -35,7 +35,7 @@
     "package:publish": "yarn clean && yarn hardhat typechain && yarn tsc --project ./tsconfig.prod.json && npm publish"
   },
   "devDependencies": {
-    "@ensofinance/weiroll": "^1.4.1-alpha.1",
+    "@ensofinance/weiroll": "^1.4.1",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.12",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
@@ -75,7 +75,7 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "@ensofinance/weiroll.js": "^0.4.1-alpha.1",
+    "@ensofinance/weiroll.js": "^0.4.1",
     "@typechain/ethers-v5": "^10.0.0",
     "typechain": "^8.0.0"
   },

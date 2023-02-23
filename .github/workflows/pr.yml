@@ -13,6 +13,10 @@ jobs:
       ETHERSCAN_KEY: ${{ secrets.ETHERSCAN_KEY }}
       MNEMONIC: ${{secrets.MNEMONIC}}
 
+    strategy:
+      matrix:
+        node-version: [18.x]
+        
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
