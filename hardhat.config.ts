@@ -91,6 +91,11 @@ const config: HardhatUserConfig = {
       url: nodeUrl('aurora'),
       accounts: accounts('aurora'),
       saveDeployments: true,
+    },
+    base: {
+      url: nodeUrl('base'),
+      accounts: accounts('base'),
+      saveDeployments: true,
     }
   }),
   paths: {
