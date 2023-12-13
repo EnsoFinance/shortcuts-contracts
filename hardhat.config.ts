@@ -96,6 +96,11 @@ const config: HardhatUserConfig = {
       url: nodeUrl('base'),
       accounts: accounts('base'),
       saveDeployments: true,
+    },
+    linea: {
+      url: nodeUrl('linea'),
+      accounts: accounts('linea'),
+      saveDeployments: true,
     }
   }),
   paths: {
