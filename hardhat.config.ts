@@ -102,7 +102,7 @@ const config: HardhatUserConfig = {
       accounts: accounts('linea'),
       saveDeployments: true,
     },
-   artio: {
+    artio: {
       url: nodeUrl('artio'),
       accounts: accounts('artio'),
       saveDeployments: true,
